@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 
 import { cn } from "./lib";
 import { BAYER4, fillOf, type PixelColor } from "./pixel";
 import { rgb, type Rgb } from "./palette";
 
 const CELL = 2;
-let uid = 0;
 
 /**
  * Paint the 2px left rail — a vertical dither ramp fading downward. Verbatim
@@ -69,8 +68,10 @@ export function DitherCollapsible({
 }: DitherCollapsibleProps) {
   const railRef = useRef<HTMLCanvasElement | null>(null);
   // Stable unique id linking the trigger button to the content region.
-  const idRef = useRef(`dither-collapsible-${++uid}`);
-  const id = idRef.current;
+  // SSR-safe: useId is tree-position based, so server and client produce
+  // identical ids (the Vue kit's module-level counter diverges across
+  // SSR/client module instances).
+  const id = `dither-collapsible-${useId()}`;
   // Track color in a ref so the mount-once RO callback reads the latest value.
   const colorRef = useRef(color);
   colorRef.current = color;

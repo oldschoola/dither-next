@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, type ReactNode } from "react"
+import { useId, useMemo, type ReactNode } from "react"
 import { FieldContext, type FieldContext as FieldContextValue } from "./control"
 import { cssColor } from "./palette"
 
@@ -8,10 +8,6 @@ import { cssColor } from "./palette"
 // state to compatible descendants via FieldContext/useField. Explicit
 // consumer `id`, `aria-describedby`, and `invalid` props win (the controls
 // merge: their own prop ?? field.controlId).
-
-// Module-level counter mirrors the Vue `let fieldCount = 0`. Each field
-// instance gets a stable unique base; useMemo keeps it stable across renders.
-let fieldCount = 0
 
 export interface DitherFieldProps {
   label?: string
@@ -25,7 +21,10 @@ export interface DitherFieldProps {
 }
 
 export function DitherField({ label, description, error, controlId, children }: DitherFieldProps) {
-  const base = useMemo(() => `dk-field-${fieldCount++}`, [])
+  // SSR-stable unique base via useId (the Vue kit used a module-level counter,
+  // which is not SSR-safe — server and client module instances diverge).
+  const reactId = useId()
+  const base = `dk-field-${reactId}`
   const id = controlId ?? `${base}-control`
   const helpId = `${base}-help`
   const describedBy = error || description ? helpId : undefined

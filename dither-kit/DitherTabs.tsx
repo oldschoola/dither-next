@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -41,7 +42,6 @@ export function useTabs(): TabsContextValue {
   return ctx;
 }
 
-let counter = 0;
 const CELL = 2;
 
 /**
@@ -153,16 +153,16 @@ export function DitherTabs({
   const matrix = seed !== undefined ? pixelMatrixFromSeed(seed) : BAYER4;
   const vertical = orientation === "vertical";
 
-  // Stable id base linking tabs ↔ panels (SSR-safe: generated once).
-  const idBaseRef = useRef(`dk-tabs-${counter++}`);
-  const idBase = idBaseRef.current;
+  // Stable id base linking tabs ↔ panels (SSR-safe: useId is tree-position
+  // based, so server and client produce identical ids — unlike the Vue kit's
+  // module-level counter which diverges across SSR/client module instances).
+  const idBase = `dk-tabs-${useId()}`;
 
   // Normalize tabs to TabItem[] once per render (cheap).
   const items: TabItem[] = useMemo(
     () => tabs.map((t) => (typeof t === "string" ? { value: t } : t)),
     [tabs],
   );
-
   const listRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // Array of tab button refs (roving tabindex + measure + focus target).

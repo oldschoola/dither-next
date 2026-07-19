@@ -3,8 +3,11 @@ import { createWidget, type SimpleWidgetKind } from "@/entities/widget";
 import type { ChartType } from "@/shared/config";
 import type { Artboard } from "./types";
 
+// Deterministic monotonic counter — SSR-safe (the Vue kit used Date.now(),
+// which produces different ids on the server vs client module instances and
+// breaks hydration of the studio's initial artboard frames).
 let counter = 0;
-const uid = () => `ab${Date.now().toString(36)}${(counter++).toString(36)}`;
+const uid = () => `ab${(counter++).toString(36)}`;
 
 export type ArtboardKind = ChartType | SimpleWidgetKind;
 
