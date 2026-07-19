@@ -1,0 +1,238 @@
+"use client";
+
+import { useState } from "react";
+
+import {
+  DitherBreadcrumb,
+  DitherPagination,
+  DitherRating,
+  DitherStepper,
+  DitherTimeline,
+} from "@dither-kit";
+
+import { DemoCard } from "../DemoCard";
+import { PropsTable, type PropRow } from "../PropsTable";
+
+const SNIPPET_BREADCRUMB = `<DitherBreadcrumb
+  :items="[
+    { label: 'Home', href: '#/' },
+    { label: 'Components', href: '#/docs' },
+    { label: 'Breadcrumb' },
+  ]"
+/>`;
+
+const SNIPPET_PAGINATION = `<script setup>
+const page = ref(3)
+<\/script>
+
+<DitherPagination v-model:page="page" :total="12" />`;
+
+const SNIPPET_RATING = `<script setup>
+const rating = ref(3)
+<\/script>
+
+<!-- interactive: click or arrow-key to set -->
+<DitherRating v-model="rating" />
+
+<!-- read-only supports fractions -->
+<DitherRating :model-value="4.5" readonly />
+
+<!-- seed varies the star tilt + dither scatter -->
+<DitherRating :model-value="4" :seed="88" color="pink" />`;
+
+const SNIPPET_STEPPER = `<DitherStepper
+  :current="1"
+  :steps="[
+    { label: 'Cart' },
+    { label: 'Shipping' },
+    { label: 'Payment' },
+    { label: 'Done' },
+  ]"
+/>`;
+
+const SNIPPET_TIMELINE = `<DitherTimeline
+  :items="[
+    { title: 'Deployed v0.3.0', time: '2h ago', color: 'green',
+      body: 'Rolled out to production.' },
+    { title: 'Merged #482', time: 'Yesterday', color: 'blue',
+      body: 'Seeded spinner form space.' },
+    { title: 'Opened milestone', time: 'Mon', color: 'purple' },
+  ]"
+/>`;
+
+const API: Record<string, PropRow[]> = {
+  breadcrumb: [
+    { prop: "items", type: "{ label; href? }[]", default: "—" },
+    { prop: "separator", type: "string", default: '"/"' },
+  ],
+  pagination: [
+    { prop: "page", type: "number (v-model)", default: "—" },
+    { prop: "total", type: "number — page count", default: "—" },
+    { prop: "siblings", type: "number — pages either side", default: "1" },
+  ],
+  rating: [
+    { prop: "modelValue", type: "number (v-model)", default: "0" },
+    { prop: "max", type: "number", default: "5" },
+    { prop: "color", type: "PixelColor", default: '"orange"' },
+    { prop: "size", type: "number (px per star)", default: "22" },
+    { prop: "readonly", type: "boolean — fractions allowed", default: "false" },
+    { prop: "label", type: "string — accessible name", default: '"Rating"' },
+    { prop: "seed", type: "number — star tilt + scatter", default: "clean" },
+  ],
+  stepper: [
+    { prop: "steps", type: "{ label; hint? }[]", default: "—" },
+    { prop: "current", type: "number — active index", default: "—" },
+  ],
+  timeline: [
+    { prop: "items", type: "{ title; time?; body?; color? }[]", default: "—" },
+    { prop: "dotSize", type: "number (px)", default: "12" },
+  ],
+};
+
+const BREADCRUMB_ITEMS = [
+  { label: "Home", href: "#/" },
+  { label: "Components", href: "#/docs" },
+  { label: "Breadcrumb" },
+];
+
+const STEPPER_STEPS = [
+  { label: "Cart" },
+  { label: "Shipping" },
+  { label: "Payment" },
+  { label: "Done" },
+];
+
+const TIMELINE_ITEMS = [
+  { title: "Deployed v0.3.0", time: "2h ago", color: "green", body: "Rolled out to production behind a flag." },
+  { title: "Merged #482", time: "Yesterday", color: "blue", body: "Seeded the spinner form space." },
+  { title: "Opened milestone", time: "Mon", color: "purple", body: "Navigation & data components." },
+  { title: "Kicked off", time: "Last week", color: "orange" },
+];
+
+const SEED_COLORS = ["orange", "pink", "purple", "green"] as const;
+
+export function NavigationDocs() {
+  const [page, setPage] = useState(3);
+  const [rating, setRating] = useState(3);
+  const [ratingSeeds, setRatingSeeds] = useState<number[]>([0, 12, 88, 404]);
+
+  const rerollRatings = () => {
+    setRatingSeeds((prev) => prev.map(() => Math.floor(Math.random() * 100000)));
+  };
+
+  return (
+    <>
+      {/* Breadcrumb */}
+      <section id="breadcrumb" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Breadcrumb</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A path back up the hierarchy. Links up to the current page, which is marked
+          <code className="text-foreground/80">aria-current="page"</code>, inside a labelled
+          <code className="text-foreground/80">nav</code>.
+        </p>
+        <DemoCard code={SNIPPET_BREADCRUMB}>
+          <div className="flex justify-center">
+            <DitherBreadcrumb items={BREADCRUMB_ITEMS} />
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.breadcrumb} />
+      </section>
+
+      {/* Pagination */}
+      <section id="pagination" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Pagination</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          Page navigation that always shows the first, last and current page, collapsing
+          the rest to ellipses. Two-way bound with <code className="text-foreground/80">v-model:page</code>.
+        </p>
+        <DemoCard code={SNIPPET_PAGINATION}>
+          <div className="grid gap-4">
+            <div className="flex justify-center">
+              <DitherPagination page={page} total={12} onPageChange={setPage} />
+            </div>
+            <p className="text-center text-[12px] text-muted-foreground">on page {page} of 12</p>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.pagination} />
+      </section>
+
+      {/* Rating */}
+      <section id="rating" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Rating</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          Dithered stars, rasterised from a 5-point polygon and scattered through the Bayer
+          matrix. Interactive as a <code className="text-foreground/80">slider</code> (click or arrow
+          keys); read-only mode fills fractionally. A seed tilts the star and reshuffles the
+          scatter, so no two ratings look stamped from the same die.
+        </p>
+        <DemoCard code={SNIPPET_RATING}>
+          <div className="grid gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <DitherRating value={rating} size={28} onChange={setRating} />
+              <p className="text-[12px] tabular-nums text-muted-foreground">{rating} / 5 — click or arrow-key</p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              <DitherRating value={4.5} readonly />
+              <DitherRating value={3} readonly color="green" />
+              <DitherRating value={5} readonly color="pink" max={5} />
+              <DitherRating value={7} readonly color="blue" max={10} size={16} />
+            </div>
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                {ratingSeeds.map((sd, i) => (
+                  <DitherRating
+                    key={i}
+                    value={4}
+                    readonly
+                    seed={sd}
+                    color={SEED_COLORS[i]}
+                    size={24}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                className="rounded-md border border-border px-3 py-1 text-[12px] text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
+                onClick={rerollRatings}
+              >
+                Reroll star seeds
+              </button>
+            </div>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.rating} />
+      </section>
+
+      {/* Stepper */}
+      <section id="stepper" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Stepper</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          Progress through a multi-step flow. Completed steps carry a check, the current step
+          an outlined node, and the connectors are the kit's dithered rule — dissolving toward
+          steps not yet reached.
+        </p>
+        <DemoCard code={SNIPPET_STEPPER}>
+          <div className="mx-auto max-w-md">
+            <DitherStepper current={1} steps={STEPPER_STEPS} />
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.stepper} />
+      </section>
+
+      {/* Timeline */}
+      <section id="timeline" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Timeline</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A vertical run of events, each pinned by a dithered dot whose density fades at the
+          rim. Give a title, an optional timestamp, body and palette colour per node.
+        </p>
+        <DemoCard code={SNIPPET_TIMELINE}>
+          <div className="mx-auto max-w-sm">
+            <DitherTimeline items={TIMELINE_ITEMS} />
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.timeline} />
+      </section>
+    </>
+  );
+}

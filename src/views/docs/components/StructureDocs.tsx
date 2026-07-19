@@ -1,0 +1,251 @@
+"use client";
+
+import { useState } from "react";
+
+import {
+  DitherButton,
+  DitherCollapsible,
+  DitherDialog,
+  DitherKbd,
+  DitherTabPanel,
+  DitherTabs,
+  type TabItem,
+  type TabsVariant,
+} from "@dither-kit";
+
+import { DemoCard } from "../DemoCard";
+import { PropsTable, type PropRow } from "../PropsTable";
+
+const TABS = ["Overview", "Metrics", "Logs"];
+
+const PANEL: Record<string, string> = {
+  Overview: "Requests are steady; nothing on fire.",
+  Metrics: "p95 latency 42ms, error rate 0.02%.",
+  Logs: "3 warnings in the last hour, zero errors.",
+};
+
+const TAB_VARIANTS: TabsVariant[] = ["underline", "segmented", "washed"];
+
+const VERT_TABS: TabItem[] = [
+  { value: "Inbox", badge: 12 },
+  { value: "Drafts", badge: 2 },
+  { value: "Archive" },
+  { value: "Spam", disabled: true },
+];
+
+const SNIPPET_TABS = `<!-- panels nest inside so they inherit the tab context -->
+<DitherTabs v-model="tab" :tabs="['Overview', 'Metrics', 'Logs']">
+  <DitherTabPanel value="Overview" class="mt-4">…</DitherTabPanel>
+  <DitherTabPanel value="Metrics" class="mt-4">…</DitherTabPanel>
+  <DitherTabPanel value="Logs" class="mt-4">…</DitherTabPanel>
+</DitherTabs>
+
+<!-- variant: underline | segmented | washed -->
+<DitherTabs v-model="tab" :tabs="tabs" variant="segmented" />
+
+<!-- objects add badges and disabled; vertical flips the rail -->
+<DitherTabs v-model="folder" orientation="vertical" variant="washed"
+  :tabs="[{ value: 'Inbox', badge: 12 }, { value: 'Spam', disabled: true }]" />`;
+
+const SNIPPET_COLLAPSIBLE = `<script setup>
+const openA = ref(true)
+const openB = ref(false)
+<\/script>
+
+<DitherCollapsible v-model="openA" title="What is dithering?" color="blue">
+  Ordered dithering trades smooth gradients for a fixed threshold
+  matrix — the same Bayer 4x4 behind every fill in this kit.
+</DitherCollapsible>
+<DitherCollapsible v-model="openB" title="Why canvas?" color="purple">
+  One engine paints every fill, so components stay coherent.
+</DitherCollapsible>`;
+
+const SNIPPET_DIALOG = `<script setup>
+const open = ref(false)
+<\/script>
+
+<DitherButton @click="open = true">Open dialog</DitherButton>
+<DitherDialog :open="open" title="Confirm"
+  description="Ship the dithered build to production?" @close="open = false">
+  <p class="text-[13px] text-muted-foreground">Review the release before continuing.</p>
+  <template #footer>
+    <DitherButton color="green" @click="open = false">Confirm</DitherButton>
+  </template>
+</DitherDialog>`;
+
+const SNIPPET_KBD = `<div class="flex items-center gap-6 text-xs">
+  <div class="flex items-center gap-2">
+    <span class="text-muted-foreground">Command menu</span>
+    <DitherKbd>⌘</DitherKbd>
+    <DitherKbd>K</DitherKbd>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-muted-foreground">Shortcuts</span>
+    <DitherKbd>?</DitherKbd>
+  </div>
+</div>`;
+
+const API: Record<string, PropRow[]> = {
+  tabs: [
+    { prop: "tabs", type: "(string | { value, label?, badge?, disabled? })[]", default: "—" },
+    { prop: "modelValue", type: "string", default: "—" },
+    { prop: "variant", type: '"underline" | "segmented" | "washed"', default: '"underline"' },
+    { prop: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"' },
+    { prop: "color", type: "PixelColor", default: '"blue"' },
+    { prop: "value (TabPanel)", type: "string — nests inside DitherTabs", default: "—" },
+  ],
+  collapsible: [
+    { prop: "title", type: "string", default: "—" },
+    { prop: "modelValue", type: "boolean", default: "false" },
+    { prop: "color", type: "PixelColor", default: '"blue"' },
+  ],
+  dialog: [
+    { prop: "open", type: "boolean", default: "—" },
+    { prop: "title", type: "string", default: "undefined" },
+    { prop: "description", type: "string", default: "undefined" },
+    { prop: "closeOnBackdrop", type: "boolean", default: "true" },
+    { prop: "class", type: "string", default: "—" },
+  ],
+  kbd: [{ prop: "class", type: "string", default: "undefined" }],
+};
+
+export function StructureDocs() {
+  const [tab, setTab] = useState("Overview");
+  const [variantTab, setVariantTab] = useState("Overview");
+  const [vertTab, setVertTab] = useState("Inbox");
+  const [openA, setOpenA] = useState(true);
+  const [openB, setOpenB] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  return (
+    <>
+      <section id="tabs" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Tabs</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A roving-tabindex tablist with a dithered underline that slides to the
+          active tab. Arrow keys move selection.
+        </p>
+        <DemoCard code={SNIPPET_TABS}>
+          <div className="mx-auto max-w-sm">
+            <DitherTabs value={tab} onChange={setTab} tabs={TABS} color="blue">
+              {TABS.map((t) => (
+                <DitherTabPanel key={t} value={t} class="mt-4">
+                  <p className="text-[12px] text-muted-foreground">{PANEL[t]}</p>
+                </DitherTabPanel>
+              ))}
+            </DitherTabs>
+          </div>
+        </DemoCard>
+        <h3 className="mt-8 text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">variants</h3>
+        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+          {TAB_VARIANTS.map((v) => (
+            <div key={v}>
+              <div className="flex h-16 items-start justify-center rounded-lg border border-border/60 p-3">
+                <DitherTabs value={variantTab} onChange={setVariantTab} tabs={TABS} variant={v} color="purple" />
+              </div>
+              <div className="mt-2 text-center text-[10px] text-muted-foreground">{v}</div>
+            </div>
+          ))}
+        </div>
+        <h3 className="mt-8 text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">vertical · badges · disabled</h3>
+        <div className="mt-4 rounded-lg border border-border/60 p-4">
+          <DitherTabs
+            value={vertTab}
+            onChange={setVertTab}
+            tabs={VERT_TABS}
+            orientation="vertical"
+            variant="washed"
+            color="green"
+            class="mx-auto max-w-sm"
+          >
+            {VERT_TABS.map((t) => (
+              <DitherTabPanel
+                key={t.value}
+                value={t.value}
+                class="min-w-0 flex-1 self-stretch rounded-md border border-border/40 p-3"
+              >
+                <p className="text-[12px] text-muted-foreground">
+                  {t.value} — {t.badge ?? 0} items.
+                </p>
+              </DitherTabPanel>
+            ))}
+          </DitherTabs>
+        </div>
+        <PropsTable rows={API.tabs} />
+      </section>
+
+      <section id="collapsible" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Collapsible</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A disclosure row animated through grid-template-rows; when open, a 2px
+          dithered rail runs down the left edge of the content.
+        </p>
+        <DemoCard code={SNIPPET_COLLAPSIBLE}>
+          <div className="mx-auto max-w-sm divide-y divide-border/60">
+            <DitherCollapsible value={openA} onChange={setOpenA} title="What is dithering?" color="blue">
+              Ordered dithering trades smooth gradients for a fixed threshold
+              matrix — the same Bayer 4x4 behind every fill in this kit.
+            </DitherCollapsible>
+            <DitherCollapsible value={openB} onChange={setOpenB} title="Why canvas?" color="purple">
+              One engine paints every fill, so components stay coherent.
+            </DitherCollapsible>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.collapsible} />
+      </section>
+
+      <section id="dialog" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Dialog</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A teleported modal with labelled title and description, trapped focus,
+          Escape/backdrop dismissal, focus restoration, and an optional action footer.
+        </p>
+        <DemoCard code={SNIPPET_DIALOG}>
+          <div className="flex justify-center">
+            <DitherButton onClick={() => setDialogOpen(true)}>Open dialog</DitherButton>
+            <DitherDialog
+              open={dialogOpen}
+              title="Confirm"
+              description="Ship the dithered build to production?"
+              onClose={() => setDialogOpen(false)}
+              footer={
+                <DitherButton color="green" onClick={() => setDialogOpen(false)}>
+                  Confirm
+                </DitherButton>
+              }
+            >
+              <p className="text-[13px] leading-relaxed text-muted-foreground">
+                Review the release before continuing.
+              </p>
+            </DitherDialog>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.dialog} />
+      </section>
+
+      <section id="kbd" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Kbd</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          An honest keyboard key — no canvas, just the house border and a 2px
+          bottom edge. Pairs with shortcut listings.
+        </p>
+        <DemoCard code={SNIPPET_KBD}>
+          <div className="flex items-center justify-center gap-6 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Command menu</span>
+              <span className="flex items-center gap-1">
+                <DitherKbd>⌘</DitherKbd>
+                <DitherKbd>K</DitherKbd>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Shortcuts</span>
+              <DitherKbd>?</DitherKbd>
+            </div>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.kbd} />
+      </section>
+    </>
+  );
+}
