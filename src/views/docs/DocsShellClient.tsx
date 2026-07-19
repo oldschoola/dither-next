@@ -2,8 +2,8 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
+import { routePath } from "@/shared/lib";
 import { SECTION_IDS } from "./nav-registry";
 import {
   DocsChrome,
@@ -16,12 +16,18 @@ import {
 /**
  * DocsShellClient — the docs chrome + scroll-spy shell. Client component
  * because it owns `activeId` (IntersectionObserver), handles deep-link scroll,
- * and pushes the active section into the URL via `router.replace`.
+ * and keeps the URL in sync with the section in view.
  *
  * Port of the Vue `DocsPage.vue` wayfinding: scroll-spy sets `activeId` +
  * `aria-current`; clean `/docs/<id>` deep links restore and stay shareable.
  * (Legacy `#/docs/<id>` is handled at the appshell level by
  * `<LegacyHashRedirect>`; this page just reads the canonical path.)
+ *
+ * URL sync uses `window.history.replaceState` — NOT `router.replace` — so the
+ * URL bar updates without triggering a Next.js client navigation. Vue does the
+ * same with `history.replaceState(null, "", docsUrl(id))`; using
+ * `router.replace` here would remount the shell on every scroll-spy tick,
+ * resetting `activeId` and fighting the observer (jitter / stuck active item).
  */
 export function DocsShellClient({
   section,
@@ -30,15 +36,18 @@ export function DocsShellClient({
   section: string;
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const [activeId, setActiveId] = useState(section);
 
   useDeepLinkScroll(section);
   useScrollSpy((id) => {
     setActiveId(id);
     // Keep the URL in sync with the section in view (shareable + reload-safe).
-    if (SECTION_IDS.includes(id) && id !== section) {
-      router.replace(`/docs/${id}`);
+    // replaceState, not router.replace: a route change would remount this
+    // shell, reset activeId to `section`, and re-run the deep-link scroll —
+    // creating a feedback loop. Vue uses history.replaceState for the same
+    // reason.
+    if (SECTION_IDS.includes(id)) {
+      window.history.replaceState(null, "", routePath(`/docs/${id}`));
     }
   });
 

@@ -92,6 +92,10 @@ export function DocsMobileNav({
  * Observes every section element; the topmost visible section wins. The
  * `-56px 0px -50% 0px` rootMargin compensates for the 56px sticky chrome and
  * triggers in the upper half (matching the Vue kit verbatim).
+ *
+ * Only fires `onChange` when the topmost visible id actually changes — mirrors
+ * Vue's `id !== activeId.value` guard so redundant intersection callbacks
+ * (same section still in view) don't thrash the sidebar or the URL.
  */
 export function useScrollSpy(onChange: (id: string) => void) {
   const onChangeRef = useRef(onChange);
@@ -100,13 +104,20 @@ export function useScrollSpy(onChange: (id: string) => void) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Track the last id we reported so we only fire on real changes — same
+    // guard as Vue's `id !== activeId.value`.
+    let lastId = "";
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         const id = visible[0]?.target.id;
-        if (id) onChangeRef.current(id);
+        if (id && id !== lastId) {
+          lastId = id;
+          onChangeRef.current(id);
+        }
       },
       { rootMargin: "-56px 0px -50% 0px" },
     );
