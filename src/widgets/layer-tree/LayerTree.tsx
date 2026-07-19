@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Artboard } from "@/entities/artboard";
 import { type Layer, layersOf } from "@/entities/chart";
 import {
@@ -63,7 +63,7 @@ export function LayerTree() {
   // collapsed artboard ids (local UI state; groups carry their own
   // `collapsed` flag in the store via setGroupCollapsed).
   const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set());
-  const isOpen = (id: string) => !collapsed.has(id);
+  const isOpen = useCallback((id: string) => !collapsed.has(id), [collapsed]);
   function toggleArtboard(id: string) {
     setCollapsed((prev) => {
       const next = new Set(prev);
@@ -179,7 +179,7 @@ export function LayerTree() {
       }
     }
     return out;
-  }, [artboards, groups, collapsed]);
+  }, [artboards, groups, isOpen]);
 
   // --- selection -------------------------------------------------------------
   function clickArtboard(a: Artboard, additive: boolean) {

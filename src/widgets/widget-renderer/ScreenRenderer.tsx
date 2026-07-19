@@ -77,7 +77,7 @@ export function ScreenRenderer({ screen, artboardId }: ScreenRendererProps) {
             {row.cells.map((cell) => {
               const id = `${artboardId}:cell:${cell.id}`;
               const selected = selectedLayerId === id;
-              const Comp = (kit as unknown as Record<string, ComponentType<any>>)[cell.is];
+              const Comp = (kit as unknown as Record<string, ComponentType<Record<string, unknown>>>)[cell.is];
               if (!Comp) return null;
               const entry = componentEntry(cell.is);
               const cellProps = entry?.mapProps ? entry.mapProps(cell.props) : cell.props;

@@ -108,13 +108,13 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
 
   if (w.kind === "component") {
     const entry = componentEntry(w.is);
-    const kitRecord = kit as unknown as Record<string, ComponentType<any>>;
-    const Comp: ComponentType<any> | undefined = kitRecord[w.is];
+    const kitRecord = kit as unknown as Record<string, ComponentType<Record<string, unknown>>>;
+    const Comp: ComponentType<Record<string, unknown>> | undefined = kitRecord[w.is];
     const compProps = entry?.mapProps ? entry.mapProps(w.props) : w.props;
     const slotText = w.slotText != null ? w.slotText : undefined;
     const demo = entry?.demo;
     const label = (entry?.label ?? "").toLowerCase();
-    const Generic = Comp as ComponentType<any>;
+    const Generic = Comp as ComponentType<Record<string, unknown>>;
 
     return (
       <div className="flex h-full w-full items-center justify-center overflow-visible p-2">

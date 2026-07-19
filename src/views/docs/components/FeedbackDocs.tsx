@@ -98,7 +98,7 @@ export function FeedbackDocs() {
       <section id="badge" className="mt-16 scroll-mt-24">
         <h2 className="text-lg tracking-tight">Badge</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-          A small label chip — the button's dither fill at rest, no hover machinery,
+          A small label chip — the button{'\''}s dither fill at rest, no hover machinery,
           any palette color and texture variant.
         </p>
         <DemoCard code={SNIPPET_BADGE}>
@@ -125,7 +125,7 @@ export function FeedbackDocs() {
       <section id="skeleton" className="mt-16 scroll-mt-24">
         <h2 className="text-lg tracking-tight">Skeleton</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-          A loading placeholder that shimmers pixel-by-pixel — the field's density
+          A loading placeholder that shimmers pixel-by-pixel — the field{'\''}s density
           breathes through the Bayer matrix instead of a gradient sweep. Size it
           with classes and compose it into any layout.
         </p>
@@ -148,7 +148,7 @@ export function FeedbackDocs() {
       <section id="spinner" className="mt-16 scroll-mt-24">
         <h2 className="text-lg tracking-tight">Spinner</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-          A dithered loader, repainted at 30fps. It's not one shape — a seed samples
+          A dithered loader, repainted at 30fps. It{'\''}s not one shape — a seed samples
           three axes at once: the <em className="text-foreground/80 not-italic">silhouette</em>
           (circle ring, square box-ring, or bar), the{" "}
           <em className="text-foreground/80 not-italic">flow</em> (sweep like a comet, pulse
@@ -189,7 +189,7 @@ export function FeedbackDocs() {
         <h2 className="text-lg tracking-tight">Separator</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
           A 2px rule whose pixels dissolve toward both ends through the Bayer
-          matrix — the image component's edge fade, applied to a divider.
+          matrix — the image component{'\''}s edge fade, applied to a divider.
         </p>
         <DemoCard code={SNIPPET_SEPARATOR}>
           <div className="mx-auto max-w-sm">

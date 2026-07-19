@@ -115,7 +115,7 @@ export type PackKey =
   | "components-surface"
   | "components-navigation";
 
-const TRUE: true = true;
+const TRUE = true as const;
 const record = (ids: readonly { id: string }[]): Record<string, true> =>
   Object.fromEntries(ids.map((i) => [i.id, TRUE]));
 

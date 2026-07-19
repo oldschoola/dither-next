@@ -127,7 +127,7 @@ export function NavigationDocs() {
         <h2 className="text-lg tracking-tight">Breadcrumb</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
           A path back up the hierarchy. Links up to the current page, which is marked
-          <code className="text-foreground/80">aria-current="page"</code>, inside a labelled
+          <code className="text-foreground/80">aria-current{`{"\""}`}page{`{"\""}`}</code>, inside a labelled
           <code className="text-foreground/80">nav</code>.
         </p>
         <DemoCard code={SNIPPET_BREADCRUMB}>
@@ -208,7 +208,7 @@ export function NavigationDocs() {
         <h2 className="text-lg tracking-tight">Stepper</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
           Progress through a multi-step flow. Completed steps carry a check, the current step
-          an outlined node, and the connectors are the kit's dithered rule — dissolving toward
+          an outlined node, and the connectors are the kit{'\''}s dithered rule — dissolving toward
           steps not yet reached.
         </p>
         <DemoCard code={SNIPPET_STEPPER}>
