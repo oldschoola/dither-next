@@ -1139,15 +1139,24 @@ The Vue app uses `routePath()` / `assetPath()` / `appPathname()` from
 ### FSD slice port list
 
 Each slice keeps its directory under `dither-next/src/`; the layering
-(pages → widgets → features → entities → shared) is preserved. `@dither-kit`
+(views → widgets → features → entities → shared) is preserved. `@dither-kit`
 alias points at `dither-next/dither-kit/`.
+
+> **Note on `views/` vs `pages/`:** the Vue FSD "pages" slice held page
+> *components* imported by App Router routes. In Next.js 15 the path
+> `src/pages/` is reserved — it is auto-detected as the **Pages Router**
+> directory, so every `.tsx`/`.ts` there is validated as a route (requiring a
+> `default` export, rejecting a `config` export, etc.). Page components
+> therefore live in `src/views/` (landing, docs, studio), imported by their
+> `app/<route>/page.tsx`. The FSD layering is unchanged — only the directory
+> name moves out of Next's reserved path.
 
 | Slice | Vue shape | Next.js port notes |
 |---|---|---|
 | `app/` | `App.vue` (router), `styles.css` (tokens), `PageLoader.vue` | `app/layout.tsx` (root layout, tokens in `globals.css`), `app/page.tsx`, `app/docs/`, `app/studio/`. `PageLoader`→`next/dynamic` `loading`. `useTheme`→client provider. |
-| `pages/landing/` | `LandingPage.vue` (Japanese-minimal, reveal stagger, emote hover, sprite crops) | `app/page.tsx` + client sections. CSS-only reveal (`.reveal` stagger), `prefers-reduced-motion`. Sprite crops use measured constants — port `FACES`/`FACE_Y`/`FACE_H` verbatim. No JS timers on landing. |
-| `pages/docs/` | `DocsPage.vue`, `DemoCard.vue`, `PropsTable.vue`, `components/`, `examples/` (section packs + `*-nav.ts`) | `app/docs/page.tsx` + `app/docs/[section]/page.tsx`. Scroll-spy via `IntersectionObserver` (rootMargin -56px). `DemoCard` Preview/Code tabs → client component. Section packs keep the self-contained shape (section + snippets + local state + `*-nav.ts`). Wayfinding: clean + legacy deep links both restore. |
-| `pages/studio/` | `StudioPage.vue` (boot order, desktop gate, panels) | `app/studio/page.tsx` (**client**). See Studio section below — highest risk. |
+| `views/landing/` | `LandingPage.vue` (Japanese-minimal, reveal stagger, emote hover, sprite crops) | `app/page.tsx` + client sections. CSS-only reveal (`.reveal` stagger), `prefers-reduced-motion`. Sprite crops use measured constants — port `FACES`/`FACE_Y`/`FACE_H` verbatim. No JS timers on landing. |
+| `views/docs/` | `DocsPage.vue`, `DemoCard.vue`, `PropsTable.vue`, `components/`, `examples/` (section packs + `*-nav.ts`) | `app/docs/page.tsx` + `app/docs/[section]/page.tsx`. Scroll-spy via `IntersectionObserver` (rootMargin -56px). `DemoCard` Preview/Code tabs → client component. Section packs keep the self-contained shape (section + snippets + local state + `*-nav.ts`). Wayfinding: clean + legacy deep links both restore. |
+| `views/studio/` | `StudioPage.vue` (boot order, desktop gate, panels) | `app/studio/page.tsx` (**client**). See Studio section below — highest risk. |
 | `widgets/canvas/` | `Canvas.vue`, `Artboard.vue` (infinite pan/zoom, multi-artboard, drag/resize/duplicate/group/lock/hide) | Client widgets. Pan-zoom + artboard-transform features feed these. |
 | `widgets/layer-tree/` | `LayerTree.vue` (listbox, role=option, aria-selected, ↑↓ stopPropagation) | Client. Keyboard contract MUST stopPropagation on ↑/↓ (window-level nudge conflict). |
 | `widgets/inspector/` | `Inspector.vue`, `ComponentPropsPanel.vue`, `AvatarDrawGrid.vue` | Client. Full granularity UI. `shared/ui` ColorField/BezierEditor/TextureField feed it. |
