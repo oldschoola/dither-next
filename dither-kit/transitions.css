@@ -1,0 +1,16 @@
+/* Dither kit transition keyframes — the scoped `<style>` blocks from the Vue
+   SFCs collapsed into one imported sheet. Each component toggles a class to
+   drive enter/leave; the element stays mounted (via `usePresence`) until the
+   leave duration elapses, so the transition plays out. */
+
+/* Tooltip — glide between points (top/left) with a spring-ish curve, fade via
+   opacity. Replaces the React `motion` spring with native CSS — no dependency. */
+.dk-tooltip-card {
+  transition:
+    top 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+}
+.dk-tooltip-hide {
+  opacity: 0;
+}
