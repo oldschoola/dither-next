@@ -313,8 +313,6 @@ const config = {
      tint: hex or palette seed · dither: 0 smooth … 1 hard Bayer
      curvature: barrel warp · chromatic-aberration: rgb split (px)
      mouse-react on by default · renderMode="static" paints one frame */}`,
-  palette: `import { cssColor, type DitherColor } from "@dither-kit"
-cssColor("blue") // rgb(53,143,243)`,
 };
 
 const API: Record<string, PropRow[]> = {
@@ -489,12 +487,6 @@ const API: Record<string, PropRow[]> = {
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "class", type: "string", default: "undefined" },
-  ],
-  palette: [
-    { prop: "cssColor(c)", type: "(DitherColor | number) → css string", default: "—" },
-    { prop: "seedFromColor(c)", type: "(DitherColor | number) → Seed", default: "—" },
-    { prop: "seedFromHue(h)", type: "(number 0…360) → Seed", default: "—" },
-    { prop: "DitherColor", type: '"green" … "grey" — seven seeds', default: "—" },
   ],
 };
 
@@ -1143,27 +1135,6 @@ export function ChartsDocs() {
           </div>
         </DemoCard>
         <PropsTable rows={API.faultyTerminal} />
-      </section>
-
-      {/* Palette */}
-      <section id="palette" className="mt-16 scroll-mt-24">
-        <h2 className="text-lg tracking-tight">Palette</h2>
-        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-          Seven seeded colors; every component resolves fill, line and sparkle
-          hues from the same seed, so a dashboard stays coherent for free.
-        </p>
-        <DemoCard code={SNIPPETS.palette}>
-          <div className="grid gap-3">
-            {COLORS.map((c) => (
-              <div key={c} className="flex items-center gap-4">
-                <span className="w-14 text-[11px] text-muted-foreground">{c}</span>
-                <span className="size-5 rounded-[3px]" style={{ backgroundColor: cssColor(c) }} />
-                <Sparkline data={wave} color={c} class="h-6 flex-1" />
-              </div>
-            ))}
-          </div>
-        </DemoCard>
-        <PropsTable rows={API.palette} />
       </section>
     </>
   );

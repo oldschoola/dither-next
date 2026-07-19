@@ -43,7 +43,10 @@ export function DocsSidebar({
                           ? "border-foreground text-foreground"
                           : "border-transparent text-muted-foreground hover:border-foreground/40 hover:text-foreground"
                       }`}
-                      onClick={() => onNavigate?.(it.id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigate?.(it.id);
+                      }}
                     >
                       {it.label}
                     </Link>
@@ -73,7 +76,10 @@ export function DocsMobileNav({
         <Link
           key={it.id}
           href={`/docs/${it.id}`}
-          onClick={() => onNavigate?.(it.id)}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate?.(it.id);
+          }}
           className={`transition-colors hover:text-foreground ${
             activeId === it.id ? "text-foreground" : ""
           }`}

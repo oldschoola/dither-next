@@ -2,21 +2,31 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DocsShellClient } from "@/views/docs/DocsShellClient";
-import { SectionContent } from "@/views/docs/SectionContent";
+import { DocsSections } from "@/views/docs/SectionContent";
 import {
   SECTION_IDS,
   SECTION_LABEL,
-  packOf,
 } from "@/views/docs/nav-registry";
 
 /**
- * `/docs/<section>` — the section page. Server Component: owns the route
+ * `/docs/<section>` — the docs page. Server Component: owns the route
  * `metadata` (title per section) and `generateStaticParams` (pre-renders every
- * section page at build). The client shell (`DocsShellClient`) wraps the
- * section pack with the chrome header + scroll-spy sidebar.
+ * section URL at build). The client shell (`DocsShellClient`) wraps the FULL
+ * docs body with the chrome header + scroll-spy sidebar.
  *
- * Legacy `#/docs/<id>` deep links are migrated to canonical `/docs/<id>` by
- * the appshell's `<LegacyHashRedirect>`; this page just reads `params.section`.
+ * Matches the Vue docs page model: ONE long scrollable page renders every
+ * section pack concatenated in nav-registry order (Overview · Handbook ·
+ * Examples · Components · Utils). The `[section]` param is the deep-link
+ * TARGET — `DocsShellClient` scrolls `<section id={section}>` into view on
+ * mount (`useDeepLinkScroll`). Scrolling updates the sidebar's active item via
+ * the IntersectionObserver scroll-spy and keeps the URL in sync with
+ * `history.replaceState`, so every `/docs/<id>` is a shareable deep link to
+ * the same long page. (Legacy `#/docs/<id>` is migrated to canonical
+ * `/docs/<id>` by the appshell's `<LegacyHashRedirect>`.)
+ *
+ * Previously this route rendered only the single pack for `packOf(section)`;
+ * that split the Vue long page across routes and meant `/docs/getting-started`
+ * could not scroll to "Palette". All packs now render on every section URL.
  */
 export const dynamicParams = false;
 
@@ -50,10 +60,9 @@ export default async function DocsSectionPage({
   const { section } = await params;
   if (!SECTION_IDS.includes(section)) notFound();
 
-  const pack = packOf(section);
   return (
     <DocsShellClient section={section}>
-      <SectionContent pack={pack} />
+      <DocsSections />
     </DocsShellClient>
   );
 }

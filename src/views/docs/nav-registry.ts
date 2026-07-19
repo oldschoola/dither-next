@@ -1,14 +1,15 @@
 /**
- * Docs navigation registry — the sidebar IA and the section→pack map.
+ * Docs navigation registry — the sidebar IA + section id list.
  *
  * Verbatim port of the `GROUPS` array in `src/pages/docs/DocsPage.vue` (script
  * section). Section ids are PERMANENT deep links — relabel freely, never
  * rename an id (docs/AGENTS.md).
  *
- * Each pack exports a React component that renders all of its sections in
- * order; the route page (`app/docs/[section]/page.tsx`) looks the section id
- * up here to pick which pack renders, and the sidebar spreads these groups
- * to render the rail.
+ * The docs page renders every section pack on ONE long scrollable page; the
+ * sidebar spreads these groups to render the rail, and the scroll-spy cycles
+ * `activeId` through `SECTION_IDS` as the reader scrolls. `SECTION_LABEL`
+ * backs the per-URL `<title>` (each `/docs/<id>` deep-links to the same page
+ * and scrolls to its section on mount).
  */
 import { FORM_NAV } from "./components/form-nav";
 import { FEEDBACK_NAV } from "./components/feedback-nav";
@@ -86,83 +87,3 @@ export const SECTION_IDS: string[] = GROUPS.flatMap((g) => g.items.map((i) => i.
 export const SECTION_LABEL: Record<string, string> = Object.fromEntries(
   GROUPS.flatMap((g) => g.items.map((i) => [i.id, i.label])),
 );
-
-/**
- * Which "page" a section belongs to. The Vue docs was a single long page; the
- * Next.js port routes each section to its own URL (`/docs/<id>`) but the
- * content is grouped so the reader keeps context. This maps a section id to a
- * logical content group so the route page can render the right pack.
- *
- * Packs: `overview` (Quick start), `handbook` (Styling/Composition/Seeds/
- * Motion/Accessibility), `examples-core` (Dashboard/Shell/Monitoring/Team/
- * Usage/Signin), `examples-auth`, `examples-product`, `components-charts`
- * (Area/Line/Bar/Pie/Radar/Sparkline + Button/Avatar/Gradient/Image/Palette),
- * and one pack per component-doc group (form/field/selection/feedback/
- * structure/overlay/surface/navigation).
- */
-export type PackKey =
-  | "overview"
-  | "handbook"
-  | "examples-core"
-  | "examples-auth"
-  | "examples-product"
-  | "components-charts"
-  | "components-form"
-  | "components-field"
-  | "components-selection"
-  | "components-feedback"
-  | "components-structure"
-  | "components-overlay"
-  | "components-surface"
-  | "components-navigation";
-
-const TRUE = true as const;
-const record = (ids: readonly { id: string }[]): Record<string, true> =>
-  Object.fromEntries(ids.map((i) => [i.id, TRUE]));
-
-const CHART_SECTION_IDS: Record<string, true> = record([
-  { id: "area" }, { id: "line" }, { id: "bar" }, { id: "pie" }, { id: "radar" },
-  { id: "sparkline" }, { id: "button" }, { id: "avatar" }, { id: "gradient" },
-  { id: "image" }, { id: "faulty-terminal" }, { id: "palette" },
-]);
-const EXAMPLES_CORE_IDS: Record<string, true> = record([
-  { id: "dashboard" }, { id: "shell" }, { id: "monitoring" }, { id: "team" },
-  { id: "usage" }, { id: "signin" },
-]);
-const EXAMPLES_AUTH_IDS: Record<string, true> = record(AUTH_NAV);
-const EXAMPLES_PRODUCT_IDS: Record<string, true> = record(PRODUCT_NAV);
-const FORM_IDS: Record<string, true> = record(FORM_NAV);
-const FIELD_IDS: Record<string, true> = record(FIELD_NAV);
-const SELECTION_IDS: Record<string, true> = record(SELECTION_NAV);
-const FEEDBACK_IDS: Record<string, true> = record(FEEDBACK_NAV);
-const STRUCTURE_IDS: Record<string, true> = record(STRUCTURE_NAV);
-const OVERLAY_IDS: Record<string, true> = record(OVERLAY_NAV);
-const SURFACE_IDS: Record<string, true> = record(SURFACE_NAV);
-const NAVIGATION_IDS: Record<string, true> = record(NAVIGATION_NAV);
-
-const HANDBOOK_IDS: Record<string, true> = {
-  styling: TRUE, composition: TRUE, seeds: TRUE, motion: TRUE, accessibility: TRUE,
-};
-
-/**
- * Map a section id to its pack key. Multi-branch lookup that the route page
- * uses to pick which section pack renders — non-trivial, kept as a function
- * because the branch set is the durable contract.
- */
-export function packOf(section: string): PackKey {
-  if (section === "getting-started") return "overview";
-  if (HANDBOOK_IDS[section]) return "handbook";
-  if (EXAMPLES_CORE_IDS[section]) return "examples-core";
-  if (EXAMPLES_AUTH_IDS[section]) return "examples-auth";
-  if (EXAMPLES_PRODUCT_IDS[section]) return "examples-product";
-  if (CHART_SECTION_IDS[section]) return "components-charts";
-  if (FORM_IDS[section]) return "components-form";
-  if (FIELD_IDS[section]) return "components-field";
-  if (SELECTION_IDS[section]) return "components-selection";
-  if (FEEDBACK_IDS[section]) return "components-feedback";
-  if (STRUCTURE_IDS[section]) return "components-structure";
-  if (OVERLAY_IDS[section]) return "components-overlay";
-  if (SURFACE_IDS[section]) return "components-surface";
-  if (NAVIGATION_IDS[section]) return "components-navigation";
-  return "overview";
-}

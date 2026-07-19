@@ -52,12 +52,18 @@ export function DocsShellClient({
   });
 
   const navigate = useCallback((id: string) => {
-    if (typeof document !== "undefined") {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "auto"
-          : "smooth",
-      });
+    if (typeof document === "undefined") return;
+    // Mirror Vue's `scrollTo`: smooth-scroll the section into view AND set the
+    // URL immediately (the scroll-spy's replaceState lags behind the scroll).
+    // The sidebar/mobile-nav <Link> onClick calls preventDefault first so this
+    // never races a Next.js client navigation — same page, scroll only.
+    document.getElementById(id)?.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+    if (SECTION_IDS.includes(id)) {
+      window.history.replaceState(null, "", routePath(`/docs/${id}`));
     }
   }, []);
 

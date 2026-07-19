@@ -1,7 +1,6 @@
 "use client";
 
-import type { PackKey } from "./nav-registry";
-
+import { PaletteSection } from "./PaletteSection";
 import { OverviewPack } from "./OverviewPack";
 import { HandbookPack } from "./HandbookPack";
 import { ExamplesCorePack } from "./ExamplesCorePack";
@@ -18,42 +17,47 @@ import { SurfaceDocs } from "./components/SurfaceDocs";
 import { NavigationDocs } from "./components/NavigationDocs";
 
 /**
- * SectionContent — renders the section pack for a given pack key.
+ * DocsSections — the entire docs body, every section pack concatenated on one
+ * long scrollable page. Port of `src/pages/docs/DocsPage.vue`, which renders
+ * all packs inline in nav-registry order (Overview · Handbook · Examples ·
+ * Components · Utils).
  *
- * The Vue docs was one long page; the Next.js port routes each section to its
- * own URL but keeps the pack grouping so a reader scanning a group sees its
- * siblings. Each pack is a self-contained component (sections + snippets +
- * local state), matching the Vue `*-nav.ts` + pack shape (docs/AGENTS.md).
+ * The Vue docs is a SINGLE long page: the sidebar's IntersectionObserver
+ * scroll-spy drives `activeId` as the reader scrolls top-to-bottom through
+ * every section, and `history.replaceState` keeps the URL in sync so each
+ * `/docs/<id>` is a shareable deep link to the same page. The Next.js port
+ * must match that model — it previously routed each section id to its own URL
+ * and rendered only that section's pack via `packOf()`, which meant
+ * `/docs/getting-started` could never scroll to "Palette" (different pack,
+ * different route) and the scroll-spy only cycled within one pack.
+ *
+ * Packs are rendered in nav-registry GROUPS order so the section order on the
+ * page matches the sidebar IA exactly. `PaletteSection` (Utils) renders last,
+ * matching Vue's placement of the `palette` section after `NavigationDocs`.
+ *
+ * Each pack is a self-contained client component (sections + snippets + local
+ * state) — the per-pack shape from `src/pages/docs/AGENTS.md` is preserved;
+ * only the page-level composition changed from "one pack per route" to "all
+ * packs on one route".
  */
-export function SectionContent({ pack }: { pack: PackKey }) {
-  switch (pack) {
-    case "overview":
-      return <OverviewPack />;
-    case "handbook":
-      return <HandbookPack />;
-    case "examples-core":
-      return <ExamplesCorePack />;
-    case "examples-auth":
-      return <AuthExamples />;
-    case "examples-product":
-      return <ProductExamples />;
-    case "components-charts":
-      return <ChartsDocs />;
-    case "components-form":
-      return <FormDocs />;
-    case "components-field":
-      return <FieldDocs />;
-    case "components-selection":
-      return <SelectionDocs />;
-    case "components-feedback":
-      return <FeedbackDocs />;
-    case "components-structure":
-      return <StructureDocs />;
-    case "components-overlay":
-      return <OverlayDocs />;
-    case "components-surface":
-      return <SurfaceDocs />;
-    case "components-navigation":
-      return <NavigationDocs />;
-  }
+export function DocsSections() {
+  return (
+    <>
+      <OverviewPack />
+      <HandbookPack />
+      <ExamplesCorePack />
+      <AuthExamples />
+      <ProductExamples />
+      <ChartsDocs />
+      <FormDocs />
+      <FieldDocs />
+      <SelectionDocs />
+      <FeedbackDocs />
+      <StructureDocs />
+      <OverlayDocs />
+      <SurfaceDocs />
+      <NavigationDocs />
+      <PaletteSection />
+    </>
+  );
 }
