@@ -32,9 +32,19 @@ and all three app routes (landing, docs, studio) are ported.
 - Aliases: `@/*` → `./src/*`, `@dither-kit` → `./dither-kit/index.ts`,
   `@dither-kit/*` → `./dither-kit/*` (tsconfig paths).
 - Scripts: `dev` (next dev), `build` (next build), `start`, `lint`,
-  `typecheck` (`tsc --noEmit`).
+  `typecheck` (`tsc --noEmit`), `test` (`vitest run`), `test:watch` (`vitest`).
 - `html-to-image` is a declared dep (studio PNG export); only reached on user
   action, no bundle bloat for non-studio routes.
+- Tests: Vitest + @testing-library/react + jsdom, mirroring the Vue tree's
+  20-spec suite. `vitest.config.ts` sets `environment: 'jsdom'`, the
+  `@`/`@dither-kit` aliases, and `tests/setup.ts` (RTL cleanup + jest-dom +
+  jsdom shims for ResizeObserver/IntersectionObserver/matchMedia/localStorage/
+  PointerEvent/offsetParent — jsdom 25 lacks these). Specs live under
+  `tests/` (root: engine + models) and `tests/components/` (RTL component
+  specs). Pure-function specs import from `@dither-kit`/`@/entities`;
+  component specs mount the ported `.tsx` via RTL. The editor store is
+  immutable (`useSyncExternalStore`) — seed via `restoreDoc`/`setViewport`,
+  read via `getEditorSnapshot()`.
 - The kit dir has ZERO imports from `next/` or `../src/` — it must stay
   portable. `'use client'` directives are at the top of every file that uses
   React hooks/context (required by App Router for createContext/useRef/etc).
@@ -75,6 +85,7 @@ and all three app routes (landing, docs, studio) are ported.
 ## Verification
 
 - `cd dither-next && npx tsc --noEmit` green.
+- `cd dither-next && npm run test` — all 20 ported spec files pass (142 tests).
 - `cd dither-next && npm run build` succeeds.
 - The Vue app (`../dither-kit`, `../src`) is untouched by this workstream.
 

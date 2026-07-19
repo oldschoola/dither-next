@@ -54,18 +54,23 @@ export function DitherDialog({
   const titleId = `${reactId}-title`;
   const descriptionId = `${reactId}-description`;
 
-  // Focus trap owns Tab cycling + focus restoration. Active only while open.
-  useFocusTrap(panelRef, open);
+  // Focus trap owns Tab cycling + focus restoration. Active only while the
+  // panel is actually in the DOM — `open` alone flips before `useInDom`/
+  // `usePresence` mount the portal, so the trap's effect would run against a
+  // null ref and never re-attach. Gate on `inDom && mounted && open` so the
+  // effect re-runs when the portal enters the DOM.
+  const inDom = useInDom();
+  const mounted = usePresence(open, 180);
+  useFocusTrap(panelRef, inDom && mounted && open);
 
-  // On open, focus the close button (or first focusable) once the panel mounts.
-  // A `useEffect` (post-paint) focusing on the now-mounted close button is the
-  // faithful port of the Vue `nextTick(focusInitial)` (guide §7): the portal
-  // node is in the DOM by the time the effect runs.
+  // On open, focus the close button once the panel is in the DOM. Gating on
+  // `inDom && mounted && open` (not just `open`) ensures the effect re-runs
+  // when the portal mounts, so `closeRef.current` is populated.
   useEffect(() => {
-    if (!open) return;
+    if (!inDom || !mounted || !open) return;
     const id = window.setTimeout(() => closeRef.current?.focus(), 0);
     return () => window.clearTimeout(id);
-  }, [open]);
+  }, [inDom, mounted, open]);
 
   function onKeydown(e: React.KeyboardEvent): void {
     if (e.key === "Escape") {
@@ -78,12 +83,6 @@ export function DitherDialog({
     if (e.target !== e.currentTarget) return; // `.self` guard
     if (closeOnBackdrop) onClose?.();
   }
-
-  // 180ms = the longest transition (panel transform, `.dialogPanel`).
-  const mounted = usePresence(open, 180);
-  // SSR guard: the component is `"use client"` but Next.js still renders it on
-  // the server during SSR of a parent page. `document` is unavailable there.
-  const inDom = useInDom();
 
   if (!inDom || !mounted) return null;
 

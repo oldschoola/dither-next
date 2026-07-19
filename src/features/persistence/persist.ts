@@ -102,11 +102,14 @@ const writeJson = (key: string, value: unknown): void => {
 const saveIndex = (): void => writeJson(INDEX_KEY, projects);
 
 const touch = (id: string): void => {
-  const meta = projects.find((p) => p.id === id);
-  if (meta) {
-    meta.updatedAt = Date.now();
-    emitProjects();
-  }
+  // Replace the meta with a new object (not an in-place mutation) so the
+  // projects array identity changes and useSyncExternalStore consumers
+  // re-render. The Vue kit mutated `meta.updatedAt` on a reactive array.
+  mutateProjects((p) => {
+    const i = p.findIndex((m) => m.id === id);
+    if (i < 0) return;
+    p[i] = { ...p[i], updatedAt: Date.now() };
+  });
 };
 
 /** Snapshot the full editor doc (artboards, groups, viewport) for saving. */
@@ -243,10 +246,16 @@ export function switchProject(id: string): void {
 
 export function renameProject(id: string, name: string): void {
   const clean = name.trim();
-  const meta = projects.find((p) => p.id === id);
-  if (!meta || !clean) return;
-  meta.name = clean;
-  emitProjects();
+  if (!clean) return;
+  // Replace the meta with a new object (not an in-place mutation) so the
+  // projects array identity changes and useSyncExternalStore consumers
+  // re-render. The Vue kit mutated `meta.name` on a reactive array; the
+  // React port needs a new snapshot reference.
+  mutateProjects((p) => {
+    const i = p.findIndex((m) => m.id === id);
+    if (i < 0) return;
+    p[i] = { ...p[i], name: clean };
+  });
   saveIndex();
 }
 
