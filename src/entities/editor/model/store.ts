@@ -329,6 +329,72 @@ export function patchSelectedChart(producer: (chart: Artboard["chart"]) => void)
   state = { ...state, artboards };
   emit();
 }
+/** Immutably patch the selected artboard (name, widget props, chart sub-fields,
+ *  screen cells, avatar pattern, x/y/w/h) via a producer. Deep-clones the
+ *  artboard, runs the producer, and replaces it — one emit. Covers every
+ *  Inspector mutation that the Vue SFC did via direct field assignment. */
+export function patchSelectedArtboard(producer: (a: Artboard) => void): void {
+  const id = state.selectedArtboardId;
+  if (!id) return;
+  const artboards = state.artboards.map((b) => {
+    if (b.id !== id) return b;
+    const clone = JSON.parse(JSON.stringify(b)) as Artboard;
+    producer(clone);
+    return clone;
+  });
+  state = { ...state, artboards };
+  emit();
+}
+
+/** Immutably patch an artboard by id (rename from LayerTree context menu,
+ *  which may target a non-selected artboard). */
+export function patchArtboard(id: string, producer: (a: Artboard) => void): void {
+  const artboards = state.artboards.map((b) => {
+    if (b.id !== id) return b;
+    const clone = JSON.parse(JSON.stringify(b)) as Artboard;
+    producer(clone);
+    return clone;
+  });
+  state = { ...state, artboards };
+  emit();
+}
+
+/** Bulk-set absolute artboard positions for multi-selection drag. Skips
+ *  locked artboards (locked members stay put, per src/AGENTS.md). One emit. */
+export function setArtboardPositions(updates: { id: string; x: number; y: number }[]): void {
+  if (!updates.length) return;
+  const map = new Map(updates.map((u) => [u.id, u]));
+  const artboards = state.artboards.map((b) => {
+    const u = map.get(b.id);
+    if (!u || b.locked) return b;
+    return { ...b, x: u.x, y: u.y };
+  });
+  state = { ...state, artboards };
+  emit();
+}
+
+/** Set an artboard's rect absolutely (for resize handles — n/w anchors move
+ *  the origin). `minW`/`minH` let widget frames use smaller minimums. */
+export function setArtboardRect(
+  id: string,
+  rect: { x: number; y: number; w: number; h: number },
+  minW = 260,
+  minH = 200,
+): void {
+  const artboards = state.artboards.map((b) =>
+    b.id === id
+      ? {
+          ...b,
+          x: rect.x,
+          y: rect.y,
+          w: Math.max(minW, Math.round(rect.w)),
+          h: Math.max(minH, Math.round(rect.h)),
+        }
+      : b,
+  );
+  state = { ...state, artboards };
+  emit();
+}
 
 export function setSelectedType(type: ChartType): void {
   const id = state.selectedArtboardId;
@@ -386,6 +452,24 @@ export function setGroupLocked(groupId: string, v: boolean): void {
   emit();
 }
 
+/** Rename a group. The Vue SFC mutated `g.name` directly; this is the
+ *  immutable equivalent used by the LayerTree rename flow. */
+export function renameGroup(groupId: string, name: string): void {
+  const clean = name.trim();
+  if (!clean) return;
+  const groups = state.groups.map((g) => (g.id === groupId ? { ...g, name: clean } : g));
+  state = { ...state, groups };
+  emit();
+}
+
+/** Collapse/expand a group. The Vue SFC toggled `g.collapsed` directly;
+ *  this is the immutable equivalent. */
+export function setGroupCollapsed(groupId: string, v: boolean): void {
+  const groups = state.groups.map((g) => (g.id === groupId ? { ...g, collapsed: v } : g));
+  state = { ...state, groups };
+  emit();
+}
+
 export function deleteGroup(groupId: string): void {
   const gone = new Set(membersOf(groupId).map((a) => a.id));
   const artboards = state.artboards.filter((a) => !gone.has(a.id));
@@ -416,6 +500,33 @@ export function deleteSeries(key: string): void {
 
 export function replay(): void {
   state = { ...state, replayToken: state.replayToken + 1 };
+  emit();
+}
+
+/** Restore the document from a snapshot `{artboards, groups}` (and optionally a
+ *  viewport). Used by history undo/redo and persistence hydration. Re-selects
+ *  the current artboard if it survives, else the first artboard. */
+export function restoreDoc(doc: {
+  artboards: Artboard[];
+  groups: Group[];
+  viewport?: Viewport;
+}): void {
+  const artboards = doc.artboards;
+  const groups = doc.groups;
+  const keep = artboards.find((a) => a.id === state.selectedArtboardId);
+  const first = keep ?? artboards[0];
+  const selectedArtboardId = first?.id ?? "";
+  const selectedLayerId = selectedArtboardId ? `${selectedArtboardId}:root` : "";
+  const selectedIds = keep ? state.selectedIds.filter((id) => artboards.some((a) => a.id === id)) : [];
+  state = {
+    ...state,
+    artboards,
+    groups,
+    viewport: doc.viewport ?? state.viewport,
+    selectedArtboardId,
+    selectedLayerId,
+    selectedIds,
+  };
   emit();
 }
 

@@ -1,0 +1,35 @@
+/* Canvas dotted-grid background + zoom-tool button styles.
+   Port of the scoped <style> block in src/widgets/canvas/Canvas.vue. */
+
+.host {
+  background-color: color-mix(in oklab, var(--color-background) 92%, var(--color-muted));
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-foreground) 12%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+.zoomTool {
+  display: flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  color: var(--color-muted-foreground);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    scale 100ms ease;
+}
+
+.zoomTool:hover {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.zoomTool:active {
+  scale: 0.96;
+}
