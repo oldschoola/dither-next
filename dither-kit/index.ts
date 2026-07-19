@@ -187,12 +187,14 @@ export type { DotVariant } from "./dot-paint"
 export { dotPaint } from "./dot-paint"
 
 // --- precompile (browser/SSR-safe RGBA buffers) ---
+// NOTE: `ButtonVariant` and `GradientDirection` are exported from the
+// component modules (`./DitherButton`, `./DitherGradient`) to mirror the
+// Vue barrel — they are NOT re-exported here to avoid duplicate-export
+// conflicts with the component files (which define the same types).
 export type {
   ButtonRasterOptions,
-  ButtonVariant,
   DitherRenderMode,
   GradientRasterOptions,
-  GradientDirection,
   PrecompiledDither,
 } from "./precompile"
 export {
@@ -224,10 +226,110 @@ export { useCanvasVisibility } from "./use-visibility"
 // --- lib ---
 export { cn } from "./lib"
 
-// -------------------------------------------------------------------------
-// Component exports (DitherButton, DitherGradient, DitherAvatar, DitherImage,
-// Area/Line/Bar/Pie/Radar series, Grid, XAxis, YAxis, Dot, ActiveDot,
-// Legend, Tooltip, Sparkline, form controls, feedback, overlays, surfaces,
-// DitherToaster, …) will be added here as the `.vue` → `.tsx` port lands.
-// Until a component is real, it is NOT exported — no stubs.
-// -------------------------------------------------------------------------
+// =========================================================================
+// Component exports — grouped to mirror the Vue `dither-kit/index.ts` barrel.
+// Components are named exports (no `export default`); the Vue barrel's
+// `export { default as X }` therefore maps to `export { X }` here.
+// =========================================================================
+
+// --- Charts + series parts ---
+export { Area } from "./Area"
+export { Line } from "./Line"
+export { AreaChart, LineChart } from "./area-chart"
+export { Bar } from "./Bar"
+export { BarChart } from "./bar-chart"
+export { Pie } from "./Pie"
+export { PieChart } from "./pie-chart"
+export { Radar } from "./Radar"
+export { RadarChart } from "./radar-chart"
+export { RadarFrame } from "./RadarFrame"
+export { CartesianSeries } from "./CartesianSeries"
+
+// --- Chart parts (axes, grid, dots, legend, tooltip, sparkline) ---
+export { Grid } from "./Grid"
+export { XAxis } from "./XAxis"
+export { YAxis } from "./YAxis"
+export { Dot } from "./Dot"
+export { ActiveDot } from "./ActiveDot"
+export { Legend } from "./Legend"
+export { Tooltip, type TooltipVariant } from "./Tooltip"
+export { Sparkline } from "./Sparkline"
+
+// --- Standalone pixel components ---
+export { DitherAvatar, type AvatarMirror } from "./DitherAvatar"
+export { DitherButton, type ButtonVariant } from "./DitherButton"
+export { DitherGradient, type GradientDirection } from "./DitherGradient"
+export { DitherImage } from "./DitherImage"
+export { DitherSpinner } from "./DitherSpinner"
+
+// --- Form controls ---
+export { DitherSwitch } from "./DitherSwitch"
+export { DitherCheckbox } from "./DitherCheckbox"
+export { DitherCheckboxGroup } from "./DitherCheckboxGroup"
+export { DitherSlider, type SliderVariant } from "./DitherSlider"
+export { DitherProgress } from "./DitherProgress"
+
+// --- Feedback ---
+export { DitherBadge, type BadgeVariant } from "./DitherBadge"
+export { DitherSkeleton } from "./DitherSkeleton"
+export { DitherSeparator, type SeparatorOrientation } from "./DitherSeparator"
+
+// --- Navigation & data ---
+export { DitherBreadcrumb, type Crumb } from "./DitherBreadcrumb"
+export { DitherPagination, pageList } from "./DitherPagination"
+export { DitherRating } from "./DitherRating"
+export { DitherStepper, type Step } from "./DitherStepper"
+export { DitherTimeline, type TimelineItem } from "./DitherTimeline"
+
+// --- Structure ---
+export { DitherTabs, type TabItem, type TabsVariant } from "./DitherTabs"
+export { DitherTabPanel } from "./DitherTabPanel"
+export { DitherCollapsible } from "./DitherCollapsible"
+export { DitherKbd } from "./DitherKbd"
+
+// --- Overlays & menus ---
+export { DitherPopover } from "./DitherPopover"
+export { DitherMenu, type MenuItem } from "./DitherMenu"
+export { DitherContextMenu, type ContextMenuItem } from "./DitherContextMenu"
+export { DitherMenubar, type MenubarItem, type MenubarMenu } from "./DitherMenubar"
+export { DitherTooltip } from "./DitherTooltip"
+export { DitherPreviewCard } from "./DitherPreviewCard"
+export { DitherDialog } from "./DitherDialog"
+export { DitherAlertDialog } from "./DitherAlertDialog"
+export { DitherDrawer, type DrawerSide } from "./DitherDrawer"
+export { DitherDrawerIndent } from "./DitherDrawerIndent"
+export { DitherSwipeArea } from "./DitherSwipeArea"
+export { DitherAccordion, type AccordionItem } from "./DitherAccordion"
+export { DitherToaster } from "./DitherToaster"
+export { DitherScrollArea } from "./DitherScrollArea"
+
+// --- Fields & forms ---
+export { DitherInput } from "./DitherInput"
+export { DitherTextarea } from "./DitherTextarea"
+export { DitherField } from "./DitherField"
+export { DitherFieldset } from "./DitherFieldset"
+export { DitherForm } from "./DitherForm"
+export { DitherNumberField } from "./DitherNumberField"
+export { DitherOtpField } from "./DitherOtpField"
+
+// --- Selection ---
+export { DitherSelect, type Option } from "./DitherSelect"
+export { DitherCombobox } from "./DitherCombobox"
+export { DitherAutocomplete } from "./DitherAutocomplete"
+export { DitherRadioGroup } from "./DitherRadioGroup"
+export { DitherToggle } from "./DitherToggle"
+export { DitherToggleGroup } from "./DitherToggleGroup"
+
+// --- Surfaces & status ---
+export {
+  DitherSidebar,
+  type SidebarCollapse,
+  type SidebarDensity,
+  type SidebarVariant,
+} from "./DitherSidebar"
+export { DitherSidebarItem } from "./DitherSidebarItem"
+export { DitherSidebarGroup } from "./DitherSidebarGroup"
+export { DitherSidebarSub } from "./DitherSidebarSub"
+export { DitherNavMenu, type NavMenuItem } from "./DitherNavMenu"
+export { DitherToolbar } from "./DitherToolbar"
+export { DitherMeter } from "./DitherMeter"
