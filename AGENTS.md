@@ -3,18 +3,24 @@
 ## Purpose
 
 Parallel Next.js port of the Vue 3 `dither-kit` + `src` app. Lives alongside
-the Vue app (which stays the source of truth until the port is complete) and
-does NOT touch it. The engine layer is ported verbatim from `../dither-kit`;
-components and app pages arrive in later workstreams.
+the Vue app (which stays the source of truth) and does NOT touch it. The
+engine layer is ported verbatim from `../dither-kit`; all 75 kit components
+and all three app routes (landing, docs, studio) are ported.
 
 ## Ownership
 
-- `dither-kit/` — the React engine: framework-agnostic TS (copied verbatim
+- `dither-kit/` — the React kit: framework-agnostic TS (copied verbatim
   from the Vue kit) + Vue-reactivity→React conversions (contexts, hooks,
   controllers, roots, canvas wrappers). Owns its own `package.json` with
   peerDeps (react, d3-scale, d3-shape, clsx, tailwind-merge) so it stays
-  copy-out portable, mirroring the Vue kit's promise.
-- `app/` — Next.js App Router root layout + placeholder page.
+  copy-out portable, mirroring the Vue kit's promise. 75 components +
+  engine ported.
+- `app/` — Next.js App Router routes: `layout.tsx` (root shell +
+  `AppProviders`), `page.tsx` (landing), `docs/` (section SSG +
+  `generateStaticParams`), `studio/` (client studio).
+- `src/` — the app in FSD: `views/{landing,docs,studio}` (uses `views/`
+  not `pages/` — Next.js reserves `src/pages/` for the Pages Router),
+  `shared/`, `entities/`, `features/`, `widgets/`.
 - `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs` —
   the scaffold.
 
@@ -53,9 +59,15 @@ components and app pages arrive in later workstreams.
     / DOM layers by a static `chartLayer` property on the child's component.
 - `precompile.ts` stays browser/SSR-safe (no DOM, no Vue, no server image
   encoder) — same contract as the Vue kit.
-- The public barrel (`dither-kit/index.ts`) exports ONLY real, ported symbols.
-  Component exports (`.vue`→`.tsx`) are added as they land — never export
-  stubs. A clearly-marked section comment reserves their place.
+- SSR safety: `"use client"` components are still server-rendered during
+  prerender, so render-path (module top-level, `useMemo`, or the render body
+  before any `useInDom` early-return) MUST NOT touch `window`/`document`/
+  `matchMedia`/`localStorage`/`IntersectionObserver`/`ResizeObserver`. Guard
+  with `typeof window !== "undefined"` or move the access into a `useEffect`.
+  Overlay portals gate on `useInDom()` (false on server) before
+  `createPortal(..., document.body)`.
+- The public barrel (`dither-kit/index.ts`) exports all ported symbols. Never
+  export stubs.
 
 ## Verification
 
@@ -65,4 +77,5 @@ components and app pages arrive in later workstreams.
 
 ## Child DOX Index
 
-- none (flat `dither-kit/` + `app/` by design)
+- none — `dither-kit/` and `src/` are flat by design (no `AGENTS.md` in
+  either yet). If either grows its own contracts, add a child doc here.

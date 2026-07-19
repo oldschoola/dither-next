@@ -38,8 +38,11 @@ export interface DitherDrawerProps {
   children?: React.ReactNode;
 }
 
-/** Snap points: 0..1 = fraction of viewport height, >1 = px. Verbatim from Vue. */
+/** Snap points: 0..1 = fraction of viewport height, >1 = px. Verbatim from Vue.
+ *  SSR guard: during prerender `window` is undefined; fractional snaps fall
+ *  back to 0 (the portal is not rendered on the server anyway via `useInDom`). */
 function resolveSnap(s: number): number {
+  if (typeof window === "undefined") return s <= 1 ? 0 : s;
   return s <= 1 ? s * window.innerHeight : s;
 }
 
