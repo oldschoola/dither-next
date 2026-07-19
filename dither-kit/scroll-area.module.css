@@ -1,0 +1,21 @@
+/* Honest scrollbars — no canvas, just the house tokens.
+ * Verbatim port of DitherScrollArea.vue's `<style scoped>` block (guide §6:
+ * scoped styles → co-located CSS Module). */
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}

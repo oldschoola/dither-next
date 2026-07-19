@@ -1,0 +1,94 @@
+/* Shared CSS transitions for overlay components (guide §6).
+ *
+ * The Vue kit uses `<Transition name="dk-pop">` / `<Transition name="dk-fade">`
+ * with co-located `<style scoped>` blocks. Several overlays share identical
+ * transition recipes, so they live here once and are consumed via CSS Modules.
+ *
+ * Usage in a component:
+ *   import styles from "./overlay-transitions.module.css";
+ *   <div className={cn(styles.popCard, open ? styles.show : styles.hide)} />
+ *
+ * The element stays mounted (see `usePresence`); toggling `show`/`hide` flips
+ * the opacity/transform and CSS animates the change. `prefers-reduced-motion`
+ * kills the transition entirely.
+ */
+
+/* --- dk-pop: opacity + 2px slide, 140ms (Popover / Menu / Menubar / Tooltip / PreviewCard) --- */
+.popCard,
+.popPanel {
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+.popHide {
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+/* --- dk-fade: opacity only, 160ms (AlertDialog / Drawer backdrop) --- */
+.fadeCard,
+.fadeBackdrop {
+  transition: opacity 160ms ease;
+}
+.fadeHide {
+  opacity: 0;
+}
+
+/* --- dk-dialog: backdrop opacity 160ms + panel transform 180ms (DitherDialog) --- */
+.dialogBackdrop {
+  transition: opacity 160ms ease;
+}
+.dialogPanel {
+  transition:
+    transform 180ms cubic-bezier(0.2, 0, 0, 1),
+    opacity 120ms ease;
+}
+.dialogBackdropHide {
+  opacity: 0;
+}
+.dialogPanelHide {
+  transform: translateY(8px) scale(0.98);
+  opacity: 0;
+}
+
+/* --- dk-toast: opacity + 8px slide, 160ms (Toaster TransitionGroup) --- */
+.toastCard {
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+.toastHide {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* --- drawer slides: transform 200ms (Drawer panel per side) --- */
+.slideRight,
+.slideLeft,
+.slideBottom {
+  transition: transform 200ms ease;
+}
+.slideRightHide {
+  transform: translateX(100%);
+}
+.slideLeftHide {
+  transform: translateX(-100%);
+}
+.slideBottomHide {
+  transform: translateY(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popCard,
+  .popPanel,
+  .fadeCard,
+  .fadeBackdrop,
+  .dialogBackdrop,
+  .dialogPanel,
+  .toastCard,
+  .slideRight,
+  .slideLeft,
+  .slideBottom {
+    transition: none;
+  }
+}
