@@ -1,0 +1,57 @@
+/*
+ * Landing page global styles — reveal stagger + emote hover.
+ *
+ * These are plain (non-module) CSS because `.reveal` and `.group` are
+ * utility class names applied as literal strings across many elements in
+ * the landing JSX (they are NOT imported as CSS-module members). Guide §6
+ * maps the Vue `<style scoped>` block to co-located CSS; a plain `.css`
+ * import is the faithful, isolation-preserving choice here (the class names
+ * are landing-specific and do not collide with the kit's own classes).
+ *
+ * `--reveal-delay` is set inline per element (0/90/180/300ms) matching the
+ * Vue template's `style="--reveal-delay: …ms"`.
+ */
+
+/* One orchestrated load: soft rise, staggered per chunk, once. */
+.reveal {
+  animation: reveal 700ms cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+  .emote {
+    transition: none;
+  }
+}
+
+/*
+ * Reaction emote: rises out of her head on hover, same easing as the page.
+ * `.group` is the Tailwind utility on each portrait wrapper; `.emote` the
+ * class on the emote canvas. Mirrors the Vue `:deep(.group:hover .emote)`.
+ */
+.emote {
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.8);
+  transition:
+    opacity 180ms cubic-bezier(0.2, 0, 0, 1),
+    transform 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.group:hover .emote {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}

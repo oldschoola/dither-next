@@ -1,13 +1,50 @@
+import type { Metadata } from "next";
+import { LandingPage } from "@/views/landing";
+
+/**
+ * Landing route — `/`. A Server Component shell that exports the page
+ * metadata and renders the landing module (which is a client component only
+ * because it performs a one-shot canvas blit on mount; everything else is
+ * CSS-driven — see `src/pages/landing/LandingPage.tsx`).
+ *
+ * Port of the Vue `/#/` route (guide §11). The appshell `app/layout.tsx`
+ * already exports a default `metadata`; this route-level export overrides
+ * the title/description/openGraph for the landing specifically.
+ */
+export const metadata: Metadata = {
+  title: "dither-ui — A dithered UI toolkit for Vue",
+  description:
+    "dither-ui is a Vue 3 UI toolkit rendered on one ordered-dither canvas engine: composable area, line, bar, pie and radar charts plus 55 Base UI-parity components — buttons, avatars, gradients, forms, overlays — all seed-generative. MIT licensed.",
+  openGraph: {
+    type: "website",
+    siteName: "dither-ui",
+    title: "dither-ui — A dithered UI toolkit for Vue",
+    description:
+      "Composable dithered charts and 55 seed-generative Vue components on one ordered-dither canvas engine. MIT licensed.",
+    url: "https://dither-ui.com/",
+    images: [
+      {
+        url: "https://dither-ui.com/og.png",
+        type: "image/png",
+        width: 1200,
+        height: 630,
+        alt: "dither-ui wordmark over a dithered blue and purple area-chart horizon",
+      },
+    ],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "dither-ui — A dithered UI toolkit for Vue",
+    description:
+      "Composable dithered charts and 55 seed-generative Vue components on one ordered-dither canvas engine. MIT licensed.",
+    images: ["https://dither-ui.com/og.png"],
+  },
+  alternates: {
+    canonical: "https://dither-ui.com/",
+  },
+};
+
 export default function Page() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6">
-      <h1 className="text-center font-mono text-2xl tracking-tight text-foreground">
-        dither-ui<span className="text-muted-foreground"> · next</span>
-      </h1>
-      <p className="max-w-md text-center font-mono text-sm text-muted-foreground">
-        Foundation ready. The dither-kit engine is ported; components and app
-        pages arrive in later workstreams.
-      </p>
-    </main>
-  )
+  return <LandingPage />;
 }
