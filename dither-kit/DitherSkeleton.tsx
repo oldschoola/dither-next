@@ -20,11 +20,11 @@ import styles from "./DitherSkeleton.module.css";
  */
 export interface DitherSkeletonProps {
   seed?: number;
-  class?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
-export function DitherSkeleton({ seed, class: className }: DitherSkeletonProps) {
+export function DitherSkeleton({ seed, className }: DitherSkeletonProps) {
   // Map seed → (duration, delay) so each skeleton shimmers at its own cadence.
   // Mirrors shimmerFromSeed's rate variance; deterministic for a given seed.
   const { duration, delay } = useMemo(() => {

@@ -150,8 +150,8 @@ export interface DitherAvatarProps {
   animate?: boolean
   animationDuration?: number
   replayToken?: number
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string
 }
 
 /**
@@ -184,7 +184,7 @@ export function DitherAvatar({
   animate = true,
   animationDuration = 600,
   replayToken = 0,
-  class: className,
+  className,
 }: DitherAvatarProps) {
   const s = useMemo(
     () => (seed !== undefined ? kitFromSeed(seed) : null),

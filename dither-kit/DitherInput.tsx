@@ -23,7 +23,7 @@ export interface DitherInputProps
   disabled?: boolean
   readOnly?: boolean
   invalid?: boolean
-  class?: string
+  className?: string
 }
 
 export function DitherInput({
@@ -34,7 +34,7 @@ export function DitherInput({
   disabled = false,
   readOnly = false,
   invalid: invalidProp,
-  class: className,
+  className,
   id,
   "aria-describedby": ariaDescribedBy,
   ...rest

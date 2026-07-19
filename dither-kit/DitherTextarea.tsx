@@ -21,7 +21,7 @@ export interface DitherTextareaProps
   disabled?: boolean
   readOnly?: boolean
   invalid?: boolean
-  class?: string
+  className?: string
 }
 
 export function DitherTextarea({
@@ -33,7 +33,7 @@ export function DitherTextarea({
   disabled = false,
   readOnly = false,
   invalid: invalidProp,
-  class: className,
+  className,
   id,
   "aria-describedby": ariaDescribedBy,
   ...rest

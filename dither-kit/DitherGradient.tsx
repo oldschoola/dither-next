@@ -31,8 +31,8 @@ export interface DitherGradientProps {
   opacity?: number
   bloom?: PixelBloomInput
   seed?: number
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string
   renderMode?: DitherRenderMode
   precompiled?: PrecompiledDither
   maxCols?: number
@@ -66,7 +66,7 @@ export function DitherGradient({
   opacity: opacityProp,
   bloom: bloomProp,
   seed,
-  class: className,
+  className,
   renderMode = "live",
   precompiled: precompiledProp,
   maxCols,

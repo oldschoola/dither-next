@@ -72,7 +72,7 @@ const SNIPPET_PRICING = `<div className="grid gap-4 sm:grid-cols-3">
           </li>
         ))}
       </ul>
-      <DitherButton variant={tier.variant} color={tier.color} class="w-full">
+      <DitherButton variant={tier.variant} color={tier.color} className="w-full">
         {tier.cta}
       </DitherButton>
     </div>
@@ -132,7 +132,7 @@ export function ProductExamples() {
                 className="relative isolate flex flex-col overflow-hidden rounded-lg border border-border/60 p-4"
               >
                 {tier.popular && (
-                  <DitherGradient from="blue" opacity={0.12} cell={4} renderMode="static" class="-z-10" />
+                  <DitherGradient from="blue" opacity={0.12} cell={4} renderMode="static" className="-z-10" />
                 )}
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">{tier.name}</span>
@@ -158,7 +158,7 @@ export function ProductExamples() {
                 <DitherButton
                   variant={tier.cta.variant}
                   color={tier.cta.color}
-                  class="mt-4 w-full py-2 text-[11px]"
+                  className="mt-4 w-full py-2 text-[11px]"
                 >
                   {tier.cta.label}
                 </DitherButton>

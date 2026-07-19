@@ -27,7 +27,7 @@ export interface DitherSelectProps {
   color?: PixelColor
   disabled?: boolean
   invalid?: boolean
-  class?: string
+  className?: string
   onChange?: (value: string) => void
 }
 
@@ -38,7 +38,7 @@ export function DitherSelect({
   color = "blue",
   disabled = false,
   invalid: invalidProp,
-  class: className,
+  className,
   onChange,
   ...rest
 }: DitherSelectProps) {

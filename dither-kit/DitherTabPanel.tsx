@@ -13,11 +13,11 @@ import { TabsContext } from "./DitherTabs";
  */
 export interface DitherTabPanelProps {
   value: string;
-  class?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
-export function DitherTabPanel({ value, class: className, children }: DitherTabPanelProps) {
+export function DitherTabPanel({ value, className, children }: DitherTabPanelProps) {
   const ctx = useContext(TabsContext);
   const active = ctx?.active === value;
 

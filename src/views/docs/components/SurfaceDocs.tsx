@@ -149,7 +149,7 @@ const SNIPPET_METER = `<div className="grid gap-3">
   </div>
 </div>`;
 
-const SNIPPET_SCROLL_AREA = `<DitherScrollArea class="h-40 rounded-lg border border-border/60 p-3">
+const SNIPPET_SCROLL_AREA = `<DitherScrollArea className="h-40 rounded-lg border border-border/60 p-3">
   {Array.from({ length: 15 }, (_, i) => (
     <p key={i} className="py-1 text-[12px] text-muted-foreground">
       Log line {i + 1} — ordered dither keeps the texture coherent.
@@ -158,13 +158,13 @@ const SNIPPET_SCROLL_AREA = `<DitherScrollArea class="h-40 rounded-lg border bor
 </DitherScrollArea>`;
 
 const SNIPPET_TOOLBAR = `<DitherToolbar label="Formatting">
-  <DitherButton class="px-2.5 py-1" aria-label="Bold">B</DitherButton>
-  <DitherButton class="px-2.5 py-1" aria-label="Italic">I</DitherButton>
-  <DitherButton class="px-2.5 py-1" aria-label="Underline">U</DitherButton>
-  <DitherSeparator orientation="vertical" class="mx-1 h-5" />
-  <DitherButton class="px-2.5 py-1" aria-label="Align left">⇤</DitherButton>
-  <DitherButton class="px-2.5 py-1" aria-label="Align center">⇹</DitherButton>
-  <DitherButton class="px-2.5 py-1" aria-label="Align right">⇥</DitherButton>
+  <DitherButton className="px-2.5 py-1" aria-label="Bold">B</DitherButton>
+  <DitherButton className="px-2.5 py-1" aria-label="Italic">I</DitherButton>
+  <DitherButton className="px-2.5 py-1" aria-label="Underline">U</DitherButton>
+  <DitherSeparator orientation="vertical" className="mx-1 h-5" />
+  <DitherButton className="px-2.5 py-1" aria-label="Align left">⇤</DitherButton>
+  <DitherButton className="px-2.5 py-1" aria-label="Align center">⇹</DitherButton>
+  <DitherButton className="px-2.5 py-1" aria-label="Align right">⇥</DitherButton>
 </DitherToolbar>`;
 
 const SNIPPET_NAV_MENU = `<DitherNavMenu value={active} onChange={setActive} items={items} color="blue" />
@@ -220,7 +220,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "low", type: "number", default: "0.5" },
     { prop: "high", type: "number", default: "0.8" },
   ],
-  scrollArea: [{ prop: "class", type: "string", default: "undefined" }],
+  scrollArea: [{ prop: "className", type: "string", default: "undefined" }],
   toolbar: [{ prop: "label", type: "string", default: "undefined" }],
   navMenu: [
     { prop: "items", type: "{ label: string; href?: string }[]", default: "—" },
@@ -596,7 +596,7 @@ export function SurfaceDocs() {
                   collapse="none"
                   washColor={v === "washed" ? "purple" : undefined}
                   label={`${v} sidebar`}
-                  class="w-32"
+                  className="w-32"
                 >
                   {["Overview", "Charts", "Palette"].map((item) => (
                     <DitherSidebarItem
@@ -631,7 +631,7 @@ export function SurfaceDocs() {
                 collapse="none"
                 density="compact"
                 label="Compact sidebar"
-                class="w-36"
+                className="w-36"
               >
                 <DitherSidebarGroup label="Files">
                   {["index.ts", "palette.ts", "pixel.ts", "gesture.ts", "lib.ts"].map(
@@ -737,7 +737,7 @@ export function SurfaceDocs() {
           scrollbars that match the house border.
         </p>
         <DemoCard code={SNIPPET_SCROLL_AREA}>
-          <DitherScrollArea class="mx-auto h-40 max-w-sm rounded-lg border border-border/60 p-3">
+          <DitherScrollArea className="mx-auto h-40 max-w-sm rounded-lg border border-border/60 p-3">
             {Array.from({ length: 15 }, (_, i) => i + 1).map((i) => (
               <p key={i} className="py-1 text-[12px] text-muted-foreground">
                 Log line {i} — ordered dither keeps the texture coherent.
@@ -758,23 +758,23 @@ export function SurfaceDocs() {
         <DemoCard code={SNIPPET_TOOLBAR}>
           <div className="flex justify-center">
             <DitherToolbar label="Formatting">
-              <DitherButton class="px-2.5 py-1" aria-label="Bold">
+              <DitherButton className="px-2.5 py-1" aria-label="Bold">
                 B
               </DitherButton>
-              <DitherButton class="px-2.5 py-1" aria-label="Italic">
+              <DitherButton className="px-2.5 py-1" aria-label="Italic">
                 I
               </DitherButton>
-              <DitherButton class="px-2.5 py-1" aria-label="Underline">
+              <DitherButton className="px-2.5 py-1" aria-label="Underline">
                 U
               </DitherButton>
-              <DitherSeparator orientation="vertical" class="mx-1 h-5" />
-              <DitherButton class="px-2.5 py-1" aria-label="Align left">
+              <DitherSeparator orientation="vertical" className="mx-1 h-5" />
+              <DitherButton className="px-2.5 py-1" aria-label="Align left">
                 ⇤
               </DitherButton>
-              <DitherButton class="px-2.5 py-1" aria-label="Align center">
+              <DitherButton className="px-2.5 py-1" aria-label="Align center">
                 ⇹
               </DitherButton>
-              <DitherButton class="px-2.5 py-1" aria-label="Align right">
+              <DitherButton className="px-2.5 py-1" aria-label="Align right">
                 ⇥
               </DitherButton>
             </DitherToolbar>

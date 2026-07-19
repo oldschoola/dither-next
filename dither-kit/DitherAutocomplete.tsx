@@ -12,7 +12,7 @@ export interface DitherAutocompleteProps {
   value: string
   placeholder?: string
   disabled?: boolean
-  class?: string
+  className?: string
   onChange?: (value: string) => void
 }
 
@@ -21,7 +21,7 @@ export function DitherAutocomplete({
   value,
   placeholder = "Search…",
   disabled = false,
-  class: className,
+  className,
   onChange,
 }: DitherAutocompleteProps) {
   const [open, setOpen] = useState(false)

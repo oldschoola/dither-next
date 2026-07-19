@@ -35,9 +35,9 @@ const VERT_TABS: TabItem[] = [
 
 const SNIPPET_TABS = `{/* panels nest inside so they inherit the tab context */}
 <DitherTabs value={tab} onChange={setTab} tabs={['Overview', 'Metrics', 'Logs']}>
-  <DitherTabPanel value="Overview" class="mt-4">…</DitherTabPanel>
-  <DitherTabPanel value="Metrics" class="mt-4">…</DitherTabPanel>
-  <DitherTabPanel value="Logs" class="mt-4">…</DitherTabPanel>
+  <DitherTabPanel value="Overview" className="mt-4">…</DitherTabPanel>
+  <DitherTabPanel value="Metrics" className="mt-4">…</DitherTabPanel>
+  <DitherTabPanel value="Logs" className="mt-4">…</DitherTabPanel>
 </DitherTabs>
 
 {/* variant: underline | segmented | washed */}
@@ -95,9 +95,9 @@ const API: Record<string, PropRow[]> = {
     { prop: "title", type: "string", default: "undefined" },
     { prop: "description", type: "string", default: "undefined" },
     { prop: "closeOnBackdrop", type: "boolean", default: "true" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
-  kbd: [{ prop: "class", type: "string", default: "undefined" }],
+  kbd: [{ prop: "className", type: "string", default: "undefined" }],
 };
 
 export function StructureDocs() {
@@ -120,7 +120,7 @@ export function StructureDocs() {
           <div className="mx-auto max-w-sm">
             <DitherTabs value={tab} onChange={setTab} tabs={TABS} color="blue">
               {TABS.map((t) => (
-                <DitherTabPanel key={t} value={t} class="mt-4">
+                <DitherTabPanel key={t} value={t} className="mt-4">
                   <p className="text-[12px] text-muted-foreground">{PANEL[t]}</p>
                 </DitherTabPanel>
               ))}
@@ -147,13 +147,13 @@ export function StructureDocs() {
             orientation="vertical"
             variant="washed"
             color="green"
-            class="mx-auto max-w-sm"
+            className="mx-auto max-w-sm"
           >
             {VERT_TABS.map((t) => (
               <DitherTabPanel
                 key={t.value}
                 value={t.value}
-                class="min-w-0 flex-1 self-stretch rounded-md border border-border/40 p-3"
+                className="min-w-0 flex-1 self-stretch rounded-md border border-border/40 p-3"
               >
                 <p className="text-[12px] text-muted-foreground">
                   {t.value} — {t.badge ?? 0} items.

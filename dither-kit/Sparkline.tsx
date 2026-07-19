@@ -18,8 +18,8 @@ export interface SparklineProps {
   bloom?: BloomInput
   bloomOnHover?: boolean
   animate?: boolean
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string
 }
 
 /**
@@ -39,7 +39,7 @@ export function Sparkline({
   bloom = "off",
   bloomOnHover = false,
   animate = false,
-  class: className,
+  className,
 }: SparklineProps) {
   const rows = useMemo(() => data.map((v) => ({ v })), [data])
   const config = useMemo(() => ({ v: { color } }), [color])

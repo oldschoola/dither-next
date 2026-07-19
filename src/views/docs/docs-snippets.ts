@@ -61,7 +61,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
 {stats.map(s => (
   <div key={s.label} className="rounded-lg border p-4">
     <span>{s.label}</span> <b>{s.value}</b>
-    <Sparkline data={s.trend} color={s.color} class="h-8" />
+    <Sparkline data={s.trend} color={s.color} className="h-8" />
   </div>
 ))}
 
@@ -104,7 +104,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
   <div key={m.name} className="flex items-center gap-4">
     <DitherAvatar name={m.name} size={32} />
     {m.name} · {m.role}
-    <Sparkline data={m.data} color={m.color} class="h-5 flex-1" />
+    <Sparkline data={m.data} color={m.color} className="h-5 flex-1" />
     <span className="tabular-nums">{m.commits}</span>
   </div>
 ))}`,
@@ -123,7 +123,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
   <span>dither-ui</span>                    {/* wordmark */}
   <input placeholder="you@dither-ui.com" />
   <input type="password" placeholder="••••••••" />
-  <DitherButton color="blue" class="w-full">Sign in</DitherButton>
+  <DitherButton color="blue" className="w-full">Sign in</DitherButton>
 </div>`,
   motion: `const [replayToken, setReplayToken] = useState(0)
 

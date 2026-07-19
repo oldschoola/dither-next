@@ -45,8 +45,8 @@ export interface DitherFaultyTerminalProps {
   seed?: number;
   renderMode?: DitherRenderMode;
   precompiled?: PrecompiledDither;
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string;
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string;
 }
 
 // A background cell of ~3px keeps the fbm affordable; low caps because the
@@ -66,7 +66,7 @@ const LOAD_FADE_MS = 900;
  * React port of `dither-kit/FaultyTerminal.vue`. Unlike `DitherGradient` the
  * root is `relative h-full w-full` (self-sizing, NOT `absolute inset-0`), so
  * it fills its wrapper — give the wrapper a height, or pass
- * `class="absolute inset-0"` to use it as a background layer. This is why it
+ * `className="absolute inset-0"` to use it as a background layer. This is why it
  * registers as an ordinary `COMPONENT_REGISTRY` entry in Studio's generic
  * widget renderer instead of a bespoke kind.
  *
@@ -97,7 +97,7 @@ export function DitherFaultyTerminal({
   seed,
   renderMode = "live",
   precompiled: precompiledProp,
-  class: className,
+  className,
 }: DitherFaultyTerminalProps) {
   const precompiled = useMemo(() => precompiledSrc(precompiledProp), [precompiledProp]);
 

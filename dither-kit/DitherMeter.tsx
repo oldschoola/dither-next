@@ -42,7 +42,7 @@ export interface DitherMeterProps {
   max?: number
   low?: number
   high?: number
-  class?: string
+  className?: string
 }
 
 // Port of DitherMeter.vue. Canvas meter + zones. Vue `cols` was a mutable
@@ -54,7 +54,7 @@ export function DitherMeter({
   max = 100,
   low = 0.5,
   high = 0.8,
-  class: className,
+  className,
 }: DitherMeterProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)

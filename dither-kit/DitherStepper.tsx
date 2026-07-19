@@ -7,7 +7,7 @@ export interface DitherStepperProps {
   steps: Step[];
   /** Index of the active step. */
   current: number;
-  class?: string;
+  className?: string;
 }
 
 /**
@@ -16,7 +16,7 @@ export interface DitherStepperProps {
  * `DitherSeparator` for the connecting rules between steps (cross-group import,
  * Feedback group — already landed at `./DitherSeparator`).
  */
-export function DitherStepper({ steps, current, class: className }: DitherStepperProps) {
+export function DitherStepper({ steps, current, className }: DitherStepperProps) {
   function state(i: number): "done" | "active" | "todo" {
     return i < current ? "done" : i === current ? "active" : "todo";
   }
@@ -34,7 +34,7 @@ export function DitherStepper({ steps, current, class: className }: DitherSteppe
             <div className="flex w-full items-center">
               {i > 0 ? (
                 <DitherSeparator
-                  class={cn("flex-1", st === "todo" ? "opacity-30" : "")}
+                  className={cn("flex-1", st === "todo" ? "opacity-30" : "")}
                 />
               ) : (
                 <span className="flex-1" />
@@ -63,7 +63,7 @@ export function DitherStepper({ steps, current, class: className }: DitherSteppe
               </span>
               {i < steps.length - 1 ? (
                 <DitherSeparator
-                  class={cn(
+                  className={cn(
                     "flex-1",
                     state(i + 1) === "todo" && st !== "active"
                       ? "opacity-30"

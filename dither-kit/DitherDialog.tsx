@@ -15,7 +15,7 @@ export interface DitherDialogProps {
   title?: string;
   description?: string;
   closeOnBackdrop?: boolean;
-  class?: string;
+  className?: string;
   onClose?: () => void;
   children?: React.ReactNode;
   footer?: React.ReactNode;
@@ -41,7 +41,7 @@ export function DitherDialog({
   title,
   description,
   closeOnBackdrop = true,
-  class: className,
+  className,
   onClose,
   children,
   footer,

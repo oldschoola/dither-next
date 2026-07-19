@@ -44,7 +44,7 @@ export interface DitherSwitchProps {
   color?: PixelColor
   seed?: number
   disabled?: boolean
-  class?: string
+  className?: string
   onChange?: (value: boolean) => void
 }
 
@@ -58,7 +58,7 @@ export function DitherSwitch({
   color: colorProp,
   seed,
   disabled = false,
-  class: className,
+  className,
   onChange,
 }: DitherSwitchProps) {
   const trackRef = useRef<HTMLSpanElement | null>(null)

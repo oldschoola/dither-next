@@ -53,7 +53,7 @@ export interface DitherBadgeProps {
   color?: PixelColor;
   variant?: BadgeVariant;
   seed?: number;
-  class?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -72,7 +72,7 @@ export function DitherBadge({
   color,
   variant,
   seed,
-  class: className,
+  className,
   children,
 }: DitherBadgeProps) {
   // Derive color/variant/matrix from seed when no explicit prop is given.

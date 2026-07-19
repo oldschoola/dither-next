@@ -77,7 +77,7 @@ export interface DitherSliderProps {
   showValue?: boolean
   disabled?: boolean
   seed?: number
-  class?: string
+  className?: string
   onChange?: (value: number | [number, number]) => void
 }
 
@@ -96,7 +96,7 @@ export function DitherSlider({
   showValue = false,
   disabled = false,
   seed,
-  class: className,
+  className,
   onChange,
 }: DitherSliderProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)

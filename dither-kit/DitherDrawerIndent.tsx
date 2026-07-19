@@ -6,7 +6,7 @@ import { cn } from "./lib";
 import { DrawerChannelContext, type DrawerChannel } from "./drawer-channel";
 
 export interface DitherDrawerIndentProps {
-  class?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -22,7 +22,7 @@ export interface DitherDrawerIndentProps {
  * The Vue kit's `provide(DRAWER_CHANNEL, { notify })` becomes a
  * `<DrawerChannelContext value={...}>` wrapping the children (guide §3).
  */
-export function DitherDrawerIndent({ class: className, children }: DitherDrawerIndentProps) {
+export function DitherDrawerIndent({ className, children }: DitherDrawerIndentProps) {
   const [openCount, setOpenCount] = useState(0);
   // Stable notify identity so drawers' open-flip effect doesn't re-run on every
   // openCount change (they depend on `parent` = the context value).

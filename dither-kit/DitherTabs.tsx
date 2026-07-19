@@ -116,7 +116,7 @@ export interface DitherTabsProps {
   variant?: TabsVariant;
   orientation?: "horizontal" | "vertical";
   seed?: number;
-  class?: string;
+  className?: string;
   /** Panels: put DitherTabPanel children here so they inherit the context. */
   children?: React.ReactNode;
 }
@@ -144,7 +144,7 @@ export function DitherTabs({
   variant = "underline",
   orientation = "horizontal",
   seed,
-  class: className,
+  className,
   children,
 }: DitherTabsProps) {
   // Seed-derived color/matrix (explicit props win). Pure render derivation.

@@ -16,7 +16,7 @@ export interface DitherComboboxProps {
   placeholder?: string
   color?: PixelColor
   disabled?: boolean
-  class?: string
+  className?: string
   onChange?: (value: string) => void
 }
 
@@ -26,7 +26,7 @@ export function DitherCombobox({
   placeholder = "Select…",
   color = "blue",
   disabled = false,
-  class: className,
+  className,
   onChange,
 }: DitherComboboxProps) {
   const [open, setOpen] = useState(false)

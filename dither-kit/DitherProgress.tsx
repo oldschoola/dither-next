@@ -59,7 +59,7 @@ export interface DitherProgressProps {
   color?: PixelColor
   seed?: number
   indeterminate?: boolean
-  class?: string
+  className?: string
 }
 
 // Port of DitherProgress.vue. Visibility-gated canvas (AGENTS.md §9 rule 2:
@@ -71,7 +71,7 @@ export function DitherProgress({
   color: colorProp,
   seed,
   indeterminate = false,
-  class: className,
+  className,
 }: DitherProgressProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)

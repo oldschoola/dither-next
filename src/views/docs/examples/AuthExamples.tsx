@@ -37,7 +37,7 @@ const SNIPPET_SIGNUP = `<div className="relative overflow-hidden rounded-lg bord
         onClick={() => setPlan(p)}>{p}</button>
     ))}
   </div>
-  <DitherButton color="purple" class="w-full">Create account</DitherButton>
+  <DitherButton color="purple" className="w-full">Create account</DitherButton>
 </div>`;
 
 const SNIPPET_MAGIC = `<div className="relative overflow-hidden rounded-lg border p-7">
@@ -46,7 +46,7 @@ const SNIPPET_MAGIC = `<div className="relative overflow-hidden rounded-lg borde
   {!sent ? (
     <>
       <input value={email} onChange={e => setEmail(e.target.value)} placeholder="you@dither-ui.com" />
-      <DitherButton color="green" class="w-full" onClick={() => setSent(true)}>
+      <DitherButton color="green" className="w-full" onClick={() => setSent(true)}>
         Send magic link
       </DitherButton>
     </>
@@ -67,7 +67,7 @@ const SNIPPET_TWOFACTOR = `<div className="relative overflow-hidden rounded-lg b
         className="w-9 h-11 text-center" onInput={() => focusNext(i)} />
     ))}
   </div>
-  <DitherButton color="blue" class="w-full">Verify</DitherButton>
+  <DitherButton color="blue" className="w-full">Verify</DitherButton>
   <button>resend in 24s</button>
 </div>`;
 
@@ -105,7 +105,7 @@ export function AuthExamples() {
               opacity={0.16}
               cell={4}
               renderMode="static"
-              class="-z-10"
+              className="-z-10"
             />
             <div className="flex items-center gap-2">
               <span className="inline-block size-2.5 rounded-[2px] bg-foreground" />
@@ -155,7 +155,7 @@ export function AuthExamples() {
                   </button>
                 ))}
               </div>
-              <DitherButton color="purple" variant="gradient" class="w-full py-2 text-[11px]">
+              <DitherButton color="purple" variant="gradient" className="w-full py-2 text-[11px]">
                 Create account
               </DitherButton>
             </div>
@@ -178,7 +178,7 @@ export function AuthExamples() {
               opacity={0.14}
               cell={4}
               renderMode="static"
-              class="-z-10"
+              className="-z-10"
             />
             <div className="flex items-center gap-2">
               <span className="inline-block size-2.5 rounded-[2px] bg-foreground" />
@@ -202,7 +202,7 @@ export function AuthExamples() {
                   <DitherButton
                     color="green"
                     variant="gradient"
-                    class="w-full py-2 text-[11px]"
+                    className="w-full py-2 text-[11px]"
                     onClick={() => setSent(true)}
                   >
                     Send magic link
@@ -260,7 +260,7 @@ export function AuthExamples() {
               opacity={0.14}
               cell={4}
               renderMode="static"
-              class="-z-10"
+              className="-z-10"
             />
             <div className="flex items-center gap-2">
               <span className="inline-block size-2.5 rounded-[2px] bg-foreground" />
@@ -295,7 +295,7 @@ export function AuthExamples() {
                   );
                 })}
               </div>
-              <DitherButton color="blue" variant="gradient" class="w-full py-2 text-[11px]">
+              <DitherButton color="blue" variant="gradient" className="w-full py-2 text-[11px]">
                 Verify
               </DitherButton>
             </div>

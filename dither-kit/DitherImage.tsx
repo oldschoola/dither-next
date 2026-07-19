@@ -86,8 +86,8 @@ export interface DitherImageProps {
   /** css px of dithered edge dissolve — 0 keeps hard edges. */
   fade?: number
   seed?: number
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string
   renderMode?: DitherRenderMode
   precompiled?: PrecompiledDither
   maxCols?: number
@@ -112,7 +112,7 @@ export function DitherImage({
   focusY: focusYProp,
   fade: fadeProp,
   seed,
-  class: className,
+  className,
   renderMode = "live",
   precompiled: precompiledProp,
   maxCols,

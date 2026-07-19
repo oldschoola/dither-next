@@ -35,8 +35,8 @@ import { useState } from "react"
 
 const [bloom, setBloom] = useState(true)
 
-<label class="flex items-center justify-between gap-4">
-  <span class="text-[13px]">Bloom on hover</span>
+<label className="flex items-center justify-between gap-4">
+  <span className="text-[13px]">Bloom on hover</span>
   <DitherSwitch value={bloom} onChange={setBloom} label="Bloom on hover" color="blue" />
 </label>`;
 
@@ -45,7 +45,7 @@ import { useState } from "react"
 
 const [opts, setOpts] = useState({ grid: true, snap: false, rulers: true })
 
-<div class="grid gap-3">
+<div className="grid gap-3">
   <DitherCheckbox value={opts.grid} onChange={v => setOpts(o => ({ ...o, grid: v }))}>Show grid</DitherCheckbox>
   <DitherCheckbox value={opts.snap} onChange={v => setOpts(o => ({ ...o, snap: v }))}>Snap to pixels</DitherCheckbox>
   <DitherCheckbox value={opts.rulers} onChange={v => setOpts(o => ({ ...o, rulers: v }))}>Show rulers</DitherCheckbox>
@@ -71,7 +71,7 @@ import { useState } from "react"
 
 const [level, setLevel] = useState(40)
 
-<div class="grid gap-6">
+<div className="grid gap-6">
   <DitherProgress value={level} color="blue" />
   <DitherProgress indeterminate color="purple" />
 </div>`;
@@ -81,13 +81,13 @@ const API: Record<string, PropRow[]> = {
     { prop: "modelValue", type: "boolean", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   checkbox: [
     { prop: "modelValue", type: "boolean", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   slider: [
     { prop: "modelValue", type: "number | [number, number] — array = range", default: "—" },
@@ -102,7 +102,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "value", type: "number", default: "0" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "indeterminate", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
 };
 

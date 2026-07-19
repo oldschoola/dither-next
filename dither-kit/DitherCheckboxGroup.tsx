@@ -14,7 +14,7 @@ export interface DitherCheckboxGroupProps {
   value: string[]
   color?: PixelColor
   label?: string
-  class?: string
+  className?: string
   onChange?: (value: string[]) => void
 }
 
@@ -23,7 +23,7 @@ export function DitherCheckboxGroup({
   value,
   color = "blue",
   label,
-  class: className,
+  className,
   onChange,
 }: DitherCheckboxGroupProps) {
   function toggle(value_: string, on: boolean) {

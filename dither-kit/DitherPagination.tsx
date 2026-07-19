@@ -29,7 +29,7 @@ export interface DitherPaginationProps {
   page: number;
   total: number;
   siblings?: number;
-  class?: string;
+  className?: string;
   onPageChange?: (page: number) => void;
 }
 
@@ -45,7 +45,7 @@ export function DitherPagination({
   page,
   total,
   siblings = 1,
-  class: className,
+  className,
   onPageChange,
 }: DitherPaginationProps) {
   const pages = useMemo(

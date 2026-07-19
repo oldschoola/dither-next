@@ -130,7 +130,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
 }
 
 {/* every component forwards class — compose with your utilities */}
-<AreaChart class="rounded-lg border border-border/60 p-2" … />`,
+<AreaChart className="rounded-lg border border-border/60 p-2" … />`,
   composition: `<AreaChart data={rows} config={config}>  {/* root: scales + context */}
   <Grid horizontal />                       {/* chrome registers first */}
   <XAxis dataKey="month" />
@@ -152,7 +152,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
 {stats.map(s => (
   <div key={s.label} className="rounded-lg border p-4">
     <span>{s.label}</span> <b>{s.value}</b>
-    <Sparkline data={s.trend} color={s.color} class="h-8" />
+    <Sparkline data={s.trend} color={s.color} className="h-8" />
   </div>
 ))}
 
@@ -195,7 +195,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
   <div key={m.name} className="flex items-center gap-4">
     <DitherAvatar name={m.name} size={32} />
     {m.name} · {m.role}
-    <Sparkline data={m.data} color={m.color} class="h-5 flex-1" />
+    <Sparkline data={m.data} color={m.color} className="h-5 flex-1" />
     <span className="tabular-nums">{m.commits}</span>
   </div>
 ))}`,
@@ -214,7 +214,7 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
   <span>dither-ui</span>                    {/* wordmark */}
   <input placeholder="you@dither-ui.com" />
   <input type="password" placeholder="••••••••" />
-  <DitherButton color="blue" class="w-full">Sign in</DitherButton>
+  <DitherButton color="blue" className="w-full">Sign in</DitherButton>
 </div>`,
   area: `const rows = [{ month: "Jan", revenue: 42, expenses: 31 }, …]
 const config = {
@@ -266,7 +266,7 @@ const config = {
     <span className="text-lg tabular-nums">$48.2k</span>
     <span className="text-xs text-green-400">+12.4%</span>
   </div>
-  <Sparkline data={last24h} color="green" class="mt-3 h-8 w-full" />
+  <Sparkline data={last24h} color="green" className="mt-3 h-8 w-full" />
 </div>`,
   motion: `const [replayToken, setReplayToken] = useState(0)
 
@@ -302,14 +302,14 @@ const config = {
      cell: px per dither cell · opacity: 0…1
      max-cols / max-rows: backing-resolution caps (default 960×600 live, 320×200 static) */}`,
   image: `<DitherImage src="/sprites.webp" cell={3} focusY={0.62} fade={72}
-  alt="The dither-ui sprite sheet, re-dithered" class="h-64 w-full" />
+  alt="The dither-ui sprite sheet, re-dithered" className="h-64 w-full" />
 <DitherImage precompiled="/sprites-dither.png" alt="The dither-ui sprite sheet" />
 {/* cell: px per dither cell · fade: dithered edge dissolve
      focus-y: cover-crop focus (0 top … 1 bottom) */}`,
   faultyTerminal: `<div className="relative h-56 overflow-hidden rounded-md">
   <DitherFaultyTerminal tint="green" glitchAmount={0.6} />
 </div>
-{/* fills its box — give the wrapper a height (or class="absolute inset-0")
+{/* fills its box — give the wrapper a height (or className="absolute inset-0")
      tint: hex or palette seed · dither: 0 smooth … 1 hard Bayer
      curvature: barrel warp · chromatic-aberration: rgb split (px)
      mouse-react on by default · renderMode="static" paints one frame */}`,
@@ -321,7 +321,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "config", type: "ChartConfig", default: "required" },
     { prop: "stackType", type: '"default" | "stacked" | "percent"', default: '"default"' },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "interactive", type: "boolean", default: "true" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
@@ -359,7 +359,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "nameKey", type: "string", default: "required" },
     { prop: "innerRadius", type: "number 0…0.85", default: "seed / 0" },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "animationDuration", type: "number (ms)", default: "seed / 900" },
@@ -386,7 +386,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "nameKey", type: "string", default: "required" },
     { prop: "rings", type: "number", default: "seed / 4" },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "animationDuration", type: "number (ms)", default: "seed / 900" },
@@ -428,7 +428,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
     { prop: "loading / disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
     { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
@@ -449,7 +449,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "opacity", type: "number 0…1", default: "seed / 1" },
     { prop: "bloom", type: '"off" | "low" | "high" | "aura" | object | number', default: "seed / off" },
     { prop: "seed", type: "number", default: "undefined" },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
     { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
@@ -461,7 +461,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "fade", type: "number (px)", default: "seed / 0" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "alt", type: "string", default: '""' },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
     { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
     { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
@@ -486,7 +486,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "brightness", type: "number", default: "1" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
-    { prop: "class", type: "string", default: "undefined" },
+    { prop: "className", type: "string", default: "undefined" },
   ],
 };
 
@@ -649,7 +649,7 @@ export function ChartsDocs() {
               className={thumbClass(picked.area === v)}
               onClick={() => pick("area", v)}
             >
-              <Sparkline data={wave} color="blue" variant={v} class="pointer-events-none h-14 w-full" />
+              <Sparkline data={wave} color="blue" variant={v} className="pointer-events-none h-14 w-full" />
               <div className={thumbLabel(picked.area === v)}>{v}</div>
             </button>
           ))}
@@ -669,7 +669,7 @@ export function ChartsDocs() {
               className={thumbClass(picked.area === s)}
               onClick={() => pick("area", s)}
             >
-              <Sparkline data={wave} color="blue" variant={s} class="pointer-events-none h-14 w-full" />
+              <Sparkline data={wave} color="blue" variant={s} className="pointer-events-none h-14 w-full" />
               <div className={`${thumbLabel(picked.area === s)} tabular-nums`}>{s}</div>
             </button>
           ))}
@@ -904,7 +904,7 @@ export function ChartsDocs() {
                     {s.delta}
                   </span>
                 </div>
-                <Sparkline data={s.data} color={s.color} class="mt-3 h-8 w-full" />
+                <Sparkline data={s.data} color={s.color} className="mt-3 h-8 w-full" />
               </div>
             ))}
           </div>
@@ -921,7 +921,7 @@ export function ChartsDocs() {
         </p>
         <DemoCard code={buttonCode}>
           <div className="grid justify-items-center gap-8">
-            <DitherButton color={btn.color} variant={btn.variant} bloom={btn.bloom} class="px-6 py-3 text-[13px]">
+            <DitherButton color={btn.color} variant={btn.variant} bloom={btn.bloom} className="px-6 py-3 text-[13px]">
               Deploy
             </DitherButton>
             <div className="grid justify-items-center gap-3">
@@ -1072,7 +1072,7 @@ export function ChartsDocs() {
             cell={3}
             focusY={0.62}
             fade={72}
-            class="h-64 w-full"
+            className="h-64 w-full"
           />
         </DemoCard>
         <PropsTable rows={API.image} />

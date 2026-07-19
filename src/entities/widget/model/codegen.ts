@@ -104,7 +104,7 @@ function screenCode(w: Extract<WidgetModel, { kind: "screen" }>): string {
       if (JSON.stringify(cell.props[spec.key]) === JSON.stringify(spec.def)) continue;
       attrs.push(boundAttr(spec.key, mapped[spec.key]));
     }
-    if (cell.grow) attrs.push(`class="flex-1"`);
+    if (cell.grow) attrs.push(`className="flex-1"`);
     const a = attrs.length ? ` ${attrs.join(" ")}` : "";
     return cell.slotText != null
       ? `<${cell.is}${a}>${cell.slotText}</${cell.is}>`

@@ -58,7 +58,7 @@ export interface DitherCheckboxProps {
   color?: PixelColor
   seed?: number
   disabled?: boolean
-  class?: string
+  className?: string
   onChange?: (value: boolean) => void
   children?: ReactNode
 }
@@ -72,7 +72,7 @@ export function DitherCheckbox({
   color: colorProp,
   seed,
   disabled = false,
-  class: className,
+  className,
   onChange,
   children,
 }: DitherCheckboxProps) {

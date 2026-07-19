@@ -94,7 +94,7 @@ const CHARTS = [
 ]
 
 <DitherSelect value={chart} onChange={setChart} options={CHARTS} placeholder="Chart type…" />
-<p class="text-[11px] text-muted-foreground">chart: "{chart}"</p>`;
+<p className="text-[11px] text-muted-foreground">chart: "{chart}"</p>`;
 
 const SNIPPET_COMBOBOX = `import { DitherCombobox } from "@dither-kit"
 import { useState } from "react"
@@ -105,7 +105,7 @@ const COLORS = ["green", "blue", "purple", "pink", "orange", "red", "grey"].map(
 )
 
 <DitherCombobox value={swatch} onChange={setSwatch} options={COLORS} color={swatch} />
-<p class="text-[11px] text-muted-foreground">swatch: "{swatch}"</p>`;
+<p className="text-[11px] text-muted-foreground">swatch: "{swatch}"</p>`;
 
 const SNIPPET_AUTOCOMPLETE = `import { DitherAutocomplete } from "@dither-kit"
 import { useState } from "react"
@@ -114,7 +114,7 @@ const [term, setTerm] = useState("")
 const TERMS = ["dither", "dithering", "bayer", "bayer 4x4", "pixel", "pixel art"]
 
 <DitherAutocomplete value={term} onChange={setTerm} suggestions={TERMS} placeholder="Search the docs…" />
-<p class="text-[11px] text-muted-foreground">term: "{term}"</p>`;
+<p className="text-[11px] text-muted-foreground">term: "{term}"</p>`;
 
 const SNIPPET_RADIO = `import { DitherRadioGroup } from "@dither-kit"
 import { useState } from "react"
@@ -128,7 +128,7 @@ const BLOOMS = [
 ]
 
 <DitherRadioGroup value={bloomLevel} onChange={setBloomLevel} options={BLOOMS} label="Bloom level" />
-<p class="text-[11px] text-muted-foreground">bloom: "{bloomLevel}"</p>`;
+<p className="text-[11px] text-muted-foreground">bloom: "{bloomLevel}"</p>`;
 
 const SNIPPET_CHECKBOX_GROUP = `import { DitherCheckboxGroup } from "@dither-kit"
 import { useState } from "react"
@@ -142,7 +142,7 @@ const PARTS = [
 ]
 
 <DitherCheckboxGroup value={parts} onChange={setParts} options={PARTS} label="Chart parts" />
-<p class="text-[11px] text-muted-foreground">parts: [{parts.join(", ")}]</p>`;
+<p className="text-[11px] text-muted-foreground">parts: [{parts.join(", ")}]</p>`;
 
 const SNIPPET_TOGGLE = `import { DitherToggle } from "@dither-kit"
 import { useState } from "react"
@@ -150,7 +150,7 @@ import { useState } from "react"
 const [bloomOn, setBloomOn] = useState(true)
 
 <DitherToggle value={bloomOn} onChange={setBloomOn}>bloom</DitherToggle>
-<p class="text-[11px] text-muted-foreground">bloom: {bloomOn}</p>`;
+<p className="text-[11px] text-muted-foreground">bloom: {bloomOn}</p>`;
 
 const SNIPPET_TOGGLE_GROUP = `import { DitherToggleGroup } from "@dither-kit"
 import { useState } from "react"
@@ -179,7 +179,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "placeholder", type: "string", default: '"Select…"' },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "disabled / invalid", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   combobox: [
     { prop: "options", type: "Option[]", default: "—" },
@@ -187,41 +187,41 @@ const API: Record<string, PropRow[]> = {
     { prop: "placeholder", type: "string", default: '"Select…"' },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   autocomplete: [
     { prop: "suggestions", type: "string[]", default: "—" },
     { prop: "modelValue", type: "string", default: "—" },
     { prop: "placeholder", type: "string", default: '"Search…"' },
     { prop: "disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   radio: [
     { prop: "options", type: "Option[]", default: "—" },
     { prop: "modelValue", type: "string", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "label", type: "string", default: "—" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   checkboxGroup: [
     { prop: "options", type: "Option[]", default: "—" },
     { prop: "modelValue", type: "string[]", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "label", type: "string", default: "—" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   toggle: [
     { prop: "modelValue", type: "boolean", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
     { prop: "disabled", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   toggleGroup: [
     { prop: "options", type: "Option[]", default: "—" },
     { prop: "modelValue", type: "string | string[]", default: "—" },
     { prop: "type", type: '"single" | "multiple"', default: '"single"' },
     { prop: "color", type: "PixelColor", default: '"blue"' },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
 };
 

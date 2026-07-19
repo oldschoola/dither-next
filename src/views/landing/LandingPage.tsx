@@ -131,7 +131,7 @@ export function LandingPage() {
           direction="up"
           opacity={0.14}
           cell={8}
-          class="-z-10"
+          className="-z-10"
         />
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pt-24 pb-14 sm:pt-32">
           <h1 className="reveal max-w-xl text-[clamp(1.75rem,4.5vw,2.75rem)] leading-[1.15] tracking-tight text-balance">
@@ -166,7 +166,7 @@ export function LandingPage() {
             <DitherButton
               color="blue"
               variant="gradient"
-              class="px-6 py-3 text-[13px] transition-transform active:scale-[0.96]"
+              className="px-6 py-3 text-[13px] transition-transform active:scale-[0.96]"
               onClick={() => window.location.assign(routePath("/studio"))}
             >
               Open studio

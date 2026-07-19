@@ -29,7 +29,7 @@ export type { DitherRenderMode, PrecompiledDither }
  *  any DOM-level prop (`onClick`, `aria-*`, `data-*`, `form`, …) falls through
  *  to the underlying button — the Vue kit's `$attrs` fallthrough (guide §5).
  *  `color`/`type`/`disabled` are omitted from the base because the kit
- *  redefines them. `class` mirrors the Vue `class` prop (guide §1). */
+ *  redefines them. `class` className prop (React idiom, guide §1). */
 export interface DitherButtonProps
   extends Omit<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -44,8 +44,8 @@ export interface DitherButtonProps
   type?: "button" | "submit" | "reset"
   loading?: boolean
   disabled?: boolean
-  /** Tailwind class merge — mirrors the Vue `class` prop (guide §1). */
-  class?: string
+  /** Tailwind class merge — className prop (React idiom, guide §1). */
+  className?: string
   renderMode?: DitherRenderMode
   precompiled?: PrecompiledDither
   maxCols?: number
@@ -85,7 +85,7 @@ export function DitherButton({
   type = "button",
   loading = false,
   disabled = false,
-  class: className,
+  className,
   renderMode = "live",
   precompiled: precompiledProp,
   maxCols,

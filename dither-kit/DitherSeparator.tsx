@@ -36,7 +36,7 @@ function paintSeparator(
 
 export interface DitherSeparatorProps {
   orientation?: SeparatorOrientation;
-  class?: string;
+  className?: string;
 }
 
 /**
@@ -50,7 +50,7 @@ export interface DitherSeparatorProps {
  */
 export function DitherSeparator({
   orientation = "horizontal",
-  class: className,
+  className,
 }: DitherSeparatorProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

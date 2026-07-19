@@ -78,7 +78,7 @@ export function ExamplesCorePack() {
                       {s.delta}
                     </span>
                   </div>
-                  <Sparkline data={s.data} color={s.color} class="mt-3 h-8 w-full" />
+                  <Sparkline data={s.data} color={s.color} className="mt-3 h-8 w-full" />
                 </div>
               ))}
             </div>
@@ -155,7 +155,7 @@ export function ExamplesCorePack() {
             <div className="flex min-w-0 flex-col">
               <header className="flex h-10 shrink-0 items-center justify-between border-b border-border/60 px-4">
                 <span className="text-[12px]">{shellNav}</span>
-                <DitherButton color="blue" variant="gradient" class="px-2.5 py-1 text-[10px]">
+                <DitherButton color="blue" variant="gradient" className="px-2.5 py-1 text-[10px]">
                   Export
                 </DitherButton>
               </header>
@@ -165,7 +165,7 @@ export function ExamplesCorePack() {
                     <div key={s.label} className="rounded-md border border-border/60 p-2.5">
                       <div className="truncate text-[10px] text-muted-foreground">{s.label}</div>
                       <div className="text-[13px] tracking-tight tabular-nums">{s.value}</div>
-                      <Sparkline data={s.data} color={s.color} class="mt-1.5 h-5 w-full" />
+                      <Sparkline data={s.data} color={s.color} className="mt-1.5 h-5 w-full" />
                     </div>
                   ))}
                 </div>
@@ -226,7 +226,7 @@ export function ExamplesCorePack() {
                   <span className="w-28 truncate text-[11px] text-foreground/90 sm:w-36">
                     {s.name}
                   </span>
-                  <Sparkline data={s.data} color={s.color} class="h-5 min-w-0 flex-1" />
+                  <Sparkline data={s.data} color={s.color} className="h-5 min-w-0 flex-1" />
                   <span
                     className={`w-14 text-right text-[11px] tabular-nums ${
                       s.ok ? "text-muted-foreground" : "text-foreground"
@@ -265,7 +265,7 @@ export function ExamplesCorePack() {
                   <div className="truncate text-[11px] text-foreground/90">{m.name}</div>
                   <div className="truncate text-[10px] text-muted-foreground">{m.role}</div>
                 </div>
-                <Sparkline data={m.data} color={m.color} class="h-5 min-w-0 flex-1" />
+                <Sparkline data={m.data} color={m.color} className="h-5 min-w-0 flex-1" />
                 <span className="w-10 text-right text-[11px] tabular-nums text-muted-foreground">
                   {m.commits}
                 </span>
@@ -309,7 +309,7 @@ export function ExamplesCorePack() {
               <div className="mt-2 text-center text-[11px] tabular-nums text-muted-foreground">
                 6.8M / 10M renders
               </div>
-              <DitherButton color="blue" variant="gradient" class="mt-3 w-full py-2 text-[11px]">
+              <DitherButton color="blue" variant="gradient" className="mt-3 w-full py-2 text-[11px]">
                 Upgrade
               </DitherButton>
             </div>
@@ -333,7 +333,7 @@ export function ExamplesCorePack() {
               opacity={0.18}
               cell={4}
               renderMode="static"
-              class="-z-10"
+              className="-z-10"
             />
             <div className="flex items-center gap-2">
               <span className="inline-block size-2.5 rounded-[2px] bg-foreground" />
@@ -355,7 +355,7 @@ export function ExamplesCorePack() {
                 autoComplete="off"
                 className="w-full rounded-md border border-border bg-background/60 px-2.5 py-1.5 text-[11px] text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-accent/60"
               />
-              <DitherButton color="blue" variant="gradient" class="w-full py-2 text-[11px]">
+              <DitherButton color="blue" variant="gradient" className="w-full py-2 text-[11px]">
                 Sign in
               </DitherButton>
             </div>

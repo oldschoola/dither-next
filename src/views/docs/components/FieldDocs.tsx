@@ -21,7 +21,7 @@ import { useState } from "react"
 const [name, setName] = useState("")
 const [email, setEmail] = useState("not-an-email")
 
-<div class="grid gap-3 sm:grid-cols-2">
+<div className="grid gap-3 sm:grid-cols-2">
   <DitherInput value={name} onChange={setName} placeholder="Ada Byte" />
   <DitherInput value={email} onChange={setEmail} type="email" invalid placeholder="you@dither-ui.com" />
 </div>`;
@@ -41,7 +41,7 @@ import { useState } from "react"
 const [handle, setHandle] = useState("")
 const [website, setWebsite] = useState("")
 
-<div class="grid gap-5">
+<div className="grid gap-5">
   <DitherField label="Handle" description="Lowercase, no spaces.">
     <DitherInput value={handle} onChange={setHandle} placeholder="ada" />
   </DitherField>
@@ -72,12 +72,12 @@ const [email, setEmail] = useState("")
 const [submitted, setSubmitted] = useState(0)
 
 <DitherForm onSubmit={() => setSubmitted(s => s + 1)}>
-  <div class="grid gap-4">
+  <div className="grid gap-4">
     <DitherField label="Email" for="form-email">
       <DitherInput id="form-email" value={email} onChange={setEmail} type="email" placeholder="you@dither-ui.com" />
     </DitherField>
-    <DitherButton type="submit" color="blue" class="w-full">Subscribe</DitherButton>
-    <p class="text-[11px] text-muted-foreground">submitted {submitted} times</p>
+    <DitherButton type="submit" color="blue" className="w-full">Subscribe</DitherButton>
+    <p className="text-[11px] text-muted-foreground">submitted {submitted} times</p>
   </div>
 </DitherForm>`;
 
@@ -86,9 +86,9 @@ import { useState } from "react"
 
 const [qty, setQty] = useState(3)
 
-<div class="flex items-center gap-4">
+<div className="flex items-center gap-4">
   <DitherNumberField value={qty} onChange={setQty} min={0} max={10} />
-  <span class="text-[13px] tabular-nums">{qty} / 10</span>
+  <span className="text-[13px] tabular-nums">{qty} / 10</span>
 </div>`;
 
 const SNIPPET_OTP = `import { DitherOtpField } from "@dither-kit"
@@ -97,9 +97,9 @@ import { useState } from "react"
 const [otp, setOtp] = useState("")
 const [complete, setComplete] = useState(false)
 
-<div class="grid gap-3">
+<div className="grid gap-3">
   <DitherOtpField value={otp} onChange={setOtp} length={6} onComplete={() => setComplete(true)} />
-  {complete && <p class="text-[11px]">complete!</p>}
+  {complete && <p className="text-[11px]">complete!</p>}
 </div>`;
 
 const API: Record<string, PropRow[]> = {
@@ -108,7 +108,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "type", type: "string", default: '"text"' },
     { prop: "placeholder", type: "string", default: "—" },
     { prop: "disabled / readonly / invalid", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   textarea: [
     { prop: "modelValue", type: "string", default: '""' },
@@ -116,7 +116,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "rows", type: "number", default: "4" },
     { prop: "resize", type: '"none" | "vertical" | "horizontal" | "both"', default: '"vertical"' },
     { prop: "disabled / readonly / invalid", type: "boolean", default: "false" },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
   field: [
     { prop: "label", type: "string", default: "—" },
@@ -243,7 +243,7 @@ export function FieldDocs() {
                 <DitherField label="Email" controlId="form-email">
                   <DitherInput id="form-email" value={formEmail} onChange={setFormEmail} type="email" placeholder="you@dither-ui.com" />
                 </DitherField>
-                <DitherButton type="submit" color="blue" class="w-full">Subscribe</DitherButton>
+                <DitherButton type="submit" color="blue" className="w-full">Subscribe</DitherButton>
                 <p className="text-[11px] text-muted-foreground">submitted {submitted} times</p>
               </div>
             </DitherForm>

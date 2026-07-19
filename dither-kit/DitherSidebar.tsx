@@ -27,7 +27,7 @@ export interface DitherSidebarProps {
   toggle?: boolean;
   /** Wash color for variant="washed". */
   washColor?: PixelColor;
-  class?: string;
+  className?: string;
   onValueChange?: (value: boolean) => void;
   /** Header slot (above the nav). */
   header?: React.ReactNode;
@@ -59,7 +59,7 @@ export function DitherSidebar({
   density = "default",
   toggle = true,
   washColor = "blue",
-  class: className,
+  className,
   onValueChange,
   header,
   footer,
@@ -108,7 +108,7 @@ export function DitherSidebar({
             direction="up"
             opacity={0.12}
             cell={4}
-            class="-z-10"
+            className="-z-10"
           />
         ) : null}
         {header}

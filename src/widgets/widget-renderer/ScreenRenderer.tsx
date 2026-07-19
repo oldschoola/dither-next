@@ -97,7 +97,7 @@ export function ScreenRenderer({ screen, artboardId }: ScreenRendererProps) {
                     selectLayer(id);
                   }}
                 >
-                  <Comp {...cellProps} {...withModel} class={cn(cell.grow && "w-full")}>
+                  <Comp {...cellProps} {...withModel} className={cn(cell.grow && "w-full")}>
                     {cell.slotText != null ? cell.slotText : undefined}
                   </Comp>
                 </div>

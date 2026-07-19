@@ -18,7 +18,7 @@ export interface DitherToggleGroupProps {
   value: string | string[]
   type?: "single" | "multiple"
   color?: PixelColor
-  class?: string
+  className?: string
   onChange?: (value: string | string[]) => void
 }
 
@@ -27,7 +27,7 @@ export function DitherToggleGroup({
   value,
   type = "single",
   color = "blue",
-  class: className,
+  className,
   onChange,
 }: DitherToggleGroupProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)

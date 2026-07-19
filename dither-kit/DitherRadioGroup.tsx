@@ -46,7 +46,7 @@ export interface DitherRadioGroupProps {
   value: string
   color?: PixelColor
   label?: string
-  class?: string
+  className?: string
   onChange?: (value: string) => void
 }
 
@@ -58,7 +58,7 @@ export function DitherRadioGroup({
   value,
   color = "blue",
   label,
-  class: className,
+  className,
   onChange,
 }: DitherRadioGroupProps) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([])

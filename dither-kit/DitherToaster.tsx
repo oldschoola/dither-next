@@ -41,7 +41,7 @@ function paintRail(
 
 export interface DitherToasterProps {
   /** Optional class on the positioning container. */
-  class?: string;
+  className?: string;
 }
 
 /**
@@ -59,7 +59,7 @@ export interface DitherToasterProps {
  * immediately, matching the Vue `v-for` list dropping it. The visible
  * animation is the enter glide; the `dismiss` × button is explicit user action.
  */
-export function DitherToaster({ class: className }: DitherToasterProps) {
+export function DitherToaster({ className }: DitherToasterProps) {
   const toasts = useToasts();
   const inDom = useInDom();
   if (!inDom) return null;

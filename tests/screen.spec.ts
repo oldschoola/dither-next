@@ -68,7 +68,7 @@ describe("screen codegen", () => {
     input.grow = true
     input.props.placeholder = "Email"
     const code = widgetCode(s, frame)
-    expect(code).toContain('class="flex-1"')
+    expect(code).toContain('className="flex-1"')
     expect(code).toContain('placeholder="Email"')
   })
 })

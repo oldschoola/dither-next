@@ -82,7 +82,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
             animate={w.animate}
             animationDuration={w.animationDuration}
             replayToken={rt}
-            class="h-full w-full rounded-lg"
+            className="h-full w-full rounded-lg"
           />
         </div>
       </div>
@@ -98,7 +98,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
           variant={w.variant}
           cell={w.cell}
           bloom={w.bloom}
-          class="px-6 py-3 text-sm"
+          className="px-6 py-3 text-sm"
         >
           {w.label}
         </DitherButton>
@@ -119,7 +119,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
     return (
       <div className="flex h-full w-full items-center justify-center overflow-visible p-2">
         {Comp && !demo ? (
-          <Generic {...compProps} class="max-h-full max-w-full">
+          <Generic {...compProps} className="max-h-full max-w-full">
             {slotText}
           </Generic>
         ) : demo === "tab-panel" ? (
@@ -137,7 +137,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
             </DitherField>
           </Generic>
         ) : demo === "form" ? (
-          <Generic {...compProps} class="grid w-full gap-3">
+          <Generic {...compProps} className="grid w-full gap-3">
             <DitherField label="Email">
               <DitherInput />
             </DitherField>
@@ -208,7 +208,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
           </>
         ) : demo === "drawer-indent" ? (
           <>
-            <Generic class="rounded-lg border border-border p-6">{slotText}</Generic>
+            <Generic className="rounded-lg border border-border p-6">{slotText}</Generic>
             <button
               type="button"
               className={cn(demoTriggerClass, "absolute bottom-3")}
@@ -235,7 +235,7 @@ export function WidgetRenderer({ widget, artboardId }: WidgetRendererProps) {
           cell={w.cell}
           focusY={w.focusY}
           fade={w.fade}
-          class="h-full w-full"
+          className="h-full w-full"
         />
       </div>
     );

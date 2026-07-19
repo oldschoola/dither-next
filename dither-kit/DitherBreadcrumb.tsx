@@ -5,7 +5,7 @@ export type Crumb = { label: string; href?: string };
 export interface DitherBreadcrumbProps {
   items: Crumb[];
   separator?: string;
-  class?: string;
+  className?: string;
 }
 
 /**
@@ -18,7 +18,7 @@ export interface DitherBreadcrumbProps {
 export function DitherBreadcrumb({
   items,
   separator = "/",
-  class: className,
+  className,
 }: DitherBreadcrumbProps) {
   return (
     <nav aria-label="Breadcrumb" className={cn("text-[13px]", className)}>

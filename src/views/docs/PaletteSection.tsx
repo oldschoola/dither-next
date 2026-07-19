@@ -47,7 +47,7 @@ export function PaletteSection() {
             <div key={c} className="flex items-center gap-4">
               <span className="w-14 text-[11px] text-muted-foreground">{c}</span>
               <span className="size-5 rounded-[3px]" style={{ backgroundColor: cssColor(c) }} />
-              <Sparkline data={wave} color={c} class="h-6 flex-1" />
+              <Sparkline data={wave} color={c} className="h-6 flex-1" />
             </div>
           ))}
         </div>

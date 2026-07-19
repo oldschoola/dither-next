@@ -157,7 +157,7 @@ export function useDeepLinkScroll(sectionId: string) {
 
 /**
  * DocsChrome — the translucent material header. Port of the `<header
- * class="chrome">` block. The `.chrome` styles live in `app/globals.css`
+ * className="chrome">` block. The `.chrome` styles live in `app/globals.css`
  * (appshell-owned); here we just apply the class + layout.
  */
 export function DocsChrome() {

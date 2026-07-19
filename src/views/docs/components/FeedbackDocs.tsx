@@ -25,15 +25,15 @@ const SNIPPET_BADGE = `<DitherBadge color="green">stable</DitherBadge>
 <DitherBadge variant="dotted">dotted</DitherBadge>
 <DitherBadge variant="hatched">hatched</DitherBadge>`;
 
-const SNIPPET_SKELETON = `<div class="rounded-lg border p-5">
-  <div class="flex items-center gap-3">
-    <DitherSkeleton class="size-10 rounded-full" />
-    <div class="grid flex-1 gap-2">
-      <DitherSkeleton class="h-3 w-2/3 rounded" />
-      <DitherSkeleton class="h-3 w-1/3 rounded" />
+const SNIPPET_SKELETON = `<div className="rounded-lg border p-5">
+  <div className="flex items-center gap-3">
+    <DitherSkeleton className="size-10 rounded-full" />
+    <div className="grid flex-1 gap-2">
+      <DitherSkeleton className="h-3 w-2/3 rounded" />
+      <DitherSkeleton className="h-3 w-1/3 rounded" />
     </div>
   </div>
-  <DitherSkeleton class="mt-4 h-24 w-full rounded" />
+  <DitherSkeleton className="mt-4 h-24 w-full rounded" />
 </div>`;
 
 // Each seed is a different spinner FORM — arc, dots, petals, thin comet.
@@ -46,11 +46,11 @@ const SNIPPET_SPINNER = `{/* default: a clean rotating arc */}
 <DitherSpinner renderMode="static" precompiled="/spinner.png" />`;
 
 const SNIPPET_SEPARATOR = `<p>Charts render on canvas.</p>
-<DitherSeparator class="my-4" />
+<DitherSeparator className="my-4" />
 <p>Fills threshold the same Bayer matrix.</p>
 
 <!-- vertical -->
-<div class="flex h-5 items-center gap-4">
+<div className="flex h-5 items-center gap-4">
   <span>docs</span>
   <DitherSeparator orientation="vertical" />
   <span>studio</span>
@@ -64,9 +64,9 @@ const API: Record<string, PropRow[]> = {
       type: '"gradient" | "solid" | "dotted" | "hatched"',
       default: '"gradient"',
     },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
-  skeleton: [{ prop: "class", type: "string", default: "—" }],
+  skeleton: [{ prop: "className", type: "string", default: "—" }],
   spinner: [
     { prop: "size", type: "number (px)", default: "20" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
@@ -80,7 +80,7 @@ const API: Record<string, PropRow[]> = {
       type: '"horizontal" | "vertical"',
       default: '"horizontal"',
     },
-    { prop: "class", type: "string", default: "—" },
+    { prop: "className", type: "string", default: "—" },
   ],
 };
 
@@ -132,13 +132,13 @@ export function FeedbackDocs() {
         <DemoCard code={SNIPPET_SKELETON}>
           <div className="mx-auto max-w-xs rounded-lg border border-border/60 p-5">
             <div className="flex items-center gap-3">
-              <DitherSkeleton class="size-10 rounded-full" />
+              <DitherSkeleton className="size-10 rounded-full" />
               <div className="grid flex-1 gap-2">
-                <DitherSkeleton class="h-3 w-2/3 rounded" />
-                <DitherSkeleton class="h-3 w-1/3 rounded" />
+                <DitherSkeleton className="h-3 w-2/3 rounded" />
+                <DitherSkeleton className="h-3 w-1/3 rounded" />
               </div>
             </div>
-            <DitherSkeleton class="mt-4 h-24 w-full rounded" />
+            <DitherSkeleton className="mt-4 h-24 w-full rounded" />
           </div>
         </DemoCard>
         <PropsTable rows={API.skeleton} />
@@ -194,7 +194,7 @@ export function FeedbackDocs() {
         <DemoCard code={SNIPPET_SEPARATOR}>
           <div className="mx-auto max-w-sm">
             <p className="text-[12px] text-muted-foreground">Charts render on canvas.</p>
-            <DitherSeparator class="my-4" />
+            <DitherSeparator className="my-4" />
             <p className="text-[12px] text-muted-foreground">
               Fills threshold the same Bayer matrix.
             </p>

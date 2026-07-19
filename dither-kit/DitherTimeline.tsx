@@ -39,7 +39,7 @@ function paintDot(
 export interface DitherTimelineProps {
   items: TimelineItem[];
   dotSize?: number;
-  class?: string;
+  className?: string;
 }
 
 /**
@@ -51,7 +51,7 @@ export interface DitherTimelineProps {
 export function DitherTimeline({
   items,
   dotSize = 12,
-  class: className,
+  className,
 }: DitherTimelineProps) {
   const dotsRef = useRef<(HTMLCanvasElement | null)[]>([]);
 

@@ -9,10 +9,10 @@ import { cn } from "./lib";
  */
 export interface DitherKbdProps {
   children: React.ReactNode;
-  class?: string;
+  className?: string;
 }
 
-export function DitherKbd({ children, class: className }: DitherKbdProps) {
+export function DitherKbd({ children, className }: DitherKbdProps) {
   return (
     <kbd
       className={cn(
