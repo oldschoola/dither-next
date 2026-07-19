@@ -260,6 +260,11 @@ export { DitherAvatar, type AvatarMirror } from "./DitherAvatar"
 export { DitherButton, type ButtonVariant } from "./DitherButton"
 export { DitherGradient, type GradientDirection } from "./DitherGradient"
 export { DitherImage } from "./DitherImage"
+export {
+  DitherFaultyTerminal,
+  type FaultyTerminalParams,
+  paintFaultyTerminal,
+} from "./DitherFaultyTerminal"
 export { DitherSpinner } from "./DitherSpinner"
 
 // --- Form controls ---

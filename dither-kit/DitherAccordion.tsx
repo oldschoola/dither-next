@@ -152,14 +152,16 @@ export function DitherAccordion({
             >
               <div className="overflow-hidden">
                 <div className="flex gap-3 pt-1 pb-2">
-                  <canvas
-                    ref={(el) => {
-                      railsRef.current[i] = el;
-                    }}
-                    aria-hidden="true"
-                    className="w-[2px] self-stretch"
-                    style={{ imageRendering: "pixelated" }}
-                  />
+                  <div className="relative w-[2px] self-stretch">
+                    <canvas
+                      ref={(el) => {
+                        railsRef.current[i] = el;
+                      }}
+                      aria-hidden="true"
+                      className="absolute inset-0 h-full w-full"
+                      style={{ imageRendering: "pixelated" }}
+                    />
+                  </div>
                   <div className="min-w-0 flex-1 text-[13px] leading-relaxed text-muted-foreground">
                     {slots?.[item.value]}
                   </div>

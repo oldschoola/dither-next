@@ -12,6 +12,7 @@ import {
   DitherButton,
   DitherGradient,
   DitherImage,
+  DitherFaultyTerminal,
   Dot,
   Grid,
   Legend,
@@ -90,6 +91,16 @@ const thumbLabel = (active: boolean) =>
   `mt-2 text-center text-[10px] transition-colors ${active ? "text-foreground" : "text-muted-foreground"}`;
 const chipClass = (active: boolean) =>
   `rounded px-2.5 py-1 text-[11px] transition-colors ${active ? "bg-card text-foreground" : "text-muted-foreground hover:text-foreground"}`;
+// Faulty-terminal feel presets — swap the effect knobs; the code tab mirrors
+// exactly what the preview renders. Verbatim port of DocsPage.vue's TERM_PRESETS.
+const TERM_PRESETS = {
+  signal: { scale: 1.5, glitchAmount: 0.6, scanlineIntensity: 0.8, dither: 0, curvature: 0, chromaticAberration: 0 },
+  glitch: { scale: 1.4, glitchAmount: 2.2, scanlineIntensity: 1.2, dither: 0, curvature: 0.05, chromaticAberration: 3 },
+  dithered: { scale: 1.8, glitchAmount: 0.4, scanlineIntensity: 0.6, dither: 1, curvature: 0, chromaticAberration: 0 },
+  crt: { scale: 1.6, glitchAmount: 0.8, scanlineIntensity: 1.4, dither: 0.3, curvature: 0.35, chromaticAberration: 2 },
+} as const;
+type TermPreset = keyof typeof TERM_PRESETS;
+const TERM_PRESET_NAMES = Object.keys(TERM_PRESETS) as TermPreset[];
 
 const SNIPPETS = {
   install: `# 1 — copy the kit folder straight from the repo (degit grabs just the folder)
@@ -291,6 +302,13 @@ const config = {
 <DitherImage precompiled="/sprites-dither.png" alt="The dither-ui sprite sheet" />
 <!-- cell: px per dither cell · fade: dithered edge dissolve
      focus-y: cover-crop focus (0 top … 1 bottom) -->`,
+  faultyTerminal: `<div class="relative h-56 overflow-hidden rounded-md">
+  <DitherFaultyTerminal tint="green" :glitch-amount="0.6" />
+</div>
+<!-- fills its box — give the wrapper a height (or class="absolute inset-0")
+     tint: hex or palette seed · dither: 0 smooth … 1 hard Bayer
+     curvature: barrel warp · chromatic-aberration: rgb split (px)
+     mouse-react on by default · render-mode="static" paints one frame -->`,
   palette: `import { cssColor, type DitherColor } from "@dither-kit"
 cssColor("blue") // rgb(53,143,243)`,
 };
@@ -446,6 +464,28 @@ const API: Record<string, PropRow[]> = {
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
     { prop: "max-cols / max-rows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
   ],
+  faultyTerminal: [
+    { prop: "scale", type: "number", default: "1.5" },
+    { prop: "grid-mul", type: "[number, number]", default: "[2, 1]" },
+    { prop: "digit-size", type: "number", default: "1.2" },
+    { prop: "time-scale", type: "number", default: "1" },
+    { prop: "pause", type: "boolean", default: "false" },
+    { prop: "scanline-intensity", type: "number", default: "1" },
+    { prop: "glitch-amount", type: "number", default: "1" },
+    { prop: "flicker-amount", type: "number", default: "1" },
+    { prop: "noise-amp", type: "number", default: "1" },
+    { prop: "chromatic-aberration", type: "number (px)", default: "0" },
+    { prop: "dither", type: "number 0…1 | boolean", default: "0" },
+    { prop: "curvature", type: "number", default: "0" },
+    { prop: "tint", type: "PixelColor (hex or seed)", default: '"#ffffff"' },
+    { prop: "mouse-react", type: "boolean", default: "true" },
+    { prop: "mouse-strength", type: "number", default: "0.5" },
+    { prop: "page-load-animation", type: "boolean", default: "false" },
+    { prop: "brightness", type: "number", default: "1" },
+    { prop: "seed", type: "number", default: "undefined" },
+    { prop: "render-mode", type: '"live" | "static"', default: '"live"' },
+    { prop: "class", type: "string", default: "undefined" },
+  ],
   palette: [
     { prop: "cssColor(c)", type: "(DitherColor | number) → css string", default: "—" },
     { prop: "seedFromColor(c)", type: "(DitherColor | number) → Seed", default: "—" },
@@ -507,6 +547,14 @@ export function ChartsDocs() {
     from: "blue",
   });
 
+  // Faulty-terminal playground — a tint swatch plus feel presets that swap
+  // the effect knobs; the code tab mirrors exactly what the preview renders.
+  const [term, setTerm] = useState<{ tint: DitherColor; preset: TermPreset }>({
+    tint: "green",
+    preset: "signal",
+  });
+  const termParams = TERM_PRESETS[term.preset];
+
   // Code tabs mirror the picked variant — what you see is what you copy.
   const areaCode = useMemo(
     () =>
@@ -555,6 +603,14 @@ export function ChartsDocs() {
 </div>`,
     [grad.from, grad.direction],
   );
+  const termCode = useMemo(() => {
+    const p = termParams;
+    const attrs = [`tint="${term.tint}"`, `:scale="${p.scale}"`, `:glitch-amount="${p.glitchAmount}"`, `:scanline-intensity="${p.scanlineIntensity}"`];
+    if (p.dither) attrs.push(`:dither="${p.dither}"`);
+    if (p.curvature) attrs.push(`:curvature="${p.curvature}"`);
+    if (p.chromaticAberration) attrs.push(`:chromatic-aberration="${p.chromaticAberration}"`);
+    return `<div class="relative h-56 overflow-hidden rounded-md">\n  <DitherFaultyTerminal ${attrs.join(" ")} />\n</div>`;
+  }, [term.tint, termParams]);
 
   return (
     <>
@@ -1024,6 +1080,65 @@ export function ChartsDocs() {
           />
         </DemoCard>
         <PropsTable rows={API.image} />
+      </section>
+
+      {/* Faulty terminal */}
+      <section id="faulty-terminal" className="mt-16 scroll-mt-24">
+        <h2 className="text-lg tracking-tight">Faulty terminal</h2>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          A CRT glyph wall — animated value-noise lights a grid of characters,
+          then scanlines, glitch, flicker, chromatic aberration and barrel
+          curvature run over it. No WebGL: it draws through the same Bayer
+          engine as everything else, so <code className="text-foreground/80">dither</code>
+          is just an intensity from smooth to hard 1-bit. Fills its box; move
+          the pointer over it.
+        </p>
+        <DemoCard code={termCode}>
+          <div className="relative h-56 overflow-hidden rounded-md border border-border/60">
+            <DitherFaultyTerminal
+              tint={term.tint}
+              scale={termParams.scale}
+              glitchAmount={termParams.glitchAmount}
+              scanlineIntensity={termParams.scanlineIntensity}
+              dither={termParams.dither}
+              curvature={termParams.curvature}
+              chromaticAberration={termParams.chromaticAberration}
+            />
+          </div>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
+            <div className="flex items-center gap-1 rounded-md border border-border/60 p-1">
+              {TERM_PRESET_NAMES.map((pName) => (
+                <button
+                  key={pName}
+                  type="button"
+                  aria-pressed={term.preset === pName}
+                  className={chipClass(term.preset === pName)}
+                  onClick={() => setTerm((prev) => ({ ...prev, preset: pName }))}
+                >
+                  {pName}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              {COLORS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  aria-label={`Tint ${c}`}
+                  aria-pressed={term.tint === c}
+                  className={`size-6 rounded-[4px] transition-transform ${
+                    term.tint === c
+                      ? "ring-1 ring-foreground ring-offset-2 ring-offset-background"
+                      : "hover:scale-110"
+                  }`}
+                  style={{ backgroundColor: cssColor(c) }}
+                  onClick={() => setTerm((prev) => ({ ...prev, tint: c }))}
+                />
+              ))}
+            </div>
+          </div>
+        </DemoCard>
+        <PropsTable rows={API.faultyTerminal} />
       </section>
 
       {/* Palette */}

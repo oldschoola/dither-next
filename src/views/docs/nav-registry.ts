@@ -65,6 +65,7 @@ export const GROUPS: NavGroup[] = [
       { id: "avatar", label: "Avatar" },
       { id: "gradient", label: "Gradient" },
       { id: "image", label: "Image" },
+      { id: "faulty-terminal", label: "Faulty terminal" },
       ...FORM_NAV,
       ...FIELD_NAV,
       ...SELECTION_NAV,
@@ -122,7 +123,7 @@ const record = (ids: readonly { id: string }[]): Record<string, true> =>
 const CHART_SECTION_IDS: Record<string, true> = record([
   { id: "area" }, { id: "line" }, { id: "bar" }, { id: "pie" }, { id: "radar" },
   { id: "sparkline" }, { id: "button" }, { id: "avatar" }, { id: "gradient" },
-  { id: "image" }, { id: "palette" },
+  { id: "image" }, { id: "faulty-terminal" }, { id: "palette" },
 ]);
 const EXAMPLES_CORE_IDS: Record<string, true> = record([
   { id: "dashboard" }, { id: "shell" }, { id: "monitoring" }, { id: "team" },

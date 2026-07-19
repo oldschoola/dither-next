@@ -127,12 +127,14 @@ export function DitherCollapsible({
       >
         <div className="overflow-hidden">
           <div className="flex gap-3 pt-1 pb-2">
-            <canvas
-              ref={railRef}
-              aria-hidden="true"
-              className="w-[2px] self-stretch"
-              style={{ imageRendering: "pixelated" }}
-            />
+            <div className="relative w-[2px] self-stretch">
+              <canvas
+                ref={railRef}
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full"
+                style={{ imageRendering: "pixelated" }}
+              />
+            </div>
             <div className="min-w-0 flex-1 text-[13px] leading-relaxed text-muted-foreground">
               {children}
             </div>
