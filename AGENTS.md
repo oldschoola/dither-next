@@ -4,7 +4,7 @@
 
 Parallel Next.js port of the Vue 3 `dither-kit` + `src` app. Lives alongside
 the Vue app (which stays the source of truth) and does NOT touch it. The
-engine layer is ported verbatim from `../dither-kit`; all 75 kit components
+engine layer is ported verbatim from `../dither-kit`; all 71 kit components
 and all three app routes (landing, docs, studio) are ported.
 
 ## Ownership
@@ -13,7 +13,8 @@ and all three app routes (landing, docs, studio) are ported.
   from the Vue kit) + Vue-reactivity→React conversions (contexts, hooks,
   controllers, roots, canvas wrappers). Owns its own `package.json` with
   peerDeps (react, d3-scale, d3-shape, clsx, tailwind-merge) so it stays
-  copy-out portable, mirroring the Vue kit's promise. 75 components +
+  copy-out portable, mirroring the Vue kit's promise. 71 components (+ chart
+    infrastructure) +
   engine ported.
 - `app/` — Next.js App Router routes: `layout.tsx` (root shell +
   `AppProviders`), `page.tsx` (landing), `docs/` (section SSG +
@@ -32,6 +33,8 @@ and all three app routes (landing, docs, studio) are ported.
   `@dither-kit/*` → `./dither-kit/*` (tsconfig paths).
 - Scripts: `dev` (next dev), `build` (next build), `start`, `lint`,
   `typecheck` (`tsc --noEmit`).
+- `html-to-image` is a declared dep (studio PNG export); only reached on user
+  action, no bundle bloat for non-studio routes.
 - The kit dir has ZERO imports from `next/` or `../src/` — it must stay
   portable. `'use client'` directives are at the top of every file that uses
   React hooks/context (required by App Router for createContext/useRef/etc).
