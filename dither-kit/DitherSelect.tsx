@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react"
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, useId } from "react"
 import { CONTROL, POPOVER, useField } from "./control"
 import { cn } from "./lib"
 import { cssColor } from "./palette"
@@ -19,7 +19,6 @@ import { usePresence } from "./use-presence"
 
 export type Option = { value: string; label: string; disabled?: boolean }
 
-let selectCount = 0
 
 export interface DitherSelectProps {
   options: Option[]
@@ -48,7 +47,7 @@ export function DitherSelect({
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const [open, setOpen] = useState(false)
   const [highlighted, setHighlighted] = useState(-1)
-  const idBase = useMemo(() => `dk-select-${selectCount++}`, [])
+  const idBase = `dk-select-${useId()}`
   const listId = `${idBase}-listbox`
 
   const invalid = invalidProp || field?.invalid || false
