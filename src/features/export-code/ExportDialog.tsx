@@ -18,10 +18,10 @@ function codeFor(a: Artboard): string {
 }
 
 function fileName(a: Artboard): string {
-  return `${a.name.replace(/[^\w-]+/g, "-").toLowerCase() || "artboard"}.vue`;
+  return `${a.name.replace(/[^\w-]+/g, "-").toLowerCase() || "artboard"}.tsx`;
 }
 
-/** Download every artboard as its own .vue file. The Vue SFC staggered the
+/** Download every artboard as its own .tsx file. The original staggered the
  *  downloads (120ms) so the browser accepts the burst as one user gesture —
  *  preserved verbatim. A recursive `setTimeout` chain replaces the Vue
  *  `await new Promise(r => setTimeout(r, 120))` so no promise executor is
@@ -43,7 +43,7 @@ function downloadAll(list: readonly Artboard[], i = 0): void {
  * ExportDialog — a code-export modal. Verbatim port of
  * `src/features/export-code/ExportDialog.vue`.
  *
- * Generates Vue SFC code for the selected artboard's chart or widget via
+ * Generates React/TSX code for the selected artboard's chart or widget via
  * `chartCode`/`widgetCode`. Copy + download-all buttons; the close button
  * is focused on open (the Vue `nextTick(() => closeRef.value?.focus())`
  * becomes a `useEffect` on `open`, guide §7). The overlay stays mounted
@@ -109,11 +109,11 @@ export function ExportDialog({ open, onClose }: ExportDialogProps) {
     >
       <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-border bg-card shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)]">
         <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
-          <span className="text-sm font-medium">Export — Vue SFC</span>
+          <span className="text-sm font-medium">Export — React/TSX</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
-              title={`Download every artboard as its own .vue file (${count})`}
+              title={`Download every artboard as its own .tsx file (${count})`}
               className="rounded-md border border-border px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => downloadAll(getEditorSnapshot().artboards)}
             >

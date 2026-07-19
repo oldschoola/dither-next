@@ -17,8 +17,8 @@ describe("widgetCode", () => {
     const code = widgetCode(createWidget("avatar"), frame)
     expect(code).toContain("DitherAvatar")
     expect(code).toContain('name="Ada Lovelace"')
-    expect(code).toContain(':size="280"')
-    expect(code).not.toContain(":grid=")
+    expect(code).toContain("size={280}")
+    expect(code).not.toContain("grid={")
     expect(code).not.toContain("mirror=")
   })
   it("avatar non-defaults emit", () => {
@@ -30,8 +30,8 @@ describe("widgetCode", () => {
     a.autoColor = false
     a.color = "#7cbf87"
     const code = widgetCode(a, frame)
-    expect(code).toContain(':grid="12"')
-    expect(code).toContain(':density="0.2"')
+    expect(code).toContain("grid={12}")
+    expect(code).toContain("density={0.2}")
     expect(code).toContain('mirror="vertical"')
     expect(code).toContain('color="#7cbf87"')
   })
@@ -42,7 +42,7 @@ describe("widgetCode", () => {
     b.bloom = { blur: 5, brightness: 1.5, opacity: 0.78, saturate: 1.5 }
     const code = widgetCode(b, frame)
     expect(code).toContain(">Deploy</DitherButton>")
-    expect(code).toContain(':bloom="{ blur: 5, brightness: 1.5, opacity: 0.78, saturate: 1.5 }"')
+    expect(code).toContain("bloom={{ blur: 5, brightness: 1.5, opacity: 0.78, saturate: 1.5 }}")
   })
   it("gradient two-tone emits from + to", () => {
     const g = createWidget("gradient")

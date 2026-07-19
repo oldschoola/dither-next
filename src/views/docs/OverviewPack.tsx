@@ -22,7 +22,7 @@ export function OverviewPack() {
         >
           GitHub repo
         </a>
-        , install four small runtime deps, and alias it — Vue 3 and Tailwind
+        , install four small runtime deps, and alias it — React 19 and Tailwind
         you already have.
       </p>
       <div className="mt-5">

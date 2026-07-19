@@ -14,50 +14,42 @@ import { DemoCard } from "../DemoCard";
 import { PropsTable, type PropRow } from "../PropsTable";
 
 const SNIPPET_BREADCRUMB = `<DitherBreadcrumb
-  :items="[
+  items={[
     { label: 'Home', href: '#/' },
     { label: 'Components', href: '#/docs' },
     { label: 'Breadcrumb' },
-  ]"
+  ]}
 />`;
 
-const SNIPPET_PAGINATION = `<script setup>
-const page = ref(3)
-<\/script>
+const SNIPPET_PAGINATION = `<DitherPagination page={page} onPageChange={setPage} total={12} />`;
 
-<DitherPagination v-model:page="page" :total="12" />`;
+const SNIPPET_RATING = `{/* interactive: click or arrow-key to set */}
+<DitherRating value={rating} onChange={setRating} />
 
-const SNIPPET_RATING = `<script setup>
-const rating = ref(3)
-<\/script>
+{/* read-only supports fractions */}
+<DitherRating value={4.5} readonly />
 
-<!-- interactive: click or arrow-key to set -->
-<DitherRating v-model="rating" />
-
-<!-- read-only supports fractions -->
-<DitherRating :model-value="4.5" readonly />
-
-<!-- seed varies the star tilt + dither scatter -->
-<DitherRating :model-value="4" :seed="88" color="pink" />`;
+{/* seed varies the star tilt + dither scatter */}
+<DitherRating value={4} seed={88} color="pink" />`;
 
 const SNIPPET_STEPPER = `<DitherStepper
-  :current="1"
-  :steps="[
+  current={1}
+  steps={[
     { label: 'Cart' },
     { label: 'Shipping' },
     { label: 'Payment' },
     { label: 'Done' },
-  ]"
+  ]}
 />`;
 
 const SNIPPET_TIMELINE = `<DitherTimeline
-  :items="[
+  items={[
     { title: 'Deployed v0.3.0', time: '2h ago', color: 'green',
       body: 'Rolled out to production.' },
     { title: 'Merged #482', time: 'Yesterday', color: 'blue',
       body: 'Seeded spinner form space.' },
     { title: 'Opened milestone', time: 'Mon', color: 'purple' },
-  ]"
+  ]}
 />`;
 
 const API: Record<string, PropRow[]> = {
@@ -66,12 +58,12 @@ const API: Record<string, PropRow[]> = {
     { prop: "separator", type: "string", default: '"/"' },
   ],
   pagination: [
-    { prop: "page", type: "number (v-model)", default: "—" },
+    { prop: "page", type: "number (value/onChange)", default: "—" },
     { prop: "total", type: "number — page count", default: "—" },
     { prop: "siblings", type: "number — pages either side", default: "1" },
   ],
   rating: [
-    { prop: "modelValue", type: "number (v-model)", default: "0" },
+    { prop: "value", type: "number (value/onChange)", default: "0" },
     { prop: "max", type: "number", default: "5" },
     { prop: "color", type: "PixelColor", default: '"orange"' },
     { prop: "size", type: "number (px per star)", default: "22" },
@@ -143,7 +135,7 @@ export function NavigationDocs() {
         <h2 className="text-lg tracking-tight">Pagination</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
           Page navigation that always shows the first, last and current page, collapsing
-          the rest to ellipses. Two-way bound with <code className="text-foreground/80">v-model:page</code>.
+          the rest to ellipses. Controlled with <code className="text-foreground/80">page</code> and <code className="text-foreground/80">onPageChange</code>.
         </p>
         <DemoCard code={SNIPPET_PAGINATION}>
           <div className="grid gap-4">

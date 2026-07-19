@@ -60,8 +60,8 @@ describe("component codegen", () => {
     const w = createComponent(componentEntry("DitherSwitch")!)
     const code = widgetCode(w, frame)
     expect(code).toContain('import { DitherSwitch } from "@dither-kit"')
-    expect(code).toContain('v-model="value"')
-    expect(code).toContain("const value = ref(true)")
+    expect(code).toContain("value={value} onChange={setValue}")
+    expect(code).toContain("const [value, setValue] = useState(true)")
     expect(code).not.toContain("color=") // default stays silent
   })
   it("non-defaults emit typed attributes", () => {
@@ -70,13 +70,13 @@ describe("component codegen", () => {
     w.props.max = 10
     const code = widgetCode(w, frame)
     expect(code).toContain('color="#ff00aa"')
-    expect(code).toContain(':max="10"')
+    expect(code).toContain("max={10}")
   })
   it("list props emit mapped object literals", () => {
     const w = createComponent(componentEntry("DitherSelect")!)
     w.props.options = ["Yes", "No"]
     const code = widgetCode(w, frame)
-    expect(code).toContain(`:options='[{"value":"yes","label":"Yes"},{"value":"no","label":"No"}]'`)
+    expect(code).toContain(`options={[{"value":"yes","label":"Yes"},{"value":"no","label":"No"}]}`)
   })
   it("slot text lands between the tags", () => {
     const w = createComponent(componentEntry("DitherBadge")!)

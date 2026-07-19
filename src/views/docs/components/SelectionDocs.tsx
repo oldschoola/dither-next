@@ -23,8 +23,8 @@ import { PropsTable, type PropRow } from "../PropsTable";
  * One React component rendering a fragment of sections, matching the Vue
  * `<template>` (which is itself a fragment). Section ids, classes, prose,
  * SNIPPET_* code strings, and the API table rows are ported verbatim from
- * the Vue source. The SNIPPET_* strings preserve Vue `<script setup>` syntax
- * on purpose: the code tab documents the Vue API the demo renders.
+ * the Vue source. The SNIPPET_* strings show React/TSX usage of the kit,
+ * documenting the API the demo renders.
  *
  * State mapping (guide §4): `ref(x)` → `useState(x)`,
  * `v-model` → `value` + `onChange`. The Combobox passes `color={swatch}`
@@ -81,11 +81,10 @@ const STYLES = [
   { value: "underline", label: "Underline" },
 ];
 
-const SNIPPET_SELECT = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherSelect } from "@dither-kit"
+const SNIPPET_SELECT = `import { DitherSelect } from "@dither-kit"
+import { useState } from "react"
 
-const chart = ref("area")
+const [chart, setChart] = useState("area")
 const CHARTS = [
   { value: "area", label: "Area" },
   { value: "line", label: "Line" },
@@ -93,112 +92,85 @@ const CHARTS = [
   { value: "pie", label: "Pie" },
   { value: "radar", label: "Radar" },
 ]
-<\/script>
 
-<template>
-  <DitherSelect v-model="chart" :options="CHARTS" placeholder="Chart type…" />
-  <p class="text-[11px] text-muted-foreground">chart: "{{ chart }}"</p>
-</template>`;
+<DitherSelect value={chart} onChange={setChart} options={CHARTS} placeholder="Chart type…" />
+<p class="text-[11px] text-muted-foreground">chart: "{chart}"</p>`;
 
-const SNIPPET_COMBOBOX = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherCombobox } from "@dither-kit"
+const SNIPPET_COMBOBOX = `import { DitherCombobox } from "@dither-kit"
+import { useState } from "react"
 
-const swatch = ref("blue")
+const [swatch, setSwatch] = useState("blue")
 const COLORS = ["green", "blue", "purple", "pink", "orange", "red", "grey"].map(
   (c) => ({ value: c, label: c })
 )
-<\/script>
 
-<template>
-  <DitherCombobox v-model="swatch" :options="COLORS" :color="swatch" />
-  <p class="text-[11px] text-muted-foreground">swatch: "{{ swatch }}"</p>
-</template>`;
+<DitherCombobox value={swatch} onChange={setSwatch} options={COLORS} color={swatch} />
+<p class="text-[11px] text-muted-foreground">swatch: "{swatch}"</p>`;
 
-const SNIPPET_AUTOCOMPLETE = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherAutocomplete } from "@dither-kit"
+const SNIPPET_AUTOCOMPLETE = `import { DitherAutocomplete } from "@dither-kit"
+import { useState } from "react"
 
-const term = ref("")
+const [term, setTerm] = useState("")
 const TERMS = ["dither", "dithering", "bayer", "bayer 4x4", "pixel", "pixel art"]
-<\/script>
 
-<template>
-  <DitherAutocomplete v-model="term" :suggestions="TERMS" placeholder="Search the docs…" />
-  <p class="text-[11px] text-muted-foreground">term: "{{ term }}"</p>
-</template>`;
+<DitherAutocomplete value={term} onChange={setTerm} suggestions={TERMS} placeholder="Search the docs…" />
+<p class="text-[11px] text-muted-foreground">term: "{term}"</p>`;
 
-const SNIPPET_RADIO = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherRadioGroup } from "@dither-kit"
+const SNIPPET_RADIO = `import { DitherRadioGroup } from "@dither-kit"
+import { useState } from "react"
 
-const bloomLevel = ref("low")
+const [bloomLevel, setBloomLevel] = useState("low")
 const BLOOMS = [
   { value: "off", label: "Off" },
   { value: "low", label: "Low" },
   { value: "high", label: "High" },
   { value: "aura", label: "Aura" },
 ]
-<\/script>
 
-<template>
-  <DitherRadioGroup v-model="bloomLevel" :options="BLOOMS" label="Bloom level" />
-  <p class="text-[11px] text-muted-foreground">bloom: "{{ bloomLevel }}"</p>
-</template>`;
+<DitherRadioGroup value={bloomLevel} onChange={setBloomLevel} options={BLOOMS} label="Bloom level" />
+<p class="text-[11px] text-muted-foreground">bloom: "{bloomLevel}"</p>`;
 
-const SNIPPET_CHECKBOX_GROUP = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherCheckboxGroup } from "@dither-kit"
+const SNIPPET_CHECKBOX_GROUP = `import { DitherCheckboxGroup } from "@dither-kit"
+import { useState } from "react"
 
-const parts = ref(["grid", "axes"])
+const [parts, setParts] = useState(["grid", "axes"])
 const PARTS = [
   { value: "grid", label: "Grid" },
   { value: "axes", label: "Axes" },
   { value: "legend", label: "Legend" },
   { value: "tooltip", label: "Tooltip" },
 ]
-<\/script>
 
-<template>
-  <DitherCheckboxGroup v-model="parts" :options="PARTS" label="Chart parts" />
-  <p class="text-[11px] text-muted-foreground">parts: [{{ parts.join(", ") }}]</p>
-</template>`;
+<DitherCheckboxGroup value={parts} onChange={setParts} options={PARTS} label="Chart parts" />
+<p class="text-[11px] text-muted-foreground">parts: [{parts.join(", ")}]</p>`;
 
-const SNIPPET_TOGGLE = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherToggle } from "@dither-kit"
+const SNIPPET_TOGGLE = `import { DitherToggle } from "@dither-kit"
+import { useState } from "react"
 
-const bloomOn = ref(true)
-<\/script>
+const [bloomOn, setBloomOn] = useState(true)
 
-<template>
-  <DitherToggle v-model="bloomOn">bloom</DitherToggle>
-  <p class="text-[11px] text-muted-foreground">bloom: {{ bloomOn }}</p>
-</template>`;
+<DitherToggle value={bloomOn} onChange={setBloomOn}>bloom</DitherToggle>
+<p class="text-[11px] text-muted-foreground">bloom: {bloomOn}</p>`;
 
-const SNIPPET_TOGGLE_GROUP = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherToggleGroup } from "@dither-kit"
+const SNIPPET_TOGGLE_GROUP = `import { DitherToggleGroup } from "@dither-kit"
+import { useState } from "react"
 
-const align = ref("left")
+const [align, setAlign] = useState("left")
 const ALIGN = [
   { value: "left", label: "Left" },
   { value: "center", label: "Center" },
   { value: "right", label: "Right" },
 ]
 
-const styles = ref(["bold"])
+const [styles, setStyles] = useState(["bold"])
 const STYLES = [
   { value: "bold", label: "Bold" },
   { value: "italic", label: "Italic" },
   { value: "underline", label: "Underline" },
 ]
-<\/script>
 
-<template>
-  <DitherToggleGroup v-model="align" :options="ALIGN" />
-  <DitherToggleGroup v-model="styles" :options="STYLES" type="multiple" />
-</template>`;
+<DitherToggleGroup value={align} onChange={setAlign} options={ALIGN} />
+<DitherToggleGroup value={styles} onChange={setStyles} options={STYLES} type="multiple" />`;
 
 const API: Record<string, PropRow[]> = {
   select: [

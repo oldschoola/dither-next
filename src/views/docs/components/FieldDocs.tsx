@@ -15,120 +15,92 @@ import {
 import { DemoCard } from "../DemoCard";
 import { PropsTable, type PropRow } from "../PropsTable";
 
-const SNIPPET_INPUT = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherInput } from "@dither-kit"
+const SNIPPET_INPUT = `import { DitherInput } from "@dither-kit"
+import { useState } from "react"
 
-const name = ref("")
-const email = ref("not-an-email")
-<\/script>
+const [name, setName] = useState("")
+const [email, setEmail] = useState("not-an-email")
 
-<template>
-  <div class="grid gap-3 sm:grid-cols-2">
-    <DitherInput v-model="name" placeholder="Ada Byte" />
-    <DitherInput v-model="email" type="email" invalid placeholder="you@dither-ui.com" />
-  </div>
-</template>`;
+<div class="grid gap-3 sm:grid-cols-2">
+  <DitherInput value={name} onChange={setName} placeholder="Ada Byte" />
+  <DitherInput value={email} onChange={setEmail} type="email" invalid placeholder="you@dither-ui.com" />
+</div>`;
 
-const SNIPPET_TEXTAREA = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherField, DitherTextarea } from "@dither-kit"
+const SNIPPET_TEXTAREA = `import { DitherField, DitherTextarea } from "@dither-kit"
+import { useState } from "react"
 
-const bio = ref("")
-<\/script>
+const [bio, setBio] = useState("")
 
-<template>
-  <DitherField label="Bio" description="A short introduction.">
-    <DitherTextarea v-model="bio" placeholder="Tell us what you make…" />
+<DitherField label="Bio" description="A short introduction.">
+  <DitherTextarea value={bio} onChange={setBio} placeholder="Tell us what you make…" />
+</DitherField>`;
+
+const SNIPPET_FIELD = `import { DitherField, DitherInput } from "@dither-kit"
+import { useState } from "react"
+
+const [handle, setHandle] = useState("")
+const [website, setWebsite] = useState("")
+
+<div class="grid gap-5">
+  <DitherField label="Handle" description="Lowercase, no spaces.">
+    <DitherInput value={handle} onChange={setHandle} placeholder="ada" />
   </DitherField>
-</template>`;
+  <DitherField label="Website" error="That URL does not resolve.">
+    <DitherInput value={website} onChange={setWebsite} placeholder="https://" />
+  </DitherField>
+</div>`;
 
-const SNIPPET_FIELD = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherField, DitherInput } from "@dither-kit"
+const SNIPPET_FIELDSET = `import { DitherField, DitherFieldset, DitherInput } from "@dither-kit"
+import { useState } from "react"
 
-const handle = ref("")
-const website = ref("")
-<\/script>
+const [name, setName] = useState("Ada Byte")
+const [handle, setHandle] = useState("ada")
 
-<template>
-  <div class="grid gap-5">
-    <DitherField label="Handle" description="Lowercase, no spaces.">
-      <DitherInput v-model="handle" placeholder="ada" />
+<DitherFieldset legend="Profile">
+  <DitherField label="Name" for="profile-name">
+    <DitherInput id="profile-name" value={name} onChange={setName} />
+  </DitherField>
+  <DitherField label="Handle" for="profile-handle">
+    <DitherInput id="profile-handle" value={handle} onChange={setHandle} />
+  </DitherField>
+</DitherFieldset>`;
+
+const SNIPPET_FORM = `import { DitherButton, DitherField, DitherForm, DitherInput } from "@dither-kit"
+import { useState } from "react"
+
+const [email, setEmail] = useState("")
+const [submitted, setSubmitted] = useState(0)
+
+<DitherForm onSubmit={() => setSubmitted(s => s + 1)}>
+  <div class="grid gap-4">
+    <DitherField label="Email" for="form-email">
+      <DitherInput id="form-email" value={email} onChange={setEmail} type="email" placeholder="you@dither-ui.com" />
     </DitherField>
-    <DitherField label="Website" error="That URL does not resolve.">
-      <DitherInput v-model="website" placeholder="https://" />
-    </DitherField>
+    <DitherButton type="submit" color="blue" class="w-full">Subscribe</DitherButton>
+    <p class="text-[11px] text-muted-foreground">submitted {submitted} times</p>
   </div>
-</template>`;
+</DitherForm>`;
 
-const SNIPPET_FIELDSET = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherField, DitherFieldset, DitherInput } from "@dither-kit"
+const SNIPPET_NUMBER = `import { DitherNumberField } from "@dither-kit"
+import { useState } from "react"
 
-const name = ref("Ada Byte")
-const handle = ref("ada")
-<\/script>
+const [qty, setQty] = useState(3)
 
-<template>
-  <DitherFieldset legend="Profile">
-    <DitherField label="Name" for="profile-name">
-      <DitherInput id="profile-name" v-model="name" />
-    </DitherField>
-    <DitherField label="Handle" for="profile-handle">
-      <DitherInput id="profile-handle" v-model="handle" />
-    </DitherField>
-  </DitherFieldset>
-</template>`;
+<div class="flex items-center gap-4">
+  <DitherNumberField value={qty} onChange={setQty} min={0} max={10} />
+  <span class="text-[13px] tabular-nums">{qty} / 10</span>
+</div>`;
 
-const SNIPPET_FORM = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherButton, DitherField, DitherForm, DitherInput } from "@dither-kit"
+const SNIPPET_OTP = `import { DitherOtpField } from "@dither-kit"
+import { useState } from "react"
 
-const email = ref("")
-const submitted = ref(0)
-<\/script>
+const [otp, setOtp] = useState("")
+const [complete, setComplete] = useState(false)
 
-<template>
-  <DitherForm @submit="submitted++">
-    <div class="grid gap-4">
-      <DitherField label="Email" for="form-email">
-        <DitherInput id="form-email" v-model="email" type="email" placeholder="you@dither-ui.com" />
-      </DitherField>
-      <DitherButton type="submit" color="blue" class="w-full">Subscribe</DitherButton>
-      <p class="text-[11px] text-muted-foreground">submitted {{ submitted }} times</p>
-    </div>
-  </DitherForm>
-</template>`;
-
-const SNIPPET_NUMBER = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherNumberField } from "@dither-kit"
-
-const qty = ref(3)
-<\/script>
-
-<template>
-  <div class="flex items-center gap-4">
-    <DitherNumberField v-model="qty" :min="0" :max="10" />
-    <span class="text-[13px] tabular-nums">{{ qty }} / 10</span>
-  </div>
-</template>`;
-
-const SNIPPET_OTP = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherOtpField } from "@dither-kit"
-
-const otp = ref("")
-const complete = ref(false)
-<\/script>
-
-<template>
-  <div class="grid gap-3">
-    <DitherOtpField v-model="otp" :length="6" @complete="complete = true" />
-    <p v-if="complete" class="text-[11px]">complete!</p>
-  </div>
-</template>`;
+<div class="grid gap-3">
+  <DitherOtpField value={otp} onChange={setOtp} length={6} onComplete={() => setComplete(true)} />
+  {complete && <p class="text-[11px]">complete!</p>}
+</div>`;
 
 const API: Record<string, PropRow[]> = {
   input: [
@@ -171,7 +143,7 @@ export function FieldDocs() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("not-an-email");
   const [handle, setHandle] = useState("");
-  const [bio, setBio] = useState("Dithered interfaces, composed with Vue.");
+  const [bio, setBio] = useState("Dithered interfaces, composed with React.");
   const [website, setWebsite] = useState("");
   const [profileName, setProfileName] = useState("Ada Byte");
   const [profileHandle, setProfileHandle] = useState("ada");

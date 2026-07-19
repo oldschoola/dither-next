@@ -46,75 +46,51 @@ const MENUBAR = [
   },
 ];
 
-const SNIPPET_POPOVER = `<script setup>
-const open = ref(false)
-<\/script>
-
-<DitherPopover :open="open" align="center" @close="open = false">
-  <template #trigger>
-    <DitherButton @click="open = !open">Open popover</DitherButton>
-  </template>
-  <p class="text-[12px] leading-relaxed text-muted-foreground">
+const SNIPPET_POPOVER = `<DitherPopover open={open} align="center" onClose={() => setOpen(false)}>
+  trigger={
+    <DitherButton onClick={() => setOpen(!open)}>Open popover</DitherButton>
+  }
+  <p className="text-[12px] leading-relaxed text-muted-foreground">
     Anchored to its trigger — Escape or an outside press closes it.
   </p>
 </DitherPopover>`;
 
-const SNIPPET_MENU = `<script setup>
-const items = [
-  { label: "New" },
-  { label: "Duplicate" },
-  { divider: true },
-  { label: "Delete", danger: true },
-]
-<\/script>
-
-<DitherMenu :items="items" @select="(label) => run(label)">
+const SNIPPET_MENU = `<DitherMenu items={items} onSelect={(label) => run(label)}>
   Actions
 </DitherMenu>`;
 
-const SNIPPET_CONTEXT = `<script setup>
-const items = [
-  { label: "Cut" },
-  { label: "Copy" },
-  { label: "Paste" },
-  { divider: true },
-  { label: "Delete", danger: true },
-]
-<\/script>
-
-<DitherContextMenu :items="items" @select="(label) => run(label)">
-  <div class="rounded-lg border border-dashed border-border p-10">
+const SNIPPET_CONTEXT = `<DitherContextMenu items={items} onSelect={(label) => run(label)}>
+  <div className="rounded-lg border border-dashed border-border p-10">
     right-click me
   </div>
 </DitherContextMenu>`;
 
-const SNIPPET_MENUBAR = `<script setup>
-const menus = [
+const SNIPPET_MENUBAR = `const menus = [
   { label: "File", items: [{ label: "New" }, { label: "Open" }, { label: "Save" }] },
   { label: "Edit", items: [{ label: "Undo" }, { label: "Redo" }, { label: "Find" }] },
   { label: "View", items: [{ label: "Zoom in" }, { label: "Zoom out" }] },
 ]
-const last = ref("none")
-<\/script>
+const [last, setLast] = useState("none")
 
-<DitherMenubar :menus="menus" @select="(m, i) => (last = \`\${m} → \${i}\`)" />
-<p class="mt-3 text-[12px] text-muted-foreground">last action: {{ last }}</p>`;
+<DitherMenubar menus={menus} onSelect={(m, i) => setLast(\`\${m} → \${i}\`)} />
+<p className="mt-3 text-[12px] text-muted-foreground">last action: {last}</p>`;
 
 const SNIPPET_TOOLTIP = `<DitherTooltip text="Deploys are frozen until Monday">
   <DitherBadge color="orange">frozen</DitherBadge>
 </DitherTooltip>`;
 
-const SNIPPET_PREVIEW = `<DitherPreviewCard>
-  <template #trigger>
-    <span class="underline decoration-border underline-offset-4" tabindex="0">
+const SNIPPET_PREVIEW = `<DitherPreviewCard
+  trigger={
+    <span className="underline decoration-border underline-offset-4" tabIndex={0}>
       @ada
     </span>
-  </template>
-  <div class="flex items-center gap-3">
-    <DitherAvatar name="Ada Lovelace" :size="40" />
+  }
+>
+  <div className="flex items-center gap-3">
+    <DitherAvatar name="Ada Lovelace" size={40} />
     <div>
-      <p class="text-[13px]">Ada Lovelace</p>
-      <p class="text-[11px] text-muted-foreground">Wrote the first program.</p>
+      <p className="text-[13px]">Ada Lovelace</p>
+      <p className="text-[11px] text-muted-foreground">Wrote the first program.</p>
     </div>
   </div>
 </DitherPreviewCard>`;

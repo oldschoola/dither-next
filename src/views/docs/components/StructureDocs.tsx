@@ -33,54 +33,45 @@ const VERT_TABS: TabItem[] = [
   { value: "Spam", disabled: true },
 ];
 
-const SNIPPET_TABS = `<!-- panels nest inside so they inherit the tab context -->
-<DitherTabs v-model="tab" :tabs="['Overview', 'Metrics', 'Logs']">
+const SNIPPET_TABS = `{/* panels nest inside so they inherit the tab context */}
+<DitherTabs value={tab} onChange={setTab} tabs={['Overview', 'Metrics', 'Logs']}>
   <DitherTabPanel value="Overview" class="mt-4">…</DitherTabPanel>
   <DitherTabPanel value="Metrics" class="mt-4">…</DitherTabPanel>
   <DitherTabPanel value="Logs" class="mt-4">…</DitherTabPanel>
 </DitherTabs>
 
-<!-- variant: underline | segmented | washed -->
-<DitherTabs v-model="tab" :tabs="tabs" variant="segmented" />
+{/* variant: underline | segmented | washed */}
+<DitherTabs value={tab} onChange={setTab} tabs={tabs} variant="segmented" />
 
-<!-- objects add badges and disabled; vertical flips the rail -->
-<DitherTabs v-model="folder" orientation="vertical" variant="washed"
-  :tabs="[{ value: 'Inbox', badge: 12 }, { value: 'Spam', disabled: true }]" />`;
+{/* objects add badges and disabled; vertical flips the rail */}
+<DitherTabs value={folder} onChange={setFolder} orientation="vertical" variant="washed"
+  tabs={[{ value: 'Inbox', badge: 12 }, { value: 'Spam', disabled: true }]} />`;
 
-const SNIPPET_COLLAPSIBLE = `<script setup>
-const openA = ref(true)
-const openB = ref(false)
-<\/script>
-
-<DitherCollapsible v-model="openA" title="What is dithering?" color="blue">
+const SNIPPET_COLLAPSIBLE = `<DitherCollapsible value={openA} onChange={setOpenA} title="What is dithering?" color="blue">
   Ordered dithering trades smooth gradients for a fixed threshold
   matrix — the same Bayer 4x4 behind every fill in this kit.
 </DitherCollapsible>
-<DitherCollapsible v-model="openB" title="Why canvas?" color="purple">
+<DitherCollapsible value={openB} onChange={setOpenB} title="Why canvas?" color="purple">
   One engine paints every fill, so components stay coherent.
 </DitherCollapsible>`;
 
-const SNIPPET_DIALOG = `<script setup>
-const open = ref(false)
-<\/script>
-
-<DitherButton @click="open = true">Open dialog</DitherButton>
-<DitherDialog :open="open" title="Confirm"
-  description="Ship the dithered build to production?" @close="open = false">
-  <p class="text-[13px] text-muted-foreground">Review the release before continuing.</p>
-  <template #footer>
-    <DitherButton color="green" @click="open = false">Confirm</DitherButton>
-  </template>
+const SNIPPET_DIALOG = `<DitherButton onClick={() => setOpen(true)}>Open dialog</DitherButton>
+<DitherDialog open={open} title="Confirm"
+  description="Ship the dithered build to production?" onClose={() => setOpen(false)}>
+  <p className="text-[13px] text-muted-foreground">Review the release before continuing.</p>
+  footer={
+    <DitherButton color="green" onClick={() => setOpen(false)}>Confirm</DitherButton>
+  }
 </DitherDialog>`;
 
-const SNIPPET_KBD = `<div class="flex items-center gap-6 text-xs">
-  <div class="flex items-center gap-2">
-    <span class="text-muted-foreground">Command menu</span>
+const SNIPPET_KBD = `<div className="flex items-center gap-6 text-xs">
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">Command menu</span>
     <DitherKbd>⌘</DitherKbd>
     <DitherKbd>K</DitherKbd>
   </div>
-  <div class="flex items-center gap-2">
-    <span class="text-muted-foreground">Shortcuts</span>
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">Shortcuts</span>
     <DitherKbd>?</DitherKbd>
   </div>
 </div>`;
@@ -88,7 +79,7 @@ const SNIPPET_KBD = `<div class="flex items-center gap-6 text-xs">
 const API: Record<string, PropRow[]> = {
   tabs: [
     { prop: "tabs", type: "(string | { value, label?, badge?, disabled? })[]", default: "—" },
-    { prop: "modelValue", type: "string", default: "—" },
+    { prop: "value", type: "string", default: "—" },
     { prop: "variant", type: '"underline" | "segmented" | "washed"', default: '"underline"' },
     { prop: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"' },
     { prop: "color", type: "PixelColor", default: '"blue"' },
@@ -96,7 +87,7 @@ const API: Record<string, PropRow[]> = {
   ],
   collapsible: [
     { prop: "title", type: "string", default: "—" },
-    { prop: "modelValue", type: "boolean", default: "false" },
+    { prop: "value", type: "boolean", default: "false" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
   ],
   dialog: [

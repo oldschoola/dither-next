@@ -13,8 +13,8 @@ import { DemoCard } from "../DemoCard";
  * One React component rendering a fragment of sections, matching the Vue
  * `<template>` (which is itself a fragment). Section ids, classes, prose, and
  * the SNIPPET_* code strings are ported verbatim from the Vue source. The
- * SNIPPET_* strings preserve Vue `<script setup>` / template syntax on
- * purpose: the code tab documents the Vue API the demo renders.
+ * SNIPPET_* strings show React/TSX usage of the kit — the code tab
+ * documents the React API the demo renders.
  *
  * State mapping (guide §4): `reactive({ plan })` → one `useState` object
  * updated via a setter that spreads the previous value; `ref(false)` / `ref("")`
@@ -25,40 +25,47 @@ import { DemoCard } from "../DemoCard";
  */
 const PLANS = ["Free", "Pro", "Scale"] as const;
 
-const SNIPPET_SIGNUP = `<div class="relative overflow-hidden rounded-lg border p-7">
-  <DitherGradient from="purple" direction="up" :opacity="0.16" />
-  <span>dither-ui</span>                    <!-- wordmark -->
+const SNIPPET_SIGNUP = `<div className="relative overflow-hidden rounded-lg border p-7">
+  <DitherGradient from="purple" direction="up" opacity={0.16} />
+  <span>dither-ui</span>                    {/* wordmark */}
   <input name="signup-name" placeholder="Ada Byte" />
   <input name="signup-email" placeholder="you@dither-ui.com" />
   <input type="password" placeholder="••••••••" />
-  <div role="group">                        <!-- plan picker -->
-    <button v-for="p in plans" :aria-pressed="plan === p"
-      @click="plan = p">{{ p }}</button>
+  <div role="group">                        {/* plan picker */}
+    {plans.map(p => (
+      <button key={p} aria-pressed={plan === p}
+        onClick={() => setPlan(p)}>{p}</button>
+    ))}
   </div>
   <DitherButton color="purple" class="w-full">Create account</DitherButton>
 </div>`;
 
-const SNIPPET_MAGIC = `<div class="relative overflow-hidden rounded-lg border p-7">
-  <DitherGradient from="green" direction="up" :opacity="0.14" />
-  <span>dither-ui</span>                    <!-- wordmark -->
-  <template v-if="!sent">
-    <input v-model="email" placeholder="you@dither-ui.com" />
-    <DitherButton color="green" class="w-full" @click="sent = true">
-      Send magic link
-    </DitherButton>
-  </template>
-  <template v-else>
-    <span>✓</span> Check your inbox — {{ email }}
-    <button @click="sent = false">use a different email</button>
-  </template>
+const SNIPPET_MAGIC = `<div className="relative overflow-hidden rounded-lg border p-7">
+  <DitherGradient from="green" direction="up" opacity={0.14} />
+  <span>dither-ui</span>                    {/* wordmark */}
+  {!sent ? (
+    <>
+      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="you@dither-ui.com" />
+      <DitherButton color="green" class="w-full" onClick={() => setSent(true)}>
+        Send magic link
+      </DitherButton>
+    </>
+  ) : (
+    <>
+      <span>✓</span> Check your inbox — {email}
+      <button onClick={() => setSent(false)}>use a different email</button>
+    </>
+  )}
 </div>`;
 
-const SNIPPET_TWOFACTOR = `<div class="relative overflow-hidden rounded-lg border p-7">
-  <DitherGradient from="blue" direction="up" :opacity="0.14" />
-  <span>dither-ui</span>                    <!-- wordmark -->
-  <div class="flex gap-2">                  <!-- code inputs -->
-    <input v-for="i in 6" maxlength="1" inputmode="numeric"
-      class="w-9 h-11 text-center" @input="focusNext(i)" />
+const SNIPPET_TWOFACTOR = `<div className="relative overflow-hidden rounded-lg border p-7">
+  <DitherGradient from="blue" direction="up" opacity={0.14} />
+  <span>dither-ui</span>                    {/* wordmark */}
+  <div className="flex gap-2">                  {/* code inputs */}
+    {Array.from({ length: 6 }, (_, i) => (
+      <input key={i} maxLength={1} inputMode="numeric"
+        className="w-9 h-11 text-center" onInput={() => focusNext(i)} />
+    ))}
   </div>
   <DitherButton color="blue" class="w-full">Verify</DitherButton>
   <button>resend in 24s</button>

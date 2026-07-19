@@ -51,124 +51,110 @@ const METERS = [
   { label: "CPU", value: 92 },
 ];
 
-const SNIPPET_ACCORDION = `<script setup>
-const faq = ref("what")
-const items = [
-  { value: "what", title: "What is dithering?" },
-  { value: "why", title: "Why canvas?" },
-  { value: "copy", title: "Can I copy the kit out?" },
-]
-<\/script>
+const SNIPPET_ACCORDION = `<DitherAccordion
+  value={faq}
+  onChange={setFaq}
+  items={items}
+  type="single"
+  color="blue"
+  slots={{
+    what: <>Ordered dithering trades smooth gradients for a fixed threshold
+      matrix — the same Bayer 4x4 behind every fill in this kit.</>,
+    why: <>One engine paints every fill, so components stay coherent.</>,
+    copy: <>Yes — the kit folder has zero app imports; copy it and alias it.</>,
+  }}
+/>`;
 
-<DitherAccordion v-model="faq" :items="items" type="single" color="blue">
-  <template #what>
-    Ordered dithering trades smooth gradients for a fixed threshold
-    matrix — the same Bayer 4x4 behind every fill in this kit.
-  </template>
-  <template #why>
-    One engine paints every fill, so components stay coherent.
-  </template>
-  <template #copy>
-    Yes — the kit folder has zero app imports; copy it and alias it.
-  </template>
-</DitherAccordion>`;
-
-const SNIPPET_ALERT_DIALOG = `<script setup>
-const open = ref(false)
-<\/script>
-
-<DitherButton color="red" @click="open = true">Delete artboard…</DitherButton>
+const SNIPPET_ALERT_DIALOG = `<DitherButton color="red" onClick={() => setOpen(true)}>Delete artboard…</DitherButton>
 <DitherAlertDialog
-  :open="open"
+  open={open}
   danger
   title="Delete artboard?"
   description="This removes the artboard and its layers. There is no undo across sessions."
-  confirm-label="Delete"
-  @confirm="open = false"
-  @cancel="open = false"
+  confirmLabel="Delete"
+  onConfirm={() => setOpen(false)}
+  onCancel={() => setOpen(false)}
 />`;
 
-const SNIPPET_DRAWER = `<!-- side drawers swipe-dismiss along their axis;
-     bottom sheets get a handle and dismiss downward -->
-<DitherDrawer :open="open" side="right" title="Settings" @close="open = false">
+const SNIPPET_DRAWER = `{/* side drawers swipe-dismiss along their axis;
+     bottom sheets get a handle and dismiss downward */}
+<DitherDrawer open={open} side="right" title="Settings" onClose={() => setOpen(false)}>
   …
 </DitherDrawer>
-<DitherDrawer :open="sheet" side="bottom" title="Notifications" @close="sheet = false" />
+<DitherDrawer open={sheet} side="bottom" title="Notifications" onClose={() => setSheet(false)} />
 
-<!-- nesting: a child drawer pushes its parent back automatically -->
-<DitherDrawer :open="account" title="Account" @close="account = false">
-  <DitherDrawer :open="security" title="Security" @close="security = false" />
+{/* nesting: a child drawer pushes its parent back automatically */}
+<DitherDrawer open={account} title="Account" onClose={() => setAccount(false)}>
+  <DitherDrawer open={security} title="Security" onClose={() => setSecurity(false)} />
 </DitherDrawer>
 
-<!-- swipe-to-open from the viewport edge -->
-<DitherSwipeArea side="right" @open="open = true" />
+{/* swipe-to-open from the viewport edge */}
+<DitherSwipeArea side="right" onOpen={() => setOpen(true)} />
 
-<!-- snap points: vh fractions or px; flicks can skip points -->
-<DitherDrawer v-model:snap-point="snap" :open="open" side="bottom"
-  :snap-points="[0.35, 0.75]" @close="open = false" />
+{/* snap points: vh fractions or px; flicks can skip points */}
+<DitherDrawer snapPoint={snap} open={open} side="bottom"
+  snapPoints={[0.35, 0.75]} onClose={() => setOpen(false)} />
 
-<!-- indent: your app scales back while any drawer is open -->
+{/* indent: your app scales back while any drawer is open */}
 <DitherDrawerIndent>
   <App />
 </DitherDrawerIndent>`;
 
-const SNIPPET_SIDEBAR = `<DitherSidebar v-model="collapsed" variant="default" collapse="rail">
-  <template #header>…wordmark…</template>
+const SNIPPET_SIDEBAR = `<DitherSidebar value={collapsed} onChange={setCollapsed} variant="default" collapse="rail">
+  header={<>…wordmark…</>}
 
-  <DitherSidebarGroup label="Platform">   <!-- label folds to a hairline on the rail -->
-    <DitherSidebarItem label="Overview" :active="active === 'Overview'" />
-    <DitherSidebarItem label="Charts" :badge="12" />  <!-- badge folds to a dot -->
+  <DitherSidebarGroup label="Platform">   {/* label folds to a hairline on the rail */}
+    <DitherSidebarItem label="Overview" active={active === 'Overview'} />
+    <DitherSidebarItem label="Charts" badge={12} />  {/* badge folds to a dot */}
   </DitherSidebarGroup>
 
   <DitherSidebarGroup label="Library">
-    <DitherSidebarSub v-model="subOpen" label="Components">
+    <DitherSidebarSub value={subOpen} onChange={setSubOpen} label="Components">
       <DitherSidebarItem label="Buttons" />
       <DitherSidebarItem label="Forms" />
     </DitherSidebarSub>
   </DitherSidebarGroup>
 </DitherSidebar>
 
-<!-- variant: default | floating | inset | washed (dither gradient chrome)
+{/* variant: default | floating | inset | washed (dither gradient chrome)
      collapse: rail | hide | none · side: left | right
-     density: default | compact · :toggle="false" = permanent rail -->`;
+     density: default | compact · toggle={false} = permanent rail */}`;
 
-const SNIPPET_TOAST = `<script setup>
-import { DitherToaster, toast } from "@dither-kit"
-<\/script>
-
-<DitherToaster />
-<DitherButton color="green" @click="toast('Saved', { color: 'green' })">
+const SNIPPET_TOAST = `<DitherToaster />
+<DitherButton color="green" onClick={() => toast('Saved', { color: 'green' })}>
   Save
 </DitherButton>
-<DitherButton color="red" @click="toast('Export failed', { color: 'red' })">
+<DitherButton color="red" onClick={() => toast('Export failed', { color: 'red' })}>
   Export
 </DitherButton>`;
 
-const SNIPPET_METER = `<div class="grid gap-3">
+const SNIPPET_METER = `<div className="grid gap-3">
   <div>
-    <div class="mb-1 flex justify-between text-[11px] text-muted-foreground">
+    <div className="mb-1 flex justify-between text-[11px] text-muted-foreground">
       <span>Disk</span><span>35%</span>
     </div>
-    <DitherMeter :value="35" />
+    <DitherMeter value={35} />
   </div>
   <div>
-    <div class="mb-1 flex justify-between text-[11px] text-muted-foreground">
+    <div className="mb-1 flex justify-between text-[11px] text-muted-foreground">
       <span>Memory</span><span>68%</span>
     </div>
-    <DitherMeter :value="68" />
+    <DitherMeter value={68} />
   </div>
   <div>
-    <div class="mb-1 flex justify-between text-[11px] text-muted-foreground">
+    <div className="mb-1 flex justify-between text-[11px] text-muted-foreground">
       <span>CPU</span><span>92%</span>
     </div>
-    <DitherMeter :value="92" />
+    <DitherMeter value={92} />
   </div>
 </div>`;
 
 const SNIPPET_SCROLL_AREA = `<DitherScrollArea class="h-40 rounded-lg border border-border/60 p-3">
-  <p v-for="i in 15" :key="i" class="py-1 text-[12px] text-muted-foreground">
-    Log line {{ i }} — ordered dither keeps the texture coherent.
-  </p>
+  {Array.from({ length: 15 }, (_, i) => (
+    <p key={i} className="py-1 text-[12px] text-muted-foreground">
+      Log line {i + 1} — ordered dither keeps the texture coherent.
+    </p>
+  ))}
 </DitherScrollArea>`;
 
 const SNIPPET_TOOLBAR = `<DitherToolbar label="Formatting">
@@ -181,23 +167,13 @@ const SNIPPET_TOOLBAR = `<DitherToolbar label="Formatting">
   <DitherButton class="px-2.5 py-1" aria-label="Align right">⇥</DitherButton>
 </DitherToolbar>`;
 
-const SNIPPET_NAV_MENU = `<script setup>
-const active = ref("Overview")
-const items = [
-  { label: "Overview" },
-  { label: "Components" },
-  { label: "Pricing" },
-  { label: "Docs" },
-]
-<\/script>
-
-<DitherNavMenu v-model="active" :items="items" color="blue" />
-<p class="mt-4 text-[12px] text-muted-foreground">Viewing: {{ active }}</p>`;
+const SNIPPET_NAV_MENU = `<DitherNavMenu value={active} onChange={setActive} items={items} color="blue" />
+<p className="mt-4 text-[12px] text-muted-foreground">Viewing: {active}</p>`;
 
 const API: Record<string, PropRow[]> = {
   accordion: [
     { prop: "items", type: "{ value: string; title: string }[]", default: "—" },
-    { prop: "modelValue", type: "string | string[]", default: "—" },
+    { prop: "value", type: "string | string[]", default: "—" },
     { prop: "type", type: '"single" | "multiple"', default: '"single"' },
     { prop: "color", type: "PixelColor", default: '"blue"' },
   ],
@@ -214,13 +190,13 @@ const API: Record<string, PropRow[]> = {
     { prop: "side", type: '"right" | "left" | "bottom"', default: '"right"' },
     { prop: "title", type: "string", default: "undefined" },
     { prop: "swipe", type: "boolean — drag to dismiss, momentum decides", default: "true" },
-    { prop: "snap-points", type: "number[] — ≤1 vh fraction, >1 px (bottom)", default: "undefined" },
-    { prop: "snap-point", type: "number — v-model:snap-point", default: "first snap" },
+    { prop: "snapPoints", type: "number[] — ≤1 vh fraction, >1 px (bottom)", default: "undefined" },
+    { prop: "snapPoint", type: "number — snapPoint/onSnapPointChange", default: "first snap" },
     { prop: "modal", type: "boolean — false: no backdrop, page stays live", default: "true" },
     { prop: "dismissible", type: "boolean — false: backdrop click ignored", default: "true" },
   ],
   sidebar: [
-    { prop: "modelValue (Sidebar)", type: "boolean — collapsed (v-model)", default: "false" },
+    { prop: "value (Sidebar)", type: "boolean — collapsed (value/onChange)", default: "false" },
     { prop: "variant (Sidebar)", type: '"default" | "floating" | "inset" | "washed"', default: '"default"' },
     { prop: "collapse (Sidebar)", type: '"rail" | "hide" | "none"', default: '"rail"' },
     { prop: "side (Sidebar)", type: '"left" | "right"', default: '"left"' },
@@ -230,7 +206,7 @@ const API: Record<string, PropRow[]> = {
     { prop: "label (Group)", type: "string — folds to a hairline on the rail", default: "undefined" },
     { prop: "label / active / color (Item)", type: "string / boolean / PixelColor", default: '— / false / "blue"' },
     { prop: "badge (Item)", type: "string | number — dot on the rail", default: "undefined" },
-    { prop: "modelValue / label (Sub)", type: "boolean (v-model) / string", default: "false / —" },
+    { prop: "value / label (Sub)", type: "boolean (value/onChange) / string", default: "false / —" },
   ],
   toast: [
     { prop: "message", type: "string", default: "—" },
@@ -248,7 +224,7 @@ const API: Record<string, PropRow[]> = {
   toolbar: [{ prop: "label", type: "string", default: "undefined" }],
   navMenu: [
     { prop: "items", type: "{ label: string; href?: string }[]", default: "—" },
-    { prop: "modelValue", type: "string", default: "—" },
+    { prop: "value", type: "string", default: "—" },
     { prop: "color", type: "PixelColor", default: '"blue"' },
   ],
 };

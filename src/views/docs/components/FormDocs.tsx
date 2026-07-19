@@ -20,8 +20,8 @@ import { PropsTable, type PropRow } from "../PropsTable";
  * One React component rendering a fragment of sections, matching the Vue
  * `<template>` (which is itself a fragment). Section ids, classes, prose,
  * SNIPPET_* code strings, and the API table rows are ported verbatim from
- * the Vue source. The SNIPPET_* strings preserve Vue `<script setup>` syntax
- * on purpose: the code tab documents the Vue API the demo renders.
+ * the Vue source. The SNIPPET_* strings show React/TSX usage of the kit,
+ * documenting the API the demo renders.
  *
  * State mapping (guide §4): `ref(true)` → `useState(true)`,
  * `reactive({...})` → one `useState` object updated via a setter that spreads
@@ -30,61 +30,51 @@ import { PropsTable, type PropRow } from "../PropsTable";
  */
 const SLIDER_VARIANTS = ["gradient", "dotted", "hatched", "solid"] as const;
 
-const SNIPPET_SWITCH = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherSwitch } from "@dither-kit"
+const SNIPPET_SWITCH = `import { DitherSwitch } from "@dither-kit"
+import { useState } from "react"
 
-const bloom = ref(true)
-<\/script>
+const [bloom, setBloom] = useState(true)
 
-<template>
-  <label class="flex items-center justify-between gap-4">
-    <span class="text-[13px]">Bloom on hover</span>
-    <DitherSwitch v-model="bloom" label="Bloom on hover" color="blue" />
-  </label>
-</template>`;
+<label class="flex items-center justify-between gap-4">
+  <span class="text-[13px]">Bloom on hover</span>
+  <DitherSwitch value={bloom} onChange={setBloom} label="Bloom on hover" color="blue" />
+</label>`;
 
-const SNIPPET_CHECKBOX = `<script setup lang="ts">
-import { reactive } from "vue"
-import { DitherCheckbox } from "@dither-kit"
+const SNIPPET_CHECKBOX = `import { DitherCheckbox } from "@dither-kit"
+import { useState } from "react"
 
-const opts = reactive({ grid: true, snap: false, rulers: true })
-<\/script>
+const [opts, setOpts] = useState({ grid: true, snap: false, rulers: true })
 
-<template>
-  <div class="grid gap-3">
-    <DitherCheckbox v-model="opts.grid">Show grid</DitherCheckbox>
-    <DitherCheckbox v-model="opts.snap">Snap to pixels</DitherCheckbox>
-    <DitherCheckbox v-model="opts.rulers">Show rulers</DitherCheckbox>
-  </div>
-</template>`;
+<div class="grid gap-3">
+  <DitherCheckbox value={opts.grid} onChange={v => setOpts(o => ({ ...o, grid: v }))}>Show grid</DitherCheckbox>
+  <DitherCheckbox value={opts.snap} onChange={v => setOpts(o => ({ ...o, snap: v }))}>Snap to pixels</DitherCheckbox>
+  <DitherCheckbox value={opts.rulers} onChange={v => setOpts(o => ({ ...o, rulers: v }))}>Show rulers</DitherCheckbox>
+</div>`;
 
-const SNIPPET_SLIDER = `const level = ref(40)
-const range = ref<[number, number]>([25, 75])
+const SNIPPET_SLIDER = `import { useState } from "react"
 
-<!-- single -->
-<DitherSlider v-model="level" label="Level" />
+const [level, setLevel] = useState(40)
+const [range, setRange] = useState<[number, number]>([25, 75])
 
-<!-- range: an array v-model grows a second thumb -->
-<DitherSlider v-model="range" label="Price" show-value />
+{/* single */}
+<DitherSlider value={level} onChange={setLevel} label="Level" />
 
-<!-- ticks mark the steps; variant picks the fill texture -->
-<DitherSlider v-model="quality" label="Quality" :step="10" ticks
+{/* range: an array value grows a second thumb */}
+<DitherSlider value={range} onChange={setRange} label="Price" show-value />
+
+{/* ticks mark the steps; variant picks the fill texture */}
+<DitherSlider value={quality} onChange={setQuality} label="Quality" step={10} ticks
   variant="dotted" show-value />`;
 
-const SNIPPET_PROGRESS = `<script setup lang="ts">
-import { ref } from "vue"
-import { DitherProgress } from "@dither-kit"
+const SNIPPET_PROGRESS = `import { DitherProgress } from "@dither-kit"
+import { useState } from "react"
 
-const level = ref(40)
-<\/script>
+const [level, setLevel] = useState(40)
 
-<template>
-  <div class="grid gap-6">
-    <DitherProgress :value="level" color="blue" />
-    <DitherProgress indeterminate color="purple" />
-  </div>
-</template>`;
+<div class="grid gap-6">
+  <DitherProgress value={level} color="blue" />
+  <DitherProgress indeterminate color="purple" />
+</div>`;
 
 const API: Record<string, PropRow[]> = {
   switch: [

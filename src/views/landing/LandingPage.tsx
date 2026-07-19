@@ -135,7 +135,7 @@ export function LandingPage() {
         />
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pt-24 pb-14 sm:pt-32">
           <h1 className="reveal max-w-xl text-[clamp(1.75rem,4.5vw,2.75rem)] leading-[1.15] tracking-tight text-balance">
-            A dithered UI toolkit for Vue.
+            A dithered UI toolkit for React.
           </h1>
           <p
             className="reveal mt-5 max-w-md text-[13px] leading-relaxed text-muted-foreground [text-wrap:pretty]"

@@ -64,11 +64,10 @@ import {
  * ChartsDocs — Area / Line / Bar / Pie / Radar / Sparkline / Button / Avatar /
  * Gradient / Image / Palette section pack.
  *
- * Port of `src/pages/docs/DocsPage.vue` lines 1233–1598 (the `components-charts`
  * pack). The Vue `<script setup>` reactive state becomes React `useState`;
- * the computed code snippets become `useMemo`. SNIPPETS strings preserve Vue
- * `<template>` syntax on purpose — the code tab documents the Vue API the live
- * React demo renders, mirroring the other section packs (guide §4).
+ * the computed code snippets become `useMemo`. SNIPPETS strings show React/TSX
+ * usage of the @dither-kit (the kit is React/Next.js): what you see is what
+ * you copy into a React component, mirroring the other section packs (guide §4).
  *
  * State mapping:
  *  - `reactive({ area, bar, pie, dot })` → one `picked` state object.
@@ -106,23 +105,22 @@ const SNIPPETS = {
   install: `# 1 — copy the kit folder straight from the repo (degit grabs just the folder)
 npx degit drvova/dither-ui/dither-kit src/dither-kit
 
-# 2 — install the four runtime deps (Vue & Tailwind you already have)
+# 2 — install the four runtime deps (React 19 & Tailwind you already have)
 npm i d3-scale d3-shape clsx tailwind-merge
 
 # 3 — alias @dither-kit so imports stay clean
-#     vite.config.ts → resolve.alias: { "@dither-kit": "/src/dither-kit" }
-#     tsconfig.json  → paths:        { "@dither-kit": ["./src/dither-kit"] }
+#     tsconfig.json  → paths: { "@dither-kit": ["./src/dither-kit"] }
 
 # 4 — use it
 import { AreaChart, Area, DitherButton } from "@dither-kit"`,
-  seeds: `<!-- one integer is a complete visual personality: -->
-<AreaChart :data="rows" :config="config" :seed="1984">
-  <Area data-key="revenue" :variant="1984" />   <!-- texture  -->
+  seeds: `{/* one integer is a complete visual personality: */}
+<AreaChart data={rows} config={config} seed={1984}>
+  <Area dataKey="revenue" variant={1984} />   {/* texture */}
 </AreaChart>
-<!-- :seed derives duration · delay · easing · stagger · sparkles · bloom
+{/* :seed derives duration · delay · easing · stagger · sparkles · bloom
      for every prop you leave unset; explicit props always win.
-     Seeds also work per prop: bloom / easing / variant / color(hue). -->
-<DitherButton :bloom="1984">Glow</DitherButton>`,
+     Seeds also work per prop: bloom / easing / variant / color(hue). */}
+<DitherButton bloom={1984}>Glow</DitherButton>`,
   styling: `/* the kit reads shadcn-style tokens — theme by overriding them */
 :root {
   --background: #08090b;   /* chart chrome: axes, legend, tooltip */
@@ -131,83 +129,89 @@ import { AreaChart, Area, DitherButton } from "@dither-kit"`,
   --accent: #3f8ff3;
 }
 
-<!-- every component forwards class — compose with your utilities -->
+{/* every component forwards class — compose with your utilities */}
 <AreaChart class="rounded-lg border border-border/60 p-2" … />`,
-  composition: `<AreaChart :data="rows" :config="config">  <!-- root: scales + context -->
-  <Grid horizontal />                       <!-- chrome registers first -->
-  <XAxis data-key="month" />
-  <YAxis :tick-count="4" />
-  <Area data-key="revenue" variant="gradient">
-    <Dot variant="border" :r="2" />         <!-- series children nest -->
+  composition: `<AreaChart data={rows} config={config}>  {/* root: scales + context */}
+  <Grid horizontal />                       {/* chrome registers first */}
+  <XAxis dataKey="month" />
+  <YAxis tickCount={4} />
+  <Area dataKey="revenue" variant="gradient">
+    <Dot variant="border" r={2} />         {/* series children nest */}
   </Area>
-  <Legend align="right" />                  <!-- reads the same context -->
-  <Tooltip label-key="month" />
+  <Legend align="right" />                  {/* reads the same context */}
+  <Tooltip labelKey="month" />
 </AreaChart>`,
-  accessibility: `<!-- one accessible node per chart, not 400 rects -->
-<svg role="img" aria-label="Chart">…</svg>   <!-- provided by the root -->
-<canvas aria-hidden="true" />                <!-- pixels stay silent -->
+  accessibility: `{/* one accessible node per chart, not 400 rects */}
+<svg role="img" aria-label="Chart">…</svg>   {/* provided by the root */}
+<canvas aria-hidden="true" />                {/* pixels stay silent */}
 
 /* honored automatically — no opt-in props */
 @media (prefers-reduced-motion: reduce)      { /* entrances snap  */ }
 @media (prefers-reduced-transparency: reduce) { /* chrome goes solid */ }`,
-  dashboard: `<!-- stat cards -->
-<div v-for="s in stats" class="rounded-lg border p-4">
-  <span>{{ s.label }}</span> <b>{{ s.value }}</b>
-  <Sparkline :data="s.trend" :color="s.color" class="h-8" />
-</div>
+  dashboard: `{/* stat cards */}
+{stats.map(s => (
+  <div key={s.label} className="rounded-lg border p-4">
+    <span>{s.label}</span> <b>{s.value}</b>
+    <Sparkline data={s.trend} color={s.color} class="h-8" />
+  </div>
+))}
 
-<!-- main panel -->
-<AreaChart :data="rows" :config="config" stack-type="stacked">
-  <XAxis data-key="month" /> <Area data-key="expenses" variant="dotted" />
-  <Area data-key="revenue" /> <Tooltip label-key="month" />
+{/* main panel */}
+<AreaChart data={rows} config={config} stackType="stacked">
+  <XAxis dataKey="month" /> <Area dataKey="expenses" variant="dotted" />
+  <Area dataKey="revenue" /> <Tooltip labelKey="month" />
 </AreaChart>
-<PieChart :data="share" :config="shareConfig" data-key="value"
-  name-key="name" :inner-radius="0.55"><Pie /></PieChart>`,
-  shell: `<div class="grid grid-cols-[160px_1fr] rounded-lg border">
-  <aside class="border-r p-3">          <!-- sidebar -->
+<PieChart data={share} config={shareConfig} dataKey="value"
+  nameKey="name" innerRadius={0.55}><Pie /></PieChart>`,
+  shell: `<div className="grid grid-cols-[160px_1fr] rounded-lg border">
+  <aside className="border-r p-3">          {/* sidebar */}
     brand · nav (active chip) · <DitherAvatar /> footer
   </aside>
   <div>
-    <header class="border-b px-4">      <!-- topbar -->
+    <header className="border-b px-4">      {/* topbar */}
       title · <DitherButton>Export</DitherButton>
     </header>
-    <main class="grid gap-4 p-4">
+    <main className="grid gap-4 p-4">
       stat cards with <Sparkline />
-      <AreaChart … />                    <!-- main panel -->
+      <AreaChart … />                    {/* main panel */}
     </main>
   </div>
 </div>`,
-  monitoring: `<LineChart :data="rows" :config="config">  <!-- pulse -->
-  <Grid horizontal /> <XAxis data-key="month" />
-  <Line data-key="revenue" /> <Line data-key="expenses" />
+  monitoring: `<LineChart data={rows} config={config}>  {/* pulse */}
+  <Grid horizontal /> <XAxis dataKey="month" />
+  <Line dataKey="revenue" /> <Line dataKey="expenses" />
 </LineChart>
 
-<RadarChart … />                        <!-- sprint health -->
+<RadarChart … />                        {/* sprint health */}
 
-<div v-for="s in services">             <!-- status rows -->
-  <span :class="s.ok ? 'bg-green' : 'bg-red'" />  <!-- dot -->
-  {{ s.name }} <Sparkline :data="s.data" :color="s.color" />
-  {{ s.uptime }}
-</div>`,
-  team: `<div v-for="m in team" class="flex items-center gap-4">
-  <DitherAvatar :name="m.name" :size="32" />
-  {{ m.name }} · {{ m.role }}
-  <Sparkline :data="m.data" :color="m.color" class="h-5 flex-1" />
-  <span class="tabular-nums">{{ m.commits }}</span>
-</div>`,
-  usage: `<BarChart :data="usageRows" :config="usageConfig">   <!-- renders/mo -->
-  <XAxis data-key="month" /> <Bar data-key="renders" />
+{services.map(s => (                     {/* status rows */}
+  <div key={s.name}>
+    <span className={s.ok ? 'bg-green' : 'bg-red'} />  {/* dot */}
+    {s.name} <Sparkline data={s.data} color={s.color} />
+    {s.uptime}
+  </div>
+))}`,
+  team: `{team.map(m => (
+  <div key={m.name} className="flex items-center gap-4">
+    <DitherAvatar name={m.name} size={32} />
+    {m.name} · {m.role}
+    <Sparkline data={m.data} color={m.color} class="h-5 flex-1" />
+    <span className="tabular-nums">{m.commits}</span>
+  </div>
+))}`,
+  usage: `<BarChart data={usageRows} config={usageConfig}>   {/* renders/mo */}
+  <XAxis dataKey="month" /> <Bar dataKey="renders" />
 </BarChart>
 
-<PieChart :data="quotaRows" :config="quotaConfig"    <!-- quota donut -->
-  data-key="value" name-key="name" :inner-radius="0.62">
+<PieChart data={quotaRows} config={quotaConfig}    {/* quota donut */}
+  dataKey="value" nameKey="name" innerRadius={0.62}>
   <Pie /> <Legend align="center" />
 </PieChart>
 
 <DitherButton color="blue">Upgrade to Pro</DitherButton>`,
-  signin: `<div class="relative overflow-hidden rounded-lg border p-8">
-  <DitherGradient from="blue" direction="up" :opacity="0.2" />
-  <span>dither-ui</span>                    <!-- wordmark -->
+  signin: `<div className="relative overflow-hidden rounded-lg border p-8">
+  <DitherGradient from="blue" direction="up" opacity={0.2} />
+  <span>dither-ui</span>                    {/* wordmark */}
   <input placeholder="you@dither-ui.com" />
   <input type="password" placeholder="••••••••" />
   <DitherButton color="blue" class="w-full">Sign in</DitherButton>
@@ -218,97 +222,97 @@ const config = {
   expenses: { label: "Expenses", color: "purple" },
 }
 
-<AreaChart :data="rows" :config="config" stack-type="stacked">
+<AreaChart data={rows} config={config} stackType="stacked">
   <Grid horizontal />
-  <XAxis data-key="month" :max-ticks="6" />
-  <YAxis :tick-count="4" />
-  <Area data-key="expenses" variant="dotted" />
-  <Area data-key="revenue" variant="gradient" />
+  <XAxis dataKey="month" maxTicks={6} />
+  <YAxis tickCount={4} />
+  <Area dataKey="expenses" variant="dotted" />
+  <Area dataKey="revenue" variant="gradient" />
   <Legend align="right" />
-  <Tooltip label-key="month" />
+  <Tooltip labelKey="month" />
 </AreaChart>`,
-  line: `<LineChart :data="rows" :config="config">
+  line: `<LineChart data={rows} config={config}>
   <Grid horizontal />
-  <XAxis data-key="month" :max-ticks="6" />
-  <Line data-key="revenue">
-    <Dot variant="border" :r="2" />
+  <XAxis dataKey="month" maxTicks={6} />
+  <Line dataKey="revenue">
+    <Dot variant="border" r={2} />
   </Line>
-  <Line data-key="expenses" />
+  <Line dataKey="expenses" />
   <Legend align="right" />
-  <Tooltip label-key="month" />
+  <Tooltip labelKey="month" />
 </LineChart>`,
-  bar: `<BarChart :data="trafficRows" :config="trafficConfig">
+  bar: `<BarChart data={trafficRows} config={trafficConfig}>
   <Grid horizontal />
-  <XAxis data-key="month" />
-  <YAxis :tick-count="4" />
-  <Bar data-key="organic" />
-  <Bar data-key="paid" />
+  <XAxis dataKey="month" />
+  <YAxis tickCount={4} />
+  <Bar dataKey="organic" />
+  <Bar dataKey="paid" />
   <Legend align="right" />
-  <Tooltip label-key="month" />
+  <Tooltip labelKey="month" />
 </BarChart>`,
-  pie: `<PieChart :data="pieRows" :config="pieConfig"
-  data-key="value" name-key="name" :inner-radius="0.55">
-  <Pie variant="gradient" is-clickable />
+  pie: `<PieChart data={pieRows} config={pieConfig}
+  dataKey="value" nameKey="name" innerRadius={0.55}>
+  <Pie variant="gradient" isClickable />
   <Legend align="center" />
 </PieChart>`,
-  radar: `<RadarChart :data="radarRows" :config="radarConfig" name-key="axis">
-  <Radar data-key="current" />
-  <Radar data-key="previous" />
+  radar: `<RadarChart data={radarRows} config={radarConfig} nameKey="axis">
+  <Radar dataKey="current" />
+  <Radar dataKey="previous" />
   <Legend align="center" />
 </RadarChart>`,
-  sparkline: `<div class="rounded-lg border p-4">
-  <div class="text-xs text-muted-foreground">Revenue</div>
-  <div class="flex items-baseline gap-2">
-    <span class="text-lg tabular-nums">$48.2k</span>
-    <span class="text-xs text-green-400">+12.4%</span>
+  sparkline: `<div className="rounded-lg border p-4">
+  <div className="text-xs text-muted-foreground">Revenue</div>
+  <div className="flex items-baseline gap-2">
+    <span className="text-lg tabular-nums">$48.2k</span>
+    <span className="text-xs text-green-400">+12.4%</span>
   </div>
-  <Sparkline :data="last24h" color="green" class="mt-3 h-8 w-full" />
+  <Sparkline data={last24h} color="green" class="mt-3 h-8 w-full" />
 </div>`,
-  motion: `const replayToken = ref(0)
+  motion: `const [replayToken, setReplayToken] = useState(0)
 
-<BarChart :data="rows" :config="config"
-  :animation-duration="900" :replay-token="replayToken">
-  <Bar data-key="revenue" />
+<BarChart data={rows} config={config}
+  animationDuration={900} replayToken={replayToken}>
+  <Bar dataKey="revenue" />
 </BarChart>
 
-<DitherButton @click="replayToken++">Replay</DitherButton>
-<!-- prefers-reduced-motion is respected automatically:
-     entrances snap, sparkles hold still -->`,
-  button: `<!-- variants -->
+<DitherButton onClick={() => setReplayToken(t => t + 1)}>Replay</DitherButton>
+{/* prefers-reduced-motion is respected automatically:
+     entrances snap, sparkles hold still */}`,
+  button: `{/* variants */}
 <DitherButton variant="gradient">Deploy</DitherButton>
 <DitherButton variant="solid">Run</DitherButton>
 <DitherButton variant="dotted">Preview</DitherButton>
 <DitherButton variant="hatched">Cancel</DitherButton>
 
-<!-- colors, bloom, static raster -->
+{/* colors, bloom, static raster */}
 <DitherButton color="green" bloom="low">Approve</DitherButton>
 <DitherButton color="red" disabled>Delete</DitherButton>
-<DitherButton render-mode="static" precompiled="/button.png">Saved</DitherButton>`,
-  avatar: `<DitherAvatar name="ada" :size="24" />
-<DitherAvatar name="ada" :size="32" />
-<DitherAvatar name="ada" :size="48" />
-<DitherAvatar name="grace" :size="48" bloom="low" />`,
-  gradient: `<div class="relative h-40">
+<DitherButton renderMode="static" precompiled="/button.png">Saved</DitherButton>`,
+  avatar: `<DitherAvatar name="ada" size={24} />
+<DitherAvatar name="ada" size={32} />
+<DitherAvatar name="ada" size={48} />
+<DitherAvatar name="grace" size={48} bloom="low" />`,
+  gradient: `<div className="relative h-40">
   <DitherGradient from="blue" to="transparent" direction="up" />
 </div>
-<div class="relative h-24">
-  <DitherGradient render-mode="static" precompiled="/gradient.png" />
+<div className="relative h-24">
+  <DitherGradient renderMode="static" precompiled="/gradient.png" />
 </div>
-<!-- from/to: any DitherColor · direction: up · down · left · right
+{/* from/to: any DitherColor · direction: up · down · left · right
      cell: px per dither cell · opacity: 0…1
-     max-cols / max-rows: backing-resolution caps (default 960×600 live, 320×200 static) -->`,
-  image: `<DitherImage src="/sprites.webp" :cell="3" :focus-y="0.62" :fade="72"
+     max-cols / max-rows: backing-resolution caps (default 960×600 live, 320×200 static) */}`,
+  image: `<DitherImage src="/sprites.webp" cell={3} focusY={0.62} fade={72}
   alt="The dither-ui sprite sheet, re-dithered" class="h-64 w-full" />
 <DitherImage precompiled="/sprites-dither.png" alt="The dither-ui sprite sheet" />
-<!-- cell: px per dither cell · fade: dithered edge dissolve
-     focus-y: cover-crop focus (0 top … 1 bottom) -->`,
-  faultyTerminal: `<div class="relative h-56 overflow-hidden rounded-md">
-  <DitherFaultyTerminal tint="green" :glitch-amount="0.6" />
+{/* cell: px per dither cell · fade: dithered edge dissolve
+     focus-y: cover-crop focus (0 top … 1 bottom) */}`,
+  faultyTerminal: `<div className="relative h-56 overflow-hidden rounded-md">
+  <DitherFaultyTerminal tint="green" glitchAmount={0.6} />
 </div>
-<!-- fills its box — give the wrapper a height (or class="absolute inset-0")
+{/* fills its box — give the wrapper a height (or class="absolute inset-0")
      tint: hex or palette seed · dither: 0 smooth … 1 hard Bayer
      curvature: barrel warp · chromatic-aberration: rgb split (px)
-     mouse-react on by default · render-mode="static" paints one frame -->`,
+     mouse-react on by default · renderMode="static" paints one frame */}`,
   palette: `import { cssColor, type DitherColor } from "@dither-kit"
 cssColor("blue") // rgb(53,143,243)`,
 };
@@ -317,105 +321,105 @@ const API: Record<string, PropRow[]> = {
   cartesian: [
     { prop: "data", type: "Row[]", default: "required" },
     { prop: "config", type: "ChartConfig", default: "required" },
-    { prop: "stack-type", type: '"default" | "stacked" | "percent"', default: '"default"' },
+    { prop: "stackType", type: '"default" | "stacked" | "percent"', default: '"default"' },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
     { prop: "class", type: "string", default: "undefined" },
     { prop: "interactive", type: "boolean", default: "true" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "effect", type: "number", default: "seed / sparkle" },
-    { prop: "animation-duration", type: "number (ms)", default: "seed / 900" },
-    { prop: "animation-delay", type: "number (ms)", default: "seed / 0" },
+    { prop: "animationDuration", type: "number (ms)", default: "seed / 900" },
+    { prop: "animationDelay", type: "number (ms)", default: "seed / 0" },
     { prop: "easing", type: "name | bezier tuple | number", default: "seed / chart default" },
     { prop: "sparkles", type: "boolean", default: "true" },
-    { prop: "hover-lift", type: "boolean", default: "true" },
+    { prop: "hoverLift", type: "boolean", default: "true" },
     { prop: "stagger", type: "number", default: "seed / 0.55" },
     { prop: "cell", type: "number (px)", default: "2" },
-    { prop: "sparkle-density", type: "number", default: "seed / 1" },
-    { prop: "sparkle-speed", type: "number", default: "seed / 1" },
-    { prop: "bar-gap", type: "number", default: "seed / 0.28" },
-    { prop: "bar-edge", type: "number", default: "seed / 0.18" },
-    { prop: "glow-size", type: "number", default: "seed / 0.16" },
-    { prop: "hover-strength", type: "number", default: "seed / 1" },
-    { prop: "dim-opacity", type: "number", default: "seed / 0.3" },
+    { prop: "sparkleDensity", type: "number", default: "seed / 1" },
+    { prop: "sparkleSpeed", type: "number", default: "seed / 1" },
+    { prop: "barGap", type: "number", default: "seed / 0.28" },
+    { prop: "barEdge", type: "number", default: "seed / 0.18" },
+    { prop: "glowSize", type: "number", default: "seed / 0.16" },
+    { prop: "hoverStrength", type: "number", default: "seed / 1" },
+    { prop: "dimOpacity", type: "number", default: "seed / 0.3" },
     { prop: "crosshair", type: "boolean", default: "true" },
-    { prop: "replay-token", type: "number", default: "0" },
-    { prop: "marker-index", type: "number | null", default: "null" },
+    { prop: "replayToken", type: "number", default: "0" },
+    { prop: "markerIndex", type: "number | null", default: "null" },
     { prop: "hovered", type: "boolean", default: "false" },
     { prop: "bloom", type: '"off" | "low" | "high" | "aura" | object | number', default: "seed / off" },
-    { prop: "bloom-on-hover", type: "boolean", default: "false" },
+    { prop: "bloomOnHover", type: "boolean", default: "false" },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number } — packaged plot URL", default: "undefined" },
-    { prop: "default-selected-data-key", type: "string | null", default: "null" },
-    { prop: "on-hover-change", type: "(index: number | null) => void", default: "undefined" },
-    { prop: "on-selection-change", type: "(key: string | null) => void", default: "undefined" },
+    { prop: "defaultSelectedDataKey", type: "string | null", default: "null" },
+    { prop: "onHoverChange", type: "(index: number | null) => void", default: "undefined" },
+    { prop: "onSelectionChange", type: "(key: string | null) => void", default: "undefined" },
     { prop: "variant (series)", type: "name | TextureConfig | number (seed)", default: '"gradient"' },
   ],
   pie: [
     { prop: "data", type: "Row[]", default: "required" },
     { prop: "config", type: "ChartConfig", default: "required" },
-    { prop: "data-key", type: "string", default: '""' },
-    { prop: "name-key", type: "string", default: "required" },
-    { prop: "inner-radius", type: "number 0…0.85", default: "seed / 0" },
+    { prop: "dataKey", type: "string", default: '""' },
+    { prop: "nameKey", type: "string", default: "required" },
+    { prop: "innerRadius", type: "number 0…0.85", default: "seed / 0" },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
     { prop: "class", type: "string", default: "undefined" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
-    { prop: "animation-duration", type: "number (ms)", default: "seed / 900" },
-    { prop: "animation-delay", type: "number (ms)", default: "seed / 0" },
+    { prop: "animationDuration", type: "number (ms)", default: "seed / 900" },
+    { prop: "animationDelay", type: "number (ms)", default: "seed / 0" },
     { prop: "easing", type: "name | bezier tuple | number", default: "seed / ease-in-out" },
-    { prop: "hover-lift", type: "boolean", default: "true" },
+    { prop: "hoverLift", type: "boolean", default: "true" },
     { prop: "cell", type: "number (px)", default: "2" },
-    { prop: "pop-out", type: "number", default: "seed / 6" },
-    { prop: "rim-width", type: "number", default: "seed / 1.4" },
+    { prop: "popOut", type: "number", default: "seed / 6" },
+    { prop: "rimWidth", type: "number", default: "seed / 1.4" },
     { prop: "falloff", type: "number", default: "seed / 0.45" },
-    { prop: "hover-strength", type: "number", default: "seed / 1" },
-    { prop: "dim-opacity", type: "number", default: "seed / 0.3" },
-    { prop: "start-angle", type: "number", default: "seed / 0" },
-    { prop: "replay-token", type: "number", default: "0" },
+    { prop: "hoverStrength", type: "number", default: "seed / 1" },
+    { prop: "dimOpacity", type: "number", default: "seed / 0.3" },
+    { prop: "startAngle", type: "number", default: "seed / 0" },
+    { prop: "replayToken", type: "number", default: "0" },
     { prop: "bloom", type: '"off" | "low" | "high" | "aura" | object | number', default: "seed / off" },
-    { prop: "bloom-on-hover", type: "boolean", default: "false" },
+    { prop: "bloomOnHover", type: "boolean", default: "false" },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number } — packaged plot URL", default: "undefined" },
-    { prop: "default-selected-data-key", type: "string | null", default: "null" },
-    { prop: "on-selection-change", type: "(key: string | null) => void", default: "undefined" },
+    { prop: "defaultSelectedDataKey", type: "string | null", default: "null" },
+    { prop: "onSelectionChange", type: "(key: string | null) => void", default: "undefined" },
   ],
   radar: [
     { prop: "data", type: "Row[]", default: "required" },
     { prop: "config", type: "ChartConfig", default: "required" },
-    { prop: "name-key", type: "string", default: "required" },
+    { prop: "nameKey", type: "string", default: "required" },
     { prop: "rings", type: "number", default: "seed / 4" },
     { prop: "margins", type: "Partial<Margins>", default: "{}" },
     { prop: "class", type: "string", default: "undefined" },
     { prop: "animate", type: "boolean", default: "true" },
     { prop: "seed", type: "number", default: "undefined" },
-    { prop: "animation-duration", type: "number (ms)", default: "seed / 900" },
-    { prop: "animation-delay", type: "number (ms)", default: "seed / 0" },
+    { prop: "animationDuration", type: "number (ms)", default: "seed / 900" },
+    { prop: "animationDelay", type: "number (ms)", default: "seed / 0" },
     { prop: "easing", type: "name | bezier tuple | number", default: "seed / ease-in-out" },
-    { prop: "hover-lift", type: "boolean", default: "true" },
+    { prop: "hoverLift", type: "boolean", default: "true" },
     { prop: "cell", type: "number (px)", default: "2" },
     { prop: "falloff", type: "number", default: "seed / 0.45" },
-    { prop: "hover-strength", type: "number", default: "seed / 1" },
-    { prop: "dim-opacity", type: "number", default: "seed / 0.3" },
-    { prop: "start-angle", type: "number", default: "seed / 0" },
-    { prop: "replay-token", type: "number", default: "0" },
+    { prop: "hoverStrength", type: "number", default: "seed / 1" },
+    { prop: "dimOpacity", type: "number", default: "seed / 0.3" },
+    { prop: "startAngle", type: "number", default: "seed / 0" },
+    { prop: "replayToken", type: "number", default: "0" },
     { prop: "bloom", type: '"off" | "low" | "high" | "aura" | object | number', default: "seed / off" },
-    { prop: "bloom-on-hover", type: "boolean", default: "false" },
+    { prop: "bloomOnHover", type: "boolean", default: "false" },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number } — packaged plot URL", default: "undefined" },
-    { prop: "default-selected-data-key", type: "string | null", default: "null" },
-    { prop: "on-selection-change", type: "(key: string | null) => void", default: "undefined" },
+    { prop: "defaultSelectedDataKey", type: "string | null", default: "null" },
+    { prop: "onSelectionChange", type: "(key: string | null) => void", default: "undefined" },
   ],
   sparkline: [
     { prop: "data", type: "number[]", default: "—" },
     { prop: "color", type: "DitherColor", default: "—" },
     { prop: "variant", type: '"gradient" | "dotted" | "hatched" | "solid"', default: '"gradient"' },
-    { prop: "marker-index", type: "number | null", default: "null" },
+    { prop: "markerIndex", type: "number | null", default: "null" },
     { prop: "bloom", type: '"off" | "low" | "high" | "aura"', default: '"off"' },
     { prop: "animate", type: "boolean", default: "false" },
   ],
   motion: [
     { prop: "animate", type: "boolean", default: "true" },
-    { prop: "animation-duration", type: "number (ms)", default: "900" },
-    { prop: "animation-delay", type: "number (ms)", default: "0" },
-    { prop: "replay-token", type: "number — bump to re-run", default: "0" },
+    { prop: "animationDuration", type: "number (ms)", default: "900" },
+    { prop: "animationDelay", type: "number (ms)", default: "0" },
+    { prop: "replayToken", type: "number — bump to re-run", default: "0" },
     { prop: "effect", type: "number — dedicated edge-motion seed", default: "master seed / gentle" },
   ],
   button: [
@@ -427,9 +431,9 @@ const API: Record<string, PropRow[]> = {
     { prop: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
     { prop: "loading / disabled", type: "boolean", default: "false" },
     { prop: "class", type: "string", default: "undefined" },
-    { prop: "render-mode", type: '"live" | "static"', default: '"live"' },
+    { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
-    { prop: "max-cols / max-rows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
+    { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
   ],
   avatar: [
     { prop: "name", type: "string", default: "—" },
@@ -448,42 +452,42 @@ const API: Record<string, PropRow[]> = {
     { prop: "bloom", type: '"off" | "low" | "high" | "aura" | object | number', default: "seed / off" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "class", type: "string", default: "undefined" },
-    { prop: "render-mode", type: '"live" | "static"', default: '"live"' },
+    { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
-    { prop: "max-cols / max-rows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
+    { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
   ],
   image: [
     { prop: "src", type: "string", default: "required" },
     { prop: "cell", type: "number (px)", default: "seed / 3" },
-    { prop: "focus-y", type: "number 0…1", default: "seed / 0.5" },
+    { prop: "focusY", type: "number 0…1", default: "seed / 0.5" },
     { prop: "fade", type: "number (px)", default: "seed / 0" },
     { prop: "seed", type: "number", default: "undefined" },
     { prop: "alt", type: "string", default: '""' },
     { prop: "class", type: "string", default: "undefined" },
-    { prop: "render-mode", type: '"live" | "static"', default: '"live"' },
+    { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "precompiled", type: "string | { src: string; width?: number; height?: number }", default: "undefined" },
-    { prop: "max-cols / max-rows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
+    { prop: "maxCols / maxRows", type: "number", default: "960 / 600 (live) · 320 / 200 (static)" },
   ],
   faultyTerminal: [
     { prop: "scale", type: "number", default: "1.5" },
-    { prop: "grid-mul", type: "[number, number]", default: "[2, 1]" },
-    { prop: "digit-size", type: "number", default: "1.2" },
-    { prop: "time-scale", type: "number", default: "1" },
+    { prop: "gridMul", type: "[number, number]", default: "[2, 1]" },
+    { prop: "digitSize", type: "number", default: "1.2" },
+    { prop: "timeScale", type: "number", default: "1" },
     { prop: "pause", type: "boolean", default: "false" },
-    { prop: "scanline-intensity", type: "number", default: "1" },
-    { prop: "glitch-amount", type: "number", default: "1" },
-    { prop: "flicker-amount", type: "number", default: "1" },
-    { prop: "noise-amp", type: "number", default: "1" },
-    { prop: "chromatic-aberration", type: "number (px)", default: "0" },
+    { prop: "scanlineIntensity", type: "number", default: "1" },
+    { prop: "glitchAmount", type: "number", default: "1" },
+    { prop: "flickerAmount", type: "number", default: "1" },
+    { prop: "noiseAmp", type: "number", default: "1" },
+    { prop: "chromaticAberration", type: "number (px)", default: "0" },
     { prop: "dither", type: "number 0…1 | boolean", default: "0" },
     { prop: "curvature", type: "number", default: "0" },
     { prop: "tint", type: "PixelColor (hex or seed)", default: '"#ffffff"' },
-    { prop: "mouse-react", type: "boolean", default: "true" },
-    { prop: "mouse-strength", type: "number", default: "0.5" },
-    { prop: "page-load-animation", type: "boolean", default: "false" },
+    { prop: "mouseReact", type: "boolean", default: "true" },
+    { prop: "mouseStrength", type: "number", default: "0.5" },
+    { prop: "pageLoadAnimation", type: "boolean", default: "false" },
     { prop: "brightness", type: "number", default: "1" },
     { prop: "seed", type: "number", default: "undefined" },
-    { prop: "render-mode", type: '"live" | "static"', default: '"live"' },
+    { prop: "renderMode", type: '"live" | "static"', default: '"live"' },
     { prop: "class", type: "string", default: "undefined" },
   ],
   palette: [
@@ -559,10 +563,10 @@ export function ChartsDocs() {
   const areaCode = useMemo(
     () =>
       SNIPPETS.area.replace(
-        'data-key="revenue" variant="gradient"',
+        'dataKey="revenue" variant="gradient"',
         typeof picked.area === "number"
-          ? `data-key="revenue" :variant="${picked.area}"  <!-- a seed — deterministic -->`
-          : `data-key="revenue" variant="${picked.area}"`,
+          ? `dataKey="revenue" variant={${picked.area}  {/* a seed — deterministic */}`
+          : `dataKey="revenue" variant="${picked.area}"`,
       ),
     [picked.area],
   );
@@ -573,8 +577,8 @@ export function ChartsDocs() {
   const barCode = useMemo(
     () =>
       SNIPPETS.bar
-        .replace("<Bar data-key=\"organic\" />", `<Bar data-key="organic" variant="${picked.bar}" />`)
-        .replace("<Bar data-key=\"paid\" />", `<Bar data-key="paid" variant="${picked.bar}" />`),
+        .replace("<Bar dataKey=\"organic\" />", `<Bar dataKey="organic" variant="${picked.bar}" />`)
+        .replace("<Bar dataKey=\"paid\" />", `<Bar dataKey="paid" variant="${picked.bar}" />`),
     [picked.bar],
   );
   const pieCode = useMemo(
@@ -586,30 +590,30 @@ export function ChartsDocs() {
       `<DitherButton color="${btn.color}" variant="${btn.variant}"${btn.bloom === "off" ? "" : ` bloom="${btn.bloom}"`}>
   Deploy
 </DitherButton>
-<DitherButton render-mode="static" precompiled="/button.png">Saved</DitherButton>`,
+<DitherButton renderMode="static" precompiled="/button.png">Saved</DitherButton>`,
     [btn.color, btn.variant, btn.bloom],
   );
   const avatarCode = useMemo(
-    () => `<DitherAvatar name="${avatarName}" :size="48" />
-<!-- same name, same face — at any size -->`,
+    () => `<DitherAvatar name="${avatarName}" size={48} />
+{/* same name, same face — at any size */}`,
     [avatarName],
   );
   const gradientCode = useMemo(
-    () => `<div class="relative h-40">
+    () => `<div className="relative h-40">
   <DitherGradient from="${grad.from}" to="transparent" direction="${grad.direction}" />
 </div>
-<div class="relative h-24">
-  <DitherGradient render-mode="static" precompiled="/gradient.png" />
+<div className="relative h-24">
+  <DitherGradient renderMode="static" precompiled="/gradient.png" />
 </div>`,
     [grad.from, grad.direction],
   );
   const termCode = useMemo(() => {
     const p = termParams;
-    const attrs = [`tint="${term.tint}"`, `:scale="${p.scale}"`, `:glitch-amount="${p.glitchAmount}"`, `:scanline-intensity="${p.scanlineIntensity}"`];
-    if (p.dither) attrs.push(`:dither="${p.dither}"`);
-    if (p.curvature) attrs.push(`:curvature="${p.curvature}"`);
-    if (p.chromaticAberration) attrs.push(`:chromatic-aberration="${p.chromaticAberration}"`);
-    return `<div class="relative h-56 overflow-hidden rounded-md">\n  <DitherFaultyTerminal ${attrs.join(" ")} />\n</div>`;
+    const attrs = [`tint="${term.tint}"`, `scale={${p.scale}`, `glitchAmount={${p.glitchAmount}`, `scanlineIntensity={${p.scanlineIntensity}`];
+    if (p.dither) attrs.push(`dither={${p.dither}`);
+    if (p.curvature) attrs.push(`curvature={${p.curvature}`);
+    if (p.chromaticAberration) attrs.push(`chromaticAberration={${p.chromaticAberration}`);
+    return `<div className="relative h-56 overflow-hidden rounded-md">\n  <DitherFaultyTerminal ${attrs.join(" ")} />\n</div>`;
   }, [term.tint, termParams]);
 
   return (
@@ -661,7 +665,7 @@ export function ChartsDocs() {
         <h3 className="mt-8 text-[10px] uppercase tracking-[0.25em] text-muted-foreground/70">seed-generative</h3>
         <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
           A number is a seed: the same deterministic idea as the avatar,
-          applied to texture. <code className="text-foreground/80">:variant=&quot;1984&quot;</code>
+          applied to texture. <code className="text-foreground/80">variant=&#123;1984&#125;</code>
           renders the same fill on every chart, forever.
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">

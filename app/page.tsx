@@ -12,15 +12,15 @@ import { LandingPage } from "@/views/landing";
  * the title/description/openGraph for the landing specifically.
  */
 export const metadata: Metadata = {
-  title: "dither-ui — A dithered UI toolkit for Vue",
+  title: "dither-ui — A dithered UI toolkit for React",
   description:
-    "dither-ui is a Vue 3 UI toolkit rendered on one ordered-dither canvas engine: composable area, line, bar, pie and radar charts plus 55 Base UI-parity components — buttons, avatars, gradients, forms, overlays — all seed-generative. MIT licensed.",
+    "dither-ui is a React 19 / Next.js 15 UI toolkit rendered on one ordered-dither canvas engine: composable area, line, bar, pie and radar charts plus 55 Base UI-parity components — buttons, avatars, gradients, forms, overlays — all seed-generative. MIT licensed.",
   openGraph: {
     type: "website",
     siteName: "dither-ui",
-    title: "dither-ui — A dithered UI toolkit for Vue",
+    title: "dither-ui — A dithered UI toolkit for React",
     description:
-      "Composable dithered charts and 55 seed-generative Vue components on one ordered-dither canvas engine. MIT licensed.",
+      "Composable dithered charts and 55 seed-generative React components on one ordered-dither canvas engine. MIT licensed.",
     url: "https://dither-ui.com/",
     images: [
       {
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "dither-ui — A dithered UI toolkit for Vue",
+    title: "dither-ui — A dithered UI toolkit for React",
     description:
-      "Composable dithered charts and 55 seed-generative Vue components on one ordered-dither canvas engine. MIT licensed.",
+      "Composable dithered charts and 55 seed-generative React components on one ordered-dither canvas engine. MIT licensed.",
     images: ["https://dither-ui.com/og.png"],
   },
   alternates: {

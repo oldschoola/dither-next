@@ -37,13 +37,13 @@ const SNIPPET_SKELETON = `<div class="rounded-lg border p-5">
 </div>`;
 
 // Each seed is a different spinner FORM — arc, dots, petals, thin comet.
-const SNIPPET_SPINNER = `<!-- default: a clean rotating arc -->
-<DitherSpinner :size="20" />
+const SNIPPET_SPINNER = `{/* default: a clean rotating arc */}
+<DitherSpinner size={20} />
 
-<!-- a seed picks the FORM — arc, ring of dots, rotating petals, thin comet -->
-<DitherSpinner :seed="42" :size="28" />
-<DitherSpinner :seed="777" color="green" />
-<DitherSpinner render-mode="static" precompiled="/spinner.png" />`;
+{/* a seed picks the FORM — arc, ring of dots, rotating petals, thin comet */}
+<DitherSpinner seed={42} size={28} />
+<DitherSpinner seed={777} color="green" />
+<DitherSpinner renderMode="static" precompiled="/spinner.png" />`;
 
 const SNIPPET_SEPARATOR = `<p>Charts render on canvas.</p>
 <DitherSeparator class="my-4" />
