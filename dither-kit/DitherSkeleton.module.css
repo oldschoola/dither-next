@@ -1,0 +1,49 @@
+/* DitherSkeleton — CSS-only shimmer. A diagonal highlight sweeps across the
+ * muted field; `prefers-reduced-motion: reduce` freezes it at the base tint
+ * (no animation, no motion). The seed varies the sweep speed + phase so a
+ * field of seeded skeletons doesn't beat in lockstep — same intent as the Vue
+ * kit's `shimmerFromSeed` (rate/amplitude/baseline), expressed as CSS timing
+ * instead of a per-frame canvas loop. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--foreground, #e6e6e6) 12%, transparent);
+  /* Timing custom properties (set from JS via the seed); defaults match the
+   * unseeded calm baseline. The ::after reads these for its animation. */
+  --dk-sk-dur: 1.6s;
+  --dk-sk-delay: 0s;
+}
+
+/* The moving highlight: a translucent gradient band translated across. */
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--foreground, #e6e6e6) 16%, transparent) 50%,
+    transparent 80%
+  );
+  animation: dk-skeleton-shimmer var(--dk-sk-dur) ease-in-out infinite;
+  animation-delay: var(--dk-sk-delay);
+}
+
+@keyframes dk-skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+    transform: none;
+    background: color-mix(in srgb, var(--foreground, #e6e6e6) 8%, transparent);
+  }
+}
